@@ -1,5 +1,6 @@
 from flask import Flask, send_from_directory
 import random
+import json
 
 app = Flask(__name__)
 
@@ -10,7 +11,11 @@ def main():
 
 
 
-
+@app.route("/test")
+def test():
+    print("test dziala")
+    x = '{ "name":"John", "age":30, "city":"New York"}'
+    return json.loads(x)
 
 @app.route("/<path:path>")
 def home(path):
