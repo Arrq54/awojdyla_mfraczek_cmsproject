@@ -1,9 +1,12 @@
 from flask import Flask, send_from_directory
 import random
 import json
+import sqlite3
 
 app = Flask(__name__)
 
+
+myConnection = sqlite3.connect('cmsProject.sqlite')
 
 @app.route("/")
 def main():
@@ -15,7 +18,7 @@ def main():
 def test():
     print("test dziala")
     x = '{ "name":"John", "age":30, "city":"New York"}'
-    return json.loads(x)
+    return x
 
 @app.route("/<path:path>")
 def home(path):
