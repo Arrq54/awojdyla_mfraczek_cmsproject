@@ -9,7 +9,7 @@
 <main>
   <Router
     routes={{
-      "/": HomePageCms,
+      "/Home": HomePageCms,
     }}
   />
 </main>
