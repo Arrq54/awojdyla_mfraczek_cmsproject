@@ -1,1 +1,2 @@
-main.svelte-1e9puaw{text-align:center;padding:1em;max-width:240px;margin:0 auto}@media(min-width: 640px){main.svelte-1e9puaw{max-width:none}}body{margin:0;padding:0;background:#ddd}
+body{margin:0;padding:0;background:#ddd}.navbar-item.svelte-31cgc2{margin:5px 20px}.navbar.svelte-31cgc2{padding-left:20%;margin-bottom:10px}.flex.svelte-31cgc2{display:flex
+    }.slider.svelte-31cgc2{width:100%;height:500px;position:relative}.arrow.svelte-31cgc2{width:20px;height:100px;position:absolute;top:50%;cursor:pointer;transition:0.5s all ease}.arrow.svelte-31cgc2:hover{transition:0.5s all ease;transform:translateY(-10px)}.arrow-left.svelte-31cgc2{left:5%}.arrow-right.svelte-31cgc2{right:5%}.slider-label.svelte-31cgc2{position:absolute;bottom:20px;left:calc(50% - 50px)}
