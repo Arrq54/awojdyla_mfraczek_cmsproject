@@ -33,6 +33,7 @@
       document.querySelector("#errordisplay").style.display = "block"
    }
 </script>
+
   <div class="login-box">
       <h1>Sign up</h1>
       <input type="text" name="username" placeholder="Username" />
@@ -45,10 +46,11 @@
   <div class="errorloginregister" id="errordisplay">
   </div>
 
+
 <style>
-    :global(body) {
+  :global(body) {
     margin: 0;
     padding: 0;
-    background: #ddd;
+    /* background: #ddd; */
   }
 </style>

@@ -3,6 +3,7 @@ import sqlite3
 from flask import Flask, send_from_directory, request
 import random
 import json
+import sqlite3
 
 app = Flask(__name__)
 
@@ -15,6 +16,8 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS data(
     admin integer
 )""")
 
+myConnection = sqlite3.connect('cmsProject.sqlite')
+
 @app.route("/")
 def main():
     return send_from_directory('client/public', 'index.html')
@@ -24,7 +27,7 @@ def main():
 def test():
     print("test dziala")
     x = '{ "name":"John", "age":30, "city":"New York"}'
-    return json.loads(x)
+    return x
 
 
 @app.route("/attemptLogin", methods=['GET', 'POST'])
