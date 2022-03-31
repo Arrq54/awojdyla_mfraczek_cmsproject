@@ -10,6 +10,6 @@
       <h1>Log in</h1>
       <input type="text" name="username" placeholder="Username" />
       <input type="password" name="password" placeholder="Password" />
-      <input type="submit" id="submitbutton" name="signup_submit" value="Log in" />
+      <input type="submit" id="submitbutton" name="signup_submit" value="Log me in" />
       <a href="/#/register" class="switchlogin">Create an account</a>
   </div>
