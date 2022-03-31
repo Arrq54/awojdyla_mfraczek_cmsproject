@@ -10,7 +10,6 @@ def main():
     return send_from_directory('client/public', 'index.html')
 
 
-
 @app.route("/test")
 def test():
     print("test dziala")

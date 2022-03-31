@@ -2,6 +2,8 @@
   import Router from "svelte-spa-router";
 
   import Home from "./routes/Home.svelte";
+  import Register from "./routes/Register.svelte"
+  import Login from "./routes/Login.svelte"
 
   export let name;
 </script>
@@ -10,6 +12,8 @@
   <Router
     routes={{
       "/": Home,
+      "/register": Register,
+      "/login": Login,
     }}
   />
 </main>
