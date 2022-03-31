@@ -11,9 +11,9 @@
 <main>
   <Router
     routes={{
+      "/": HomePageCms,
       "/register": Register,
       "/login": Login,
-      "/Home": HomePageCms,
     }}
   />
 </main>
