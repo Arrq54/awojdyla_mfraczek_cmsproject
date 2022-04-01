@@ -17,6 +17,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS data(
 )""")
 
 myConnection = sqlite3.connect('cmsProject.sqlite')
+app.config["Loggedin"] = 0
 
 @app.route("/")
 def main():
@@ -40,11 +41,13 @@ def attemptLogin():
     myCursor.execute("SELECT *, oid FROM data")
     records = myCursor.fetchall()
     found = False
-    admin = 0;
+    admin = 0
     for i in records:
         if username == i[0] and password == i[2]:
             found = True
             admin = i[3]
+            app.config["Loggedin"] = 2 if admin == 1 else 1
+            ####### WAZNE app.config = session, wedlug tego wyswietlamy rozne wersje strony glownej, 0 = niezalogowany, 1 = normalny user, 2 = admin
     returnAnswer = f'{{"correctData":true, "admin":{admin}}}' if found else f'{{"correctData":false, "admin":{admin}}}'
     print(returnAnswer)
     # true = user istnieje w bazie #false = nie istnieje
@@ -74,6 +77,11 @@ def register():
     # true = success, false = error
     return json.loads(returnAnswer)
 
+
+@app.route("/openedConf", methods=['GET', 'POST'])
+def getUserType():
+    returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
+    return json.loads(returnAnswer)
 
 @app.route("/<path:path>")
 def home(path):
