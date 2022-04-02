@@ -1,64 +1,25 @@
 <script>
   import { Router, Link } from "svelte-navigator";
-  window.onload = function () {
-    fetch("test")
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
 
-  let dataFromDatabase = {};
-  dataFromDatabase.navbarItems = ["Features", "Pricing", "FAQs", "About"];
-
-  dataFromDatabase.slider = {
-    src: "../../images/sliderPlaceholder.png",
-    labels: ["First side label", "Second side label", "Third side label"],
-    texts: [
-      "Some representative placeholder content for the first side",
-      "Some representative placeholder content for the second side",
-      "Some representative placeholder content for the third side",
-    ],
-  };
-
-  dataFromDatabase.news = [
-    {
-      header: "News 1",
-      title: "Special title treatment",
-      text: "(First)With supporting text below as natural lead-in to additional content",
-      buttonText: "Go somewhere",
-      src: "",
-    },
-    {
-      header: "News 2",
-      title: "Special title treatment",
-      text: "(Second)With supporting text below as natural lead-in to additional content",
-      buttonText: "Go somewhere",
-      src: "",
-    },
-    {
-      header: "News 3",
-      title: "Special title treatment",
-      text: "(Third)With supporting text below as natural lead-in to additional content",
-      buttonText: "Go somewhere",
-      src: "",
-    },
-  ];
-
-  dataFromDatabase.firstFeaturetteNews = {
-    title: "First featurette heading. It will blow your mind.",
-    textContent:
-      "Some great placeholder content for the first featurette here. Imagine some exciting prose here",
-    src: "../../images/ffnPlaceholder.png",
-  };
-
-  dataFromDatabase.footer = ["Features", "Pricing", "FAQs", "About"];
-  dataFromDatabase.footerCompany = "© 2022 Company, Inc";
+  async function getContentFromDatabase() {
+    let temp = fetch("/getContentFromDatabase").then((response) =>
+      response.json()
+    );
+    const res = await temp;
+    console.log(res);
+    return res;
+  }
+  let promiseData = getContentFromDatabase();
 
   let actualSliderSide = 0;
 
-  function changeSliderSide(x) {
+  function changeSliderSide(x, dataFromDatabase) {
     if (actualSliderSide == 0 && x == -1) {
       actualSliderSide = 2;
-    } else if (actualSliderSide == 2 && x == 1) {
+    } else if (
+      actualSliderSide == dataFromDatabase.slider.length - 1 &&
+      x == 1
+    ) {
       actualSliderSide = 0;
     } else {
       actualSliderSide += x;
@@ -66,96 +27,106 @@
   }
 </script>
 
-<div class="main">
-  <!--NAVBAR MENU-->
-  <div class="navbar flex justify-space-between">
-    <div class="flex">
-      <div class="navbar-item">Icon</div>
-      <Router>
-        {#each dataFromDatabase.navbarItems as item}
-          <div class="navbar-item"><Link to={item}>{item}</Link></div>
-        {/each}
-      </Router>
-    </div>
-
-    <div class="register-login-buttons flex">
-      <div class="navbar-item btn  btn-login">
-        <a href="/#/login" class="btn-a">Login</a>
+{#await promiseData then dataFromDatabase}
+  <div class="main">
+    <!--NAVBAR MENU-->
+    <div class="navbar flex justify-space-between">
+      <div class="flex">
+        <div class="navbar-item">Icon</div>
+        <Router>
+          {#each dataFromDatabase.navbarItems as item}
+            <div class="navbar-item"><Link to={item[0]}>{item[0]}</Link></div>
+          {/each}
+        </Router>
       </div>
-      <div class="navbar-item btn btn-register">
-        <a href="/#/register" class="btn-a ">Register</a>
-      </div>
-    </div>
-  </div>
-  <!--SLIDER-->
-  <div
-    class="slider"
-    style="background-image: url({dataFromDatabase.slider.src});"
-  >
-    <div class="arrow arrow-left" on:click={() => changeSliderSide(-1)}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
-        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-          d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
-        /></svg
-      >
-    </div>
-    <div class="arrow arrow-right" on:click={() => changeSliderSide(1)}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
-        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-          d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
-        /></svg
-      >
-    </div>
-    <div class="slider-content">
-      <h4>{dataFromDatabase.slider.labels[actualSliderSide]}</h4>
-      <p>{dataFromDatabase.slider.texts[actualSliderSide]}</p>
-    </div>
-  </div>
 
-  <div class="flex justify-content-center news flex-wrap">
-    {#each dataFromDatabase.news as news}
-      <div class="newsBlock">
-        <div class="news-header">{news.header}</div>
-        <div class="news-content">
-          <p class="title">{news.title}</p>
-          {news.text}
-          <br />
-          <br />
-          <div class="btn btn-div-news">
-            <a href={news.src} class="btn-news">{news.buttonText}</a>
-          </div>
+      <div class="register-login-buttons flex">
+        <div class="navbar-item btn  btn-login">
+          <a href="/#/login" class="btn-a">Login</a>
+        </div>
+        <div class="navbar-item btn btn-register">
+          <a href="/#/register" class="btn-a ">Register</a>
         </div>
       </div>
-    {/each}
-  </div>
-  <hr />
-  <div class="first-featurette-news flex justify-space-between">
-    <div class="ffn-content">
-      <div>
-        <h3>{dataFromDatabase.firstFeaturetteNews.title}</h3>
-        <p>{dataFromDatabase.firstFeaturetteNews.textContent}</p>
+    </div>
+    <!--SLIDER to do-->
+    <div
+      class="slider"
+      style="background-image: url({dataFromDatabase.slider[actualSliderSide]
+        .src});"
+    >
+      <div
+        class="arrow arrow-left"
+        on:click={() => changeSliderSide(-1, dataFromDatabase)}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+          ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+            d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
+          /></svg
+        >
+      </div>
+      <div
+        class="arrow arrow-right"
+        on:click={() => changeSliderSide(1, dataFromDatabase)}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+          ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+            d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
+          /></svg
+        >
+      </div>
+      <div class="slider-content">
+        <h4>{dataFromDatabase.slider[actualSliderSide].label}</h4>
+        <p>{dataFromDatabase.slider[actualSliderSide].texts}</p>
       </div>
     </div>
-    <div
-      class="ffn-image"
-      style="background-image: url({dataFromDatabase.firstFeaturetteNews.src});"
-    />
-  </div>
-  <hr />
-  <div class="footer">
-    <div class="upper-footer flex justify-content-center">
-      <Router>
-        {#each dataFromDatabase.footer as item}
-          <div class="footer-item"><Link to={item}>{item}</Link></div>
-        {/each}
-      </Router>
+
+    <div class="flex justify-content-center news flex-wrap">
+      {#each dataFromDatabase.news as news}
+        <div class="newsBlock">
+          <div class="news-header">{news.header}</div>
+          <div class="news-content">
+            <p class="title">{news.title}</p>
+            {news.text_content}
+            <br />
+            <br />
+            <div class="btn btn-div-news">
+              <a href={news.src} class="btn-news">{news.button_text}</a>
+            </div>
+          </div>
+        </div>
+      {/each}
     </div>
     <hr />
-    <div class="lower-footer">
-      <h4 class="copyright">{dataFromDatabase.footerCompany}</h4>
+    <div class="first-featurette-news flex justify-space-between">
+      <div class="ffn-content">
+        <div>
+          <h3>{dataFromDatabase.firstFeaturetteNews[0].title}</h3>
+          <p>{dataFromDatabase.firstFeaturetteNews[0].textContent}</p>
+        </div>
+      </div>
+      <div
+        class="ffn-image"
+        style="background-image: url({dataFromDatabase.firstFeaturetteNews[0]
+          .src});"
+      />
+    </div>
+    <hr />
+    <div class="footer">
+      <div class="upper-footer flex justify-content-center">
+        <Router>
+          {#each dataFromDatabase.footer.links as item}
+            <div class="footer-item"><Link to={item[0]}>{item[0]}</Link></div>
+          {/each}
+        </Router>
+      </div>
+      <hr />
+      <div class="lower-footer">
+        <h4 class="copyright">{dataFromDatabase.footer.company}</h4>
+      </div>
     </div>
   </div>
-</div>
+{/await}
 
 <style>
   .main {
@@ -339,5 +310,8 @@
   }
   .copyright {
     text-align: center;
+  }
+  .slider {
+    transition: 0.3s all ease;
   }
 </style>

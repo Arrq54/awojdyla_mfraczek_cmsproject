@@ -159,5 +159,12 @@ button:focus {
   display: none;
   color: red;
   font-size: 16px;
-  margin-top: -60px;
+  margin: -60px auto 0 auto;
+}
+#backg {
+  background: #ddd;
+  width: 100%;
+  position: absolute;
+  height: 200%;
+  transform: translateY(-400px);
 }

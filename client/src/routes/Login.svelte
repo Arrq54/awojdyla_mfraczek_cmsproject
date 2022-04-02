@@ -11,8 +11,9 @@
         .then(response => response.json())
         .then(
             data => {
-              if(!data.correctData) userNotFound()
               console.log(data)
+              if(!data.correctData) userNotFound()
+              else window.location.replace("/")
             }
         )
     }
@@ -26,6 +27,7 @@
    }
   } 
 </script>
+  <div id="backg"></div>
   <div class="login-box" style="height:310px">
       <h1>Log in</h1>
       <input type="text" name="username" placeholder="Username" />

@@ -4,6 +4,7 @@
   import Register from "./routes/Register.svelte";
   import Login from "./routes/Login.svelte";
   import HomePageCms from "./routes/HomePageCms.svelte";
+  import ConfigurationMenuUser from "./routes/ConfigurationMenuUser.svelte";
 
   export let name;
 </script>
@@ -14,6 +15,7 @@
       "/": HomePageCms,
       "/register": Register,
       "/login": Login,
+      "/configurationUser": ConfigurationMenuUser,
     }}
   />
 </main>

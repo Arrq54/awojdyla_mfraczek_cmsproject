@@ -12,10 +12,14 @@
       const headers = { "Content-Type": "application/json" }
       fetch("/register", { method: "post", body, headers })
         .then(response => response.json())
-        data => {
-              if(!data.correctData) userAlreadyExistsError()
+        .then(
+          data => {
               console.log(data)
+              if(!data.correctData) userAlreadyExistsError()
+              else window.location.replace("/#/login")
         }
+        )
+        
     }
   } 
   async function passwordConfirmError(){
@@ -34,6 +38,8 @@
    }
 </script>
 
+
+  <div id="backg"></div>
   <div class="login-box">
       <h1>Sign up</h1>
       <input type="text" name="username" placeholder="Username" />
@@ -46,11 +52,11 @@
   <div class="errorloginregister" id="errordisplay">
   </div>
 
-
 <style>
   :global(body) {
     margin: 0;
     padding: 0;
     /* background: #ddd; */
+    /*overflow:hidden;*/
   }
 </style>
