@@ -6,7 +6,6 @@
       response.json()
     );
     const res = await temp;
-    console.log(res);
     return res;
   }
   let promiseData = getContentFromDatabase();
@@ -25,6 +24,12 @@
       actualSliderSide += x;
     }
   }
+  let logged = getLoginStatus();
+  async function getLoginStatus() {
+    let temp = fetch("/checkLoginStatus").then((response) => response.json());
+    const res = await temp;
+    return res;
+  }
 </script>
 
 {#await promiseData then dataFromDatabase}
@@ -41,12 +46,23 @@
       </div>
 
       <div class="register-login-buttons flex">
-        <div class="navbar-item btn  btn-login">
-          <a href="/#/login" class="btn-a">Login</a>
-        </div>
-        <div class="navbar-item btn btn-register">
-          <a href="/#/register" class="btn-a ">Register</a>
-        </div>
+        {#await logged then status}
+          {#if status.user > 0}
+            <div class="navbar-item btn  btn-login">
+              <a href="/#/configurationuser" class="btn-a">Menu</a>
+            </div>
+            <div class="navbar-item btn btn-register">
+              <a href="/logout" class="btn-a ">Log out</a>
+            </div>
+          {:else}
+            <div class="navbar-item btn  btn-login">
+              <a href="/#/login" class="btn-a">Login</a>
+            </div>
+            <div class="navbar-item btn btn-register">
+              <a href="/#/register" class="btn-a ">Register</a>
+            </div>
+          {/if}
+        {/await}
       </div>
     </div>
     <!--SLIDER to do-->
