@@ -78,7 +78,7 @@ def register():
     return json.loads(returnAnswer)
 
 
-@app.route("/openedConf", methods=['GET', 'POST'])
+@app.route("/checkLoginStatus", methods=['GET', 'POST'])
 def getUserType():
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
@@ -182,6 +182,12 @@ def getContentFromDatabase():
 
     return json.dumps(output)
 
+@app.route("/logout")
+def logout():
+    print("logout")
+    app.config["Loggedin"] = 0
+    returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
+    return json.loads(returnAnswer)
 
 if __name__ == "__main__":
     app.run(debug=True)

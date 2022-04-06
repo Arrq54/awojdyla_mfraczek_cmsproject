@@ -6,7 +6,6 @@
       response.json()
     );
     const res = await temp;
-    console.log(res);
     return res;
   }
   let promiseData = getContentFromDatabase();
@@ -25,6 +24,19 @@
       actualSliderSide += x;
     }
   }
+  let logged = getLoginStatus();
+  async function getLoginStatus() {
+    let temp = fetch("/checkLoginStatus").then((response) => response.json());
+    const res = await temp;
+    return res;
+  }
+  function logout(){
+    fetch("/logout").then((response) => response.json()).then((data)=>logged = data)
+  }
+  function settingsMenu(){
+    window.location.replace("/#/configurationuser")
+    location.reload()
+  }
 </script>
 
 {#await promiseData then dataFromDatabase}
@@ -41,12 +53,23 @@
       </div>
 
       <div class="register-login-buttons flex">
-        <div class="navbar-item btn  btn-login">
-          <a href="/#/login" class="btn-a">Login</a>
-        </div>
-        <div class="navbar-item btn btn-register">
-          <a href="/#/register" class="btn-a ">Register</a>
-        </div>
+        {#await logged then status}
+          {#if status.user > 0}
+            <div class="navbar-item btn  btn-menu">
+              <a href={null} on:click={settingsMenu} class="btn-a">Menu</a>
+            </div>
+            <div class="navbar-item btn btn-logout">
+              <a href={null} on:click={logout} class="btn-a ">Log out</a>
+            </div>
+          {:else}
+            <div class="navbar-item btn  btn-login">
+              <a href="/#/login" class="btn-a">Login</a>
+            </div>
+            <div class="navbar-item btn btn-register">
+              <a href="/#/register" class="btn-a ">Register</a>
+            </div>
+          {/if}
+        {/await}
       </div>
     </div>
     <!--SLIDER to do-->
@@ -200,11 +223,7 @@
     background-color: white;
     transition: 0.3s all ease-in-out;
   }
-  .btn-register {
-    border: 1px solid #1b76fd;
-    background-color: white;
-    transition: 0.3s all ease-in-out;
-  }
+ 
   .btn-login > a {
     color: #1f8a59;
     text-decoration: none;
@@ -216,6 +235,11 @@
   }
   .btn-login:hover > a {
     color: white;
+    transition: 0.3s all ease-in-out;
+  }
+  .btn-register {
+    border: 1px solid #1b76fd;
+    background-color: white;
     transition: 0.3s all ease-in-out;
   }
   .btn-register > a {
@@ -231,6 +255,49 @@
     color: white;
     transition: 0.3s all ease-in-out;
   }
+
+
+  .btn-logout{
+    border: 1px solid #e34245;
+    background-color: white;
+    transition: 0.3s all ease-in-out;
+    cursor: pointer;
+  }
+  .btn-logout > a {
+    color: #e34245;
+    text-decoration: none;
+  }
+  .btn-logout:hover {
+    color: white;
+    background-color: #e34245;
+    transition: 0.3s all ease-in-out;
+  }
+  .btn-logout:hover > a {
+    color: white;
+    transition: 0.3s all ease-in-out;
+  }
+
+
+  .btn-menu{
+    border: 1px solid #36a372;
+    background-color: white;
+    transition: 0.3s all ease-in-out;
+    cursor: pointer;
+  }
+  .btn-menu > a {
+    color: #36a372;
+    text-decoration: none;
+  }
+  .btn-menu:hover {
+    color: white;
+    background-color: #36a372;
+    transition: 0.3s all ease-in-out;
+  }
+  .btn-menu:hover > a {
+    color: white;
+    transition: 0.3s all ease-in-out;
+  }
+
 
   .news {
     margin-top: 35px;
