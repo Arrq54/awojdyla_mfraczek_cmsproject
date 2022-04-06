@@ -1,32 +1,90 @@
-<script>
-  window.onload = () => {
-    const body = JSON.stringify({});
-    const headers = { "Content-Type": "application/json" };
-    fetch("/checkLoginStatus", { method: "post", body, headers })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        //   if(data.user == 0 || data.user == 2) window.location.replace("/")
-        //   else if(data.user == 1) standardUser()
-      });
-  };
-</script>
+<script defer>
+  window.onload = function(){
+    console.log("asd")
 
+    // fetch("/checkLoginStatus")
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     //   if(data.user == 0 || data.user == 2) window.location.replace("/")
+    //     //   else if(data.user == 1) standardUser()
+    //   });
+  }
+  async function asyncCheckLoginStatus(){
+    let temp = fetch("/checkLoginStatus").then((response) => response.json())
+    return await temp
+  }
+  $: status = asyncCheckLoginStatus()
+  $: selectedTab = 'themes'
+  function setTab(tab){
+    selectedTab = tab
+  }
+  function sliderLoaded(){
+    console.log("slider loaded")
+  }
+</script>
 <div id="backg" />
+<!-- svelte-ignore missing-declaration -->
+{#await status then user}
 <div class="maincontainer">
   <div class="menu">
     <div class="maincard">
       <ul>
-        <li>Themes</li>
-        <li>Slider</li>
-        <li>Menu</li>
-        <li>Articles</li>
-        <li>Pictures</li>
+        <li  on:click={()=>setTab('themes')}>Themes</li>
+        <li on:click={()=>setTab('slider')}>Slider</li>
+        <li on:click={()=>setTab('menu')}>Menu</li>
+        <li on:click={()=>setTab('articles')}>Articles</li>
+        <li on:click={()=>setTab('pictures')}>Pictures</li>
       </ul>
     </div>
+    {#if user.user==2}
+    <p>Admin</p>
+    {:else}
     <p>No admin permissions</p>
+    {/if}
+  </div>
+  <div class="content">
+    {#if selectedTab=='themes'}
+    <!-- THEMES EDYCJA -->
+      <div class="settings flex">
+        <div class="line">
+          Themes
+        </div>
+      </div>
+      {:else if selectedTab=='slider'}
+      <div  on:load={()=>sliderLoaded()} class="settings flex">
+        <!-- SLIDER EDYCJA -->
+        <div class="card">
+          <div class="line">
+            <h5>Tu bedzie opis</h5>
+            <input type="text" name="" id="">
+          </div>
+          <div class="line">
+            <h5>Tu bedzie nizej opis</h5>
+            <input type="text" name="" id="">
+          </div>
+        </div>
+      </div>
+      {:else if selectedTab=="menu"}
+      <div>
+        <!-- MENU EDYCJA -->
+        menu
+      </div>
+      {:else if selectedTab=="articles"}
+      <!-- ARTICLES EDYCJA -->
+      <div>
+        articles
+      </div>
+      {:else if selectedTab=="pictures"}
+      <!-- Pictures EDYCJA -->
+      <div>
+        pictures
+      </div>
+    {/if}
   </div>
 </div>
+{/await}
+
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
@@ -41,14 +99,14 @@
   .maincontainer {
     width: 60%;
     height: 500px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    margin-left: calc(50vw - 30%);
+    margin-top: calc(50vh - 250px);
     font-family: "Roboto", sans-serif;
     background: whitesmoke;
     border: 1px solid whitesmoke;
     border-radius: 26px;
+    display: flex;
   }
   .menu {
     border: 1px solid #16a060;
@@ -74,5 +132,17 @@
     color: rgb(90, 1, 179);
     background-color: #81ffc45e;
     cursor: pointer;
+  }
+  .content{
+    width: 88%;
+    height: 100%;
+    padding: 0px;
+  }
+  .flex{
+    display: flex;
+  }
+  .line{
+    display: flex;
+    justify-content: space-between;
   }
 </style>

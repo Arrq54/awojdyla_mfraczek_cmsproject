@@ -182,8 +182,9 @@ def getContentFromDatabase():
 
     return json.dumps(output)
 
-@app.route("/logut")
+@app.route("/logout")
 def logout():
+    print("logout")
     app.config["Loggedin"] = 0
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
