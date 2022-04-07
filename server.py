@@ -189,5 +189,18 @@ def logout():
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
 
+@app.route("/getSlider")
+def getSlider():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM slider")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

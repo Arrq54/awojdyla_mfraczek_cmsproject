@@ -1,15 +1,4 @@
 <script defer>
-  window.onload = function(){
-    console.log("asd")
-
-    // fetch("/checkLoginStatus")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     //   if(data.user == 0 || data.user == 2) window.location.replace("/")
-    //     //   else if(data.user == 1) standardUser()
-    //   });
-  }
   async function asyncCheckLoginStatus(){
     let temp = fetch("/checkLoginStatus").then((response) => response.json())
     return await temp
@@ -19,8 +8,15 @@
   function setTab(tab){
     selectedTab = tab
   }
-  function sliderLoaded(){
-    console.log("slider loaded")
+
+  async function sliderLoad(){
+    fetch("/getSlider").then((response)=>response.json()).then(data=>sliderAsync =data)
+  }
+  let sliderAsync = [];
+  let files;
+  function checkImage(){
+    console.log("asdasd")
+    console.log(files)
   }
 </script>
 <div id="backg" />
@@ -36,12 +32,13 @@
         <li on:click={()=>setTab('articles')}>Articles</li>
         <li on:click={()=>setTab('pictures')}>Pictures</li>
       </ul>
+      {#if user.user==2}
+      <p>Admin</p>
+      {:else}
+      <p>No admin permissions</p>
+      {/if}
     </div>
-    {#if user.user==2}
-    <p>Admin</p>
-    {:else}
-    <p>No admin permissions</p>
-    {/if}
+   
   </div>
   <div class="content">
     {#if selectedTab=='themes'}
@@ -52,17 +49,29 @@
         </div>
       </div>
       {:else if selectedTab=='slider'}
-      <div  on:load={()=>sliderLoaded()} class="settings flex">
+      <div use:sliderLoad class="settings flex">
         <!-- SLIDER EDYCJA -->
         <div class="card">
-          <div class="line">
-            <h5>Tu bedzie opis</h5>
-            <input type="text" name="" id="">
-          </div>
-          <div class="line">
-            <h5>Tu bedzie nizej opis</h5>
-            <input type="text" name="" id="">
-          </div>
+          {#await sliderAsync then slider}
+            {#each slider as item, i}
+              <div class="card-header">
+                Slider card nr:{i}
+              </div>
+                <div class="line">
+                  <h5>Slider label</h5>
+                  <input type="text" name="" value={item.label} id="">
+                </div>
+                <div class="line">
+                  <h5>Slider text</h5>
+                  <textarea rows="10" type="text" name="" value={item.texts} id=""/>
+                </div>
+                <div class="line">
+                  <h5>Picture</h5>
+                  <input class="file" type="file" name="" id="" accept="image/*" on:change={checkImage}  bind:files >
+                </div>
+                <hr class="sliderHR">
+            {/each}
+          {/await}
         </div>
       </div>
       {:else if selectedTab=="menu"}
@@ -98,7 +107,6 @@
   }
   .maincontainer {
     width: 60%;
-    height: 500px;
     position: relative;
     margin-left: calc(50vw - 30%);
     margin-top: calc(50vh - 250px);
@@ -111,7 +119,6 @@
   .menu {
     border: 1px solid #16a060;
     width: 22%;
-    height: 100%;
     padding: 0px;
     background-color: #16a060;
     border-top-left-radius: 25px;
@@ -133,6 +140,10 @@
     background-color: #81ffc45e;
     cursor: pointer;
   }
+  .maincard{
+    height: 100%;
+    position: relative;
+  }
   .content{
     width: 88%;
     height: 100%;
@@ -143,6 +154,34 @@
   }
   .line{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    width: 100%;
+  }
+  .card{
+    position: relative;
+    width: 100%;
+  }
+  .card-header{
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  input[type="text"]{
+    width: 400px;
+  }
+  textarea{
+    padding: 0;
+    margin: 0;
+    resize: none;
+    width: 400px;
+    height: auto;
+  }
+  .settings{
+    padding: 20px;
+  }
+  
+  .sliderHR{
+    margin: 20px;
+    margin-top: 50px;
   }
 </style>
