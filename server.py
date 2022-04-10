@@ -1,9 +1,12 @@
+import os
 from types import SimpleNamespace
 import sqlite3
-from flask import Flask, send_from_directory, request, session
+from flask import Flask, send_from_directory, request, redirect
 import random
 import json
 import sqlite3
+import requests
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -18,6 +21,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS data(
 
 myConnection = sqlite3.connect('cmsProject.sqlite')
 app.config["Loggedin"] = 0
+
 
 @app.route("/")
 def main():
@@ -83,6 +87,7 @@ def getUserType():
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
 
+
 @app.route("/<path:path>")
 def home(path):
     return send_from_directory('client/public', path)
@@ -133,6 +138,8 @@ myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer_company(
     company text
 )""")
+
+
 @app.route("/getContentFromDatabase")
 def getContentFromDatabase():
     output = {}
@@ -140,7 +147,7 @@ def getContentFromDatabase():
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
     myCursor.execute("SELECT * FROM navbar_menu")
-    records =  myCursor.fetchall()
+    records = myCursor.fetchall()
     output['navbarItems'] = records
     # slider
     myConnection = sqlite3.connect('usersData.sqlite')
@@ -182,12 +189,14 @@ def getContentFromDatabase():
 
     return json.dumps(output)
 
+
 @app.route("/logout")
 def logout():
     print("logout")
     app.config["Loggedin"] = 0
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
+
 
 @app.route("/getSlider")
 def getSlider():
@@ -199,7 +208,21 @@ def getSlider():
     return json.dumps(records)
 
 
+app.config['UPLOAD_FOLDER'] = 'client/public/images'
 
+
+@app.route("/uploadSlider", methods=['GET', 'POST'])
+def uploadSlider():
+    # data = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+    # print(data)
+    for i in request.files:
+        file = request.files[i]
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
+            directory = os.path.normpath(path)
+            file.save(directory, file.filename)
+    return redirect("/#/configurationuser")
 
 
 if __name__ == "__main__":

@@ -1,99 +1,166 @@
 <script defer>
-  async function asyncCheckLoginStatus(){
-    let temp = fetch("/checkLoginStatus").then((response) => response.json())
-    return await temp
+  async function asyncCheckLoginStatus() {
+    let temp = fetch("/checkLoginStatus").then((response) => response.json());
+    return await temp;
   }
-  $: status = asyncCheckLoginStatus()
-  $: selectedTab = 'themes'
-  function setTab(tab){
-    selectedTab = tab
+  $: status = asyncCheckLoginStatus();
+  $: selectedTab = "themes";
+  function setTab(tab) {
+    selectedTab = tab;
   }
 
-  async function sliderLoad(){
-    fetch("/getSlider").then((response)=>response.json()).then(data=>sliderAsync =data)
+  async function sliderLoad() {
+    fetch("/getSlider")
+      .then((response) => response.json())
+      .then((data) => (sliderAsync = data));
   }
+  let sliderLength = 0;
   let sliderAsync = [];
   let files;
-  function checkImage(){
-    console.log("asdasd")
-    console.log(files)
+
+  function updateSlider() {
+    sliderLength = sliderAsync.length;
+    let body = [];
+    let bd = new FormData();
+    for (let i = 0; i < sliderLength; i++) {
+      let sliderCard = document.querySelectorAll(`.slider${i}`);
+      let obj = {};
+
+      if (sliderCard[2].files.length > 0) {
+        console.log(sliderCard[2].files[0]);
+        bd.append("file", sliderCard[2].files[0], String(i));
+      } else {
+        obj.url = "DEFAULT";
+      }
+      obj.label = sliderCard[0].value;
+      obj.text = sliderCard[1].value;
+      body.push(obj);
+    }
+    console.log(bd);
+    bd.forEach(function (value, key) {
+      console.log(value);
+      console.log(key);
+    });
+    const headers = { "Content-Type": "application/json" };
+    body = JSON.stringify(body);
+    fetch("/uploadSlider", { method: "post", bd, headers }) // fetch
+      .then((response) => response.json())
+      .then(
+        (data) => console.log(data) // dane odpowiedzi z serwera
+      )
+      .catch((error) => console.log(error));
   }
 </script>
+
 <div id="backg" />
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
-<div class="maincontainer">
-  <div class="menu">
-    <div class="maincard">
-      <ul>
-        <li  on:click={()=>setTab('themes')}>Themes</li>
-        <li on:click={()=>setTab('slider')}>Slider</li>
-        <li on:click={()=>setTab('menu')}>Menu</li>
-        <li on:click={()=>setTab('articles')}>Articles</li>
-        <li on:click={()=>setTab('pictures')}>Pictures</li>
-      </ul>
-      {#if user.user==2}
-      <p>Admin</p>
-      {:else}
-      <p>No admin permissions</p>
+  <div class="maincontainer">
+    <div class="menu">
+      <div class="maincard">
+        <ul>
+          <li on:click={() => setTab("themes")}>Themes</li>
+          <li on:click={() => setTab("slider")}>Slider</li>
+          <li on:click={() => setTab("menu")}>Menu</li>
+          <li on:click={() => setTab("articles")}>Articles</li>
+          <li on:click={() => setTab("pictures")}>Pictures</li>
+        </ul>
+        {#if user.user == 2}
+          <p>Admin</p>
+        {:else}
+          <p>No admin permissions</p>
+        {/if}
+      </div>
+    </div>
+    <div class="content">
+      {#if selectedTab == "themes"}
+        <!-- THEMES EDYCJA -->
+        <div class="settings flex">
+          <div class="line">Themes</div>
+        </div>
+      {:else if selectedTab == "slider"}
+        <div use:sliderLoad class="settings flex">
+          <!-- SLIDER EDYCJA -->
+          <!-- <form
+            action="/uploadSlider"
+            enctype="multipart/form-data"
+            method="post"
+          >
+            <h1>test</h1>
+            <input type="file" name="plik" id="" />
+            <button type="submit">submit</button>
+
+            <hr />
+          </form> -->
+          <div class="card">
+            {#await sliderAsync then slider}
+              <form
+                action="/uploadSlider"
+                enctype="multipart/form-data"
+                method="post"
+              >
+                {#each slider as item, i}
+                  <div class="card-header">
+                    Slider card nr:{i}
+                  </div>
+                  <div class="line">
+                    <h5>Slider label</h5>
+                    <input
+                      type="text"
+                      name={`sliderLabel${i}`}
+                      value={item.label}
+                      id={`slider${i}`}
+                      class={`slider${i}`}
+                    />
+                  </div>
+                  <div class="line">
+                    <h5>Slider text</h5>
+                    <textarea
+                      rows="10"
+                      type="text"
+                      name={`sliderText${i}`}
+                      value={item.texts}
+                      id={`slider${i}`}
+                      class={`slider${i}`}
+                    />
+                  </div>
+                  <div class="line">
+                    <h5>
+                      Picture<br />
+                      <a href={item.src}>Link to current picture</a>
+                    </h5>
+                    <input
+                      class={`slider${i}`}
+                      type="file"
+                      name={`sliderFile${i}`}
+                      id={`slider${i}`}
+                      accept="image/*"
+                      bind:files
+                    />
+                  </div>
+
+                  <hr class="sliderHR" />
+                  <button type="submit" class="btn btn-save">Save</button>
+                {/each}
+              </form>
+            {/await}
+          </div>
+        </div>
+      {:else if selectedTab == "menu"}
+        <div>
+          <!-- MENU EDYCJA -->
+          menu
+        </div>
+      {:else if selectedTab == "articles"}
+        <!-- ARTICLES EDYCJA -->
+        <div>articles</div>
+      {:else if selectedTab == "pictures"}
+        <!-- Pictures EDYCJA -->
+        <div>pictures</div>
       {/if}
     </div>
-   
   </div>
-  <div class="content">
-    {#if selectedTab=='themes'}
-    <!-- THEMES EDYCJA -->
-      <div class="settings flex">
-        <div class="line">
-          Themes
-        </div>
-      </div>
-      {:else if selectedTab=='slider'}
-      <div use:sliderLoad class="settings flex">
-        <!-- SLIDER EDYCJA -->
-        <div class="card">
-          {#await sliderAsync then slider}
-            {#each slider as item, i}
-              <div class="card-header">
-                Slider card nr:{i}
-              </div>
-                <div class="line">
-                  <h5>Slider label</h5>
-                  <input type="text" name="" value={item.label} id="">
-                </div>
-                <div class="line">
-                  <h5>Slider text</h5>
-                  <textarea rows="10" type="text" name="" value={item.texts} id=""/>
-                </div>
-                <div class="line">
-                  <h5>Picture</h5>
-                  <input class="file" type="file" name="" id="" accept="image/*" on:change={checkImage}  bind:files >
-                </div>
-                <hr class="sliderHR">
-            {/each}
-          {/await}
-        </div>
-      </div>
-      {:else if selectedTab=="menu"}
-      <div>
-        <!-- MENU EDYCJA -->
-        menu
-      </div>
-      {:else if selectedTab=="articles"}
-      <!-- ARTICLES EDYCJA -->
-      <div>
-        articles
-      </div>
-      {:else if selectedTab=="pictures"}
-      <!-- Pictures EDYCJA -->
-      <div>
-        pictures
-      </div>
-    {/if}
-  </div>
-</div>
 {/await}
-
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
@@ -140,47 +207,47 @@
     background-color: #81ffc45e;
     cursor: pointer;
   }
-  .maincard{
+  .maincard {
     height: 100%;
     position: relative;
   }
-  .content{
+  .content {
     width: 88%;
     height: 100%;
     padding: 0px;
   }
-  .flex{
+  .flex {
     display: flex;
   }
-  .line{
+  .line {
     display: flex;
     justify-content: space-around;
     width: 100%;
   }
-  .card{
+  .card {
     position: relative;
     width: 100%;
   }
-  .card-header{
+  .card-header {
     text-align: center;
     font-size: 25px;
     font-weight: bold;
   }
-  input[type="text"]{
+  input[type="text"] {
     width: 400px;
   }
-  textarea{
+  textarea {
     padding: 0;
     margin: 0;
     resize: none;
     width: 400px;
     height: auto;
   }
-  .settings{
+  .settings {
     padding: 20px;
   }
-  
-  .sliderHR{
+
+  .sliderHR {
     margin: 20px;
     margin-top: 50px;
   }

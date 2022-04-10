@@ -117,6 +117,9 @@ var app = (function () {
                 rest[k] = props[k];
         return rest;
     }
+    function null_to_empty(value) {
+        return value == null ? '' : value;
+    }
     function action_destroyer(action_result) {
         return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
     }
@@ -4016,7 +4019,7 @@ var app = (function () {
     	return block;
     }
 
-    // (42:42)     <div class="main">      <!--NAVBAR MENU-->      <div class="navbar flex justify-space-between">        <div class="flex">          <div class="navbar-item">Icon</div>          <Router>            {#each dataFromDatabase.navbarItems as item}
+    // (44:42)     <div class="main">      <!--NAVBAR MENU-->      <div class="navbar flex justify-space-between">        <div class="flex">          <div class="navbar-item">Icon</div>          <Router>            {#each dataFromDatabase.navbarItems as item}
     function create_then_block$1(ctx) {
     	let div16;
     	let div3;
@@ -4184,63 +4187,63 @@ var app = (function () {
     			div14 = element("div");
     			h41 = element("h4");
     			t20 = text(t20_value);
-    			attr_dev(div0, "class", "navbar-item svelte-s3ha91");
-    			add_location(div0, file$2, 46, 8, 1269);
-    			attr_dev(div1, "class", "flex svelte-s3ha91");
-    			add_location(div1, file$2, 45, 6, 1241);
-    			attr_dev(div2, "class", "register-login-buttons flex svelte-s3ha91");
-    			add_location(div2, file$2, 54, 6, 1520);
-    			attr_dev(div3, "class", "navbar flex justify-space-between svelte-s3ha91");
-    			add_location(div3, file$2, 44, 4, 1186);
+    			attr_dev(div0, "class", "navbar-item svelte-8movmf");
+    			add_location(div0, file$2, 48, 8, 1294);
+    			attr_dev(div1, "class", "flex svelte-8movmf");
+    			add_location(div1, file$2, 47, 6, 1266);
+    			attr_dev(div2, "class", "register-login-buttons flex svelte-8movmf");
+    			add_location(div2, file$2, 56, 6, 1545);
+    			attr_dev(div3, "class", "navbar flex justify-space-between svelte-8movmf");
+    			add_location(div3, file$2, 46, 4, 1211);
     			attr_dev(path0, "d", "M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z");
-    			add_location(path0, file$2, 85, 179, 2816);
+    			add_location(path0, file$2, 87, 179, 2841);
     			attr_dev(svg0, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg0, "viewBox", "0 0 320 512");
-    			add_location(svg0, file$2, 84, 8, 2574);
-    			attr_dev(div4, "class", "arrow arrow-left svelte-s3ha91");
-    			add_location(div4, file$2, 80, 6, 2452);
+    			add_location(svg0, file$2, 86, 8, 2599);
+    			attr_dev(div4, "class", "arrow arrow-left svelte-8movmf");
+    			add_location(div4, file$2, 82, 6, 2477);
     			attr_dev(path1, "d", "M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z");
-    			add_location(path1, file$2, 95, 179, 3473);
+    			add_location(path1, file$2, 97, 179, 3498);
     			attr_dev(svg1, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg1, "viewBox", "0 0 320 512");
-    			add_location(svg1, file$2, 94, 8, 3231);
-    			attr_dev(div5, "class", "arrow arrow-right svelte-s3ha91");
-    			add_location(div5, file$2, 90, 6, 3109);
-    			add_location(h40, file$2, 101, 8, 3803);
-    			add_location(p0, file$2, 102, 8, 3871);
-    			attr_dev(div6, "class", "slider-content svelte-s3ha91");
-    			add_location(div6, file$2, 100, 6, 3765);
-    			attr_dev(div7, "class", "slider svelte-s3ha91");
+    			add_location(svg1, file$2, 96, 8, 3256);
+    			attr_dev(div5, "class", "arrow arrow-right svelte-8movmf");
+    			add_location(div5, file$2, 92, 6, 3134);
+    			add_location(h40, file$2, 103, 8, 3828);
+    			add_location(p0, file$2, 104, 8, 3896);
+    			attr_dev(div6, "class", "slider-content svelte-8movmf");
+    			add_location(div6, file$2, 102, 6, 3790);
+    			attr_dev(div7, "class", "slider svelte-8movmf");
     			set_style(div7, "background-image", "url(" + /*dataFromDatabase*/ ctx[7].slider[/*actualSliderSide*/ ctx[0]].src + ")");
-    			add_location(div7, file$2, 75, 4, 2314);
-    			attr_dev(div8, "class", "flex justify-content-center news flex-wrap svelte-s3ha91");
-    			add_location(div8, file$2, 106, 4, 3961);
-    			attr_dev(hr0, "class", "svelte-s3ha91");
-    			add_location(hr0, file$2, 122, 4, 4514);
-    			add_location(h3, file$2, 126, 10, 4648);
-    			add_location(p1, file$2, 127, 10, 4716);
-    			add_location(div9, file$2, 125, 8, 4631);
-    			attr_dev(div10, "class", "ffn-content svelte-s3ha91");
-    			add_location(div10, file$2, 124, 6, 4596);
-    			attr_dev(div11, "class", "ffn-image svelte-s3ha91");
+    			add_location(div7, file$2, 77, 4, 2339);
+    			attr_dev(div8, "class", "flex justify-content-center news flex-wrap svelte-8movmf");
+    			add_location(div8, file$2, 108, 4, 3986);
+    			attr_dev(hr0, "class", "svelte-8movmf");
+    			add_location(hr0, file$2, 124, 4, 4539);
+    			add_location(h3, file$2, 128, 10, 4673);
+    			add_location(p1, file$2, 129, 10, 4741);
+    			add_location(div9, file$2, 127, 8, 4656);
+    			attr_dev(div10, "class", "ffn-content svelte-8movmf");
+    			add_location(div10, file$2, 126, 6, 4621);
+    			attr_dev(div11, "class", "ffn-image svelte-8movmf");
     			set_style(div11, "background-image", "url(" + /*dataFromDatabase*/ ctx[7].firstFeaturetteNews[0].src + ")");
-    			add_location(div11, file$2, 130, 6, 4814);
-    			attr_dev(div12, "class", "first-featurette-news flex justify-space-between svelte-s3ha91");
-    			add_location(div12, file$2, 123, 4, 4526);
-    			attr_dev(hr1, "class", "svelte-s3ha91");
-    			add_location(hr1, file$2, 136, 4, 4972);
-    			attr_dev(div13, "class", "upper-footer flex justify-content-center svelte-s3ha91");
-    			add_location(div13, file$2, 138, 6, 5012);
-    			attr_dev(hr2, "class", "svelte-s3ha91");
-    			add_location(hr2, file$2, 145, 6, 5281);
-    			attr_dev(h41, "class", "copyright svelte-s3ha91");
-    			add_location(h41, file$2, 147, 8, 5331);
-    			attr_dev(div14, "class", "lower-footer svelte-s3ha91");
-    			add_location(div14, file$2, 146, 6, 5295);
+    			add_location(div11, file$2, 132, 6, 4839);
+    			attr_dev(div12, "class", "first-featurette-news flex justify-space-between svelte-8movmf");
+    			add_location(div12, file$2, 125, 4, 4551);
+    			attr_dev(hr1, "class", "svelte-8movmf");
+    			add_location(hr1, file$2, 138, 4, 4997);
+    			attr_dev(div13, "class", "upper-footer flex justify-content-center svelte-8movmf");
+    			add_location(div13, file$2, 140, 6, 5037);
+    			attr_dev(hr2, "class", "svelte-8movmf");
+    			add_location(hr2, file$2, 147, 6, 5306);
+    			attr_dev(h41, "class", "copyright svelte-8movmf");
+    			add_location(h41, file$2, 149, 8, 5356);
+    			attr_dev(div14, "class", "lower-footer svelte-8movmf");
+    			add_location(div14, file$2, 148, 6, 5320);
     			attr_dev(div15, "class", "footer");
-    			add_location(div15, file$2, 137, 4, 4984);
-    			attr_dev(div16, "class", "main svelte-s3ha91");
-    			add_location(div16, file$2, 42, 2, 1138);
+    			add_location(div15, file$2, 139, 4, 5009);
+    			attr_dev(div16, "class", "main svelte-8movmf");
+    			add_location(div16, file$2, 44, 2, 1163);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div16, anchor);
@@ -4395,14 +4398,14 @@ var app = (function () {
     		block,
     		id: create_then_block$1.name,
     		type: "then",
-    		source: "(42:42)     <div class=\\\"main\\\">      <!--NAVBAR MENU-->      <div class=\\\"navbar flex justify-space-between\\\">        <div class=\\\"flex\\\">          <div class=\\\"navbar-item\\\">Icon</div>          <Router>            {#each dataFromDatabase.navbarItems as item}",
+    		source: "(44:42)     <div class=\\\"main\\\">      <!--NAVBAR MENU-->      <div class=\\\"navbar flex justify-space-between\\\">        <div class=\\\"flex\\\">          <div class=\\\"navbar-item\\\">Icon</div>          <Router>            {#each dataFromDatabase.navbarItems as item}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (50:37) <Link to={item[0]}>
+    // (52:37) <Link to={item[0]}>
     function create_default_slot_3(ctx) {
     	let t_value = /*item*/ ctx[8][0] + "";
     	let t;
@@ -4424,14 +4427,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(50:37) <Link to={item[0]}>",
+    		source: "(52:37) <Link to={item[0]}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (49:10) {#each dataFromDatabase.navbarItems as item}
+    // (51:10) {#each dataFromDatabase.navbarItems as item}
     function create_each_block_2(ctx) {
     	let div;
     	let link;
@@ -4450,8 +4453,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(link.$$.fragment);
-    			attr_dev(div, "class", "navbar-item svelte-s3ha91");
-    			add_location(div, file$2, 49, 12, 1392);
+    			attr_dev(div, "class", "navbar-item svelte-8movmf");
+    			add_location(div, file$2, 51, 12, 1417);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4486,14 +4489,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(49:10) {#each dataFromDatabase.navbarItems as item}",
+    		source: "(51:10) {#each dataFromDatabase.navbarItems as item}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (48:8) <Router>
+    // (50:8) <Router>
     function create_default_slot_2(ctx) {
     	let each_1_anchor;
     	let current;
@@ -4582,7 +4585,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(48:8) <Router>",
+    		source: "(50:8) <Router>",
     		ctx
     	});
 
@@ -4604,7 +4607,7 @@ var app = (function () {
     	return block;
     }
 
-    // (56:35)             {#if status.user > 0}
+    // (58:35)             {#if status.user > 0}
     function create_then_block_1$1(ctx) {
     	let if_block_anchor;
 
@@ -4648,14 +4651,14 @@ var app = (function () {
     		block,
     		id: create_then_block_1$1.name,
     		type: "then",
-    		source: "(56:35)             {#if status.user > 0}",
+    		source: "(58:35)             {#if status.user > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (64:10) {:else}
+    // (66:10) {:else}
     function create_else_block$1(ctx) {
     	let div0;
     	let a0;
@@ -4673,15 +4676,15 @@ var app = (function () {
     			a1 = element("a");
     			a1.textContent = "Register";
     			attr_dev(a0, "href", "/#/login");
-    			attr_dev(a0, "class", "btn-a svelte-s3ha91");
-    			add_location(a0, file$2, 65, 14, 2019);
-    			attr_dev(div0, "class", "navbar-item btn btn-login svelte-s3ha91");
-    			add_location(div0, file$2, 64, 12, 1963);
+    			attr_dev(a0, "class", "btn-a svelte-8movmf");
+    			add_location(a0, file$2, 67, 14, 2044);
+    			attr_dev(div0, "class", "navbar-item btn btn-login svelte-8movmf");
+    			add_location(div0, file$2, 66, 12, 1988);
     			attr_dev(a1, "href", "/#/register");
-    			attr_dev(a1, "class", "btn-a  svelte-s3ha91");
-    			add_location(a1, file$2, 68, 14, 2153);
-    			attr_dev(div1, "class", "navbar-item btn btn-register svelte-s3ha91");
-    			add_location(div1, file$2, 67, 12, 2095);
+    			attr_dev(a1, "class", "btn-a  svelte-8movmf");
+    			add_location(a1, file$2, 70, 14, 2178);
+    			attr_dev(div1, "class", "navbar-item btn btn-register svelte-8movmf");
+    			add_location(div1, file$2, 69, 12, 2120);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -4702,14 +4705,14 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(64:10) {:else}",
+    		source: "(66:10) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (57:10) {#if status.user > 0}
+    // (59:10) {#if status.user > 0}
     function create_if_block$1(ctx) {
     	let div0;
     	let a0;
@@ -4729,15 +4732,15 @@ var app = (function () {
     			a1 = element("a");
     			a1.textContent = "Log out";
     			attr_dev(a0, "href", null);
-    			attr_dev(a0, "class", "btn-a svelte-s3ha91");
-    			add_location(a0, file$2, 58, 14, 1700);
-    			attr_dev(div0, "class", "navbar-item btn btn-menu svelte-s3ha91");
-    			add_location(div0, file$2, 57, 12, 1645);
+    			attr_dev(a0, "class", "btn-a svelte-8movmf");
+    			add_location(a0, file$2, 60, 14, 1725);
+    			attr_dev(div0, "class", "navbar-item btn btn-menu svelte-8movmf");
+    			add_location(div0, file$2, 59, 12, 1670);
     			attr_dev(a1, "href", null);
-    			attr_dev(a1, "class", "btn-a  svelte-s3ha91");
-    			add_location(a1, file$2, 61, 14, 1851);
-    			attr_dev(div1, "class", "navbar-item btn btn-logout svelte-s3ha91");
-    			add_location(div1, file$2, 60, 12, 1795);
+    			attr_dev(a1, "class", "btn-a  svelte-8movmf");
+    			add_location(a1, file$2, 63, 14, 1876);
+    			attr_dev(div1, "class", "navbar-item btn btn-logout svelte-8movmf");
+    			add_location(div1, file$2, 62, 12, 1820);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -4769,7 +4772,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(57:10) {#if status.user > 0}",
+    		source: "(59:10) {#if status.user > 0}",
     		ctx
     	});
 
@@ -4791,7 +4794,7 @@ var app = (function () {
     	return block;
     }
 
-    // (108:6) {#each dataFromDatabase.news as news}
+    // (110:6) {#each dataFromDatabase.news as news}
     function create_each_block_1(ctx) {
     	let div3;
     	let div0;
@@ -4836,21 +4839,21 @@ var app = (function () {
     			a = element("a");
     			t8 = text(t8_value);
     			t9 = space();
-    			attr_dev(div0, "class", "news-header svelte-s3ha91");
-    			add_location(div0, file$2, 109, 10, 4107);
-    			attr_dev(p, "class", "title svelte-s3ha91");
-    			add_location(p, file$2, 111, 12, 4203);
-    			add_location(br0, file$2, 113, 12, 4283);
-    			add_location(br1, file$2, 114, 12, 4303);
+    			attr_dev(div0, "class", "news-header svelte-8movmf");
+    			add_location(div0, file$2, 111, 10, 4132);
+    			attr_dev(p, "class", "title svelte-8movmf");
+    			add_location(p, file$2, 113, 12, 4228);
+    			add_location(br0, file$2, 115, 12, 4308);
+    			add_location(br1, file$2, 116, 12, 4328);
     			attr_dev(a, "href", /*news*/ ctx[11].src);
-    			attr_dev(a, "class", "btn-news svelte-s3ha91");
-    			add_location(a, file$2, 116, 14, 4369);
-    			attr_dev(div1, "class", "btn btn-div-news svelte-s3ha91");
-    			add_location(div1, file$2, 115, 12, 4323);
-    			attr_dev(div2, "class", "news-content svelte-s3ha91");
-    			add_location(div2, file$2, 110, 10, 4163);
-    			attr_dev(div3, "class", "newsBlock svelte-s3ha91");
-    			add_location(div3, file$2, 108, 8, 4072);
+    			attr_dev(a, "class", "btn-news svelte-8movmf");
+    			add_location(a, file$2, 118, 14, 4394);
+    			attr_dev(div1, "class", "btn btn-div-news svelte-8movmf");
+    			add_location(div1, file$2, 117, 12, 4348);
+    			attr_dev(div2, "class", "news-content svelte-8movmf");
+    			add_location(div2, file$2, 112, 10, 4188);
+    			attr_dev(div3, "class", "newsBlock svelte-8movmf");
+    			add_location(div3, file$2, 110, 8, 4097);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -4882,14 +4885,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(108:6) {#each dataFromDatabase.news as news}",
+    		source: "(110:6) {#each dataFromDatabase.news as news}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (142:37) <Link to={item[0]}>
+    // (144:37) <Link to={item[0]}>
     function create_default_slot_1(ctx) {
     	let t_value = /*item*/ ctx[8][0] + "";
     	let t;
@@ -4911,14 +4914,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(142:37) <Link to={item[0]}>",
+    		source: "(144:37) <Link to={item[0]}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (141:10) {#each dataFromDatabase.footer.links as item}
+    // (143:10) {#each dataFromDatabase.footer.links as item}
     function create_each_block$1(ctx) {
     	let div;
     	let link;
@@ -4937,8 +4940,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(link.$$.fragment);
-    			attr_dev(div, "class", "footer-item svelte-s3ha91");
-    			add_location(div, file$2, 141, 12, 5155);
+    			attr_dev(div, "class", "footer-item svelte-8movmf");
+    			add_location(div, file$2, 143, 12, 5180);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4973,14 +4976,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(141:10) {#each dataFromDatabase.footer.links as item}",
+    		source: "(143:10) {#each dataFromDatabase.footer.links as item}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (140:8) <Router>
+    // (142:8) <Router>
     function create_default_slot(ctx) {
     	let each_1_anchor;
     	let current;
@@ -5069,7 +5072,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(140:8) <Router>",
+    		source: "(142:8) <Router>",
     		ctx
     	});
 
@@ -5270,12 +5273,12 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
-    	child_ctx[17] = i;
+    	child_ctx[16] = list[i];
+    	child_ctx[18] = i;
     	return child_ctx;
     }
 
-    // (1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch("/checkLoginStatus").then((response) => response.json())      return await temp    }
+    // (1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch("/checkLoginStatus").then((response) => response.json());      return await temp;    }
     function create_catch_block_1(ctx) {
     	const block = { c: noop, m: noop, p: noop, d: noop };
 
@@ -5283,14 +5286,14 @@ var app = (function () {
     		block,
     		id: create_catch_block_1.name,
     		type: "catch",
-    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json())      return await temp    }",
+    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json());      return await temp;    }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (24:25)   <div class="maincontainer">    <div class="menu">      <div class="maincard">        <ul>          <li  on:click={()=>setTab('themes')}
+    // (57:25)     <div class="maincontainer">      <div class="menu">        <div class="maincard">          <ul>            <li on:click={() => setTab("themes")}
     function create_then_block(ctx) {
     	let div3;
     	let div1;
@@ -5312,7 +5315,7 @@ var app = (function () {
     	let dispose;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*user*/ ctx[13].user == 2) return create_if_block_5;
+    		if (/*user*/ ctx[14].user == 2) return create_if_block_5;
     		return create_else_block;
     	}
 
@@ -5320,8 +5323,8 @@ var app = (function () {
     	let if_block0 = current_block_type(ctx);
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*selectedTab*/ ctx[2] == 'themes') return create_if_block;
-    		if (/*selectedTab*/ ctx[2] == 'slider') return create_if_block_1;
+    		if (/*selectedTab*/ ctx[2] == "themes") return create_if_block;
+    		if (/*selectedTab*/ ctx[2] == "slider") return create_if_block_1;
     		if (/*selectedTab*/ ctx[2] == "menu") return create_if_block_2;
     		if (/*selectedTab*/ ctx[2] == "articles") return create_if_block_3;
     		if (/*selectedTab*/ ctx[2] == "pictures") return create_if_block_4;
@@ -5355,26 +5358,26 @@ var app = (function () {
     			t10 = space();
     			div2 = element("div");
     			if (if_block1) if_block1.c();
-    			attr_dev(li0, "class", "svelte-1l0f7w5");
-    			add_location(li0, file$1, 28, 8, 737);
-    			attr_dev(li1, "class", "svelte-1l0f7w5");
-    			add_location(li1, file$1, 29, 8, 795);
-    			attr_dev(li2, "class", "svelte-1l0f7w5");
-    			add_location(li2, file$1, 30, 8, 852);
-    			attr_dev(li3, "class", "svelte-1l0f7w5");
-    			add_location(li3, file$1, 31, 8, 905);
-    			attr_dev(li4, "class", "svelte-1l0f7w5");
-    			add_location(li4, file$1, 32, 8, 966);
-    			attr_dev(ul, "class", "svelte-1l0f7w5");
-    			add_location(ul, file$1, 27, 6, 723);
-    			attr_dev(div0, "class", "maincard svelte-1l0f7w5");
-    			add_location(div0, file$1, 26, 4, 693);
-    			attr_dev(div1, "class", "menu svelte-1l0f7w5");
-    			add_location(div1, file$1, 25, 2, 669);
-    			attr_dev(div2, "class", "content svelte-1l0f7w5");
-    			add_location(div2, file$1, 42, 2, 1170);
-    			attr_dev(div3, "class", "maincontainer svelte-1l0f7w5");
-    			add_location(div3, file$1, 24, 0, 638);
+    			attr_dev(li0, "class", "svelte-1ekekcp");
+    			add_location(li0, file$1, 61, 10, 1772);
+    			attr_dev(li1, "class", "svelte-1ekekcp");
+    			add_location(li1, file$1, 62, 10, 1833);
+    			attr_dev(li2, "class", "svelte-1ekekcp");
+    			add_location(li2, file$1, 63, 10, 1894);
+    			attr_dev(li3, "class", "svelte-1ekekcp");
+    			add_location(li3, file$1, 64, 10, 1951);
+    			attr_dev(li4, "class", "svelte-1ekekcp");
+    			add_location(li4, file$1, 65, 10, 2016);
+    			attr_dev(ul, "class", "svelte-1ekekcp");
+    			add_location(ul, file$1, 60, 8, 1756);
+    			attr_dev(div0, "class", "maincard svelte-1ekekcp");
+    			add_location(div0, file$1, 59, 6, 1724);
+    			attr_dev(div1, "class", "menu svelte-1ekekcp");
+    			add_location(div1, file$1, 58, 4, 1698);
+    			attr_dev(div2, "class", "content svelte-1ekekcp");
+    			add_location(div2, file$1, 74, 4, 2241);
+    			attr_dev(div3, "class", "maincontainer svelte-1ekekcp");
+    			add_location(div3, file$1, 57, 2, 1665);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -5398,11 +5401,11 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(li0, "click", /*click_handler*/ ctx[7], false, false, false),
-    					listen_dev(li1, "click", /*click_handler_1*/ ctx[8], false, false, false),
-    					listen_dev(li2, "click", /*click_handler_2*/ ctx[9], false, false, false),
-    					listen_dev(li3, "click", /*click_handler_3*/ ctx[10], false, false, false),
-    					listen_dev(li4, "click", /*click_handler_4*/ ctx[11], false, false, false)
+    					listen_dev(li0, "click", /*click_handler*/ ctx[6], false, false, false),
+    					listen_dev(li1, "click", /*click_handler_1*/ ctx[7], false, false, false),
+    					listen_dev(li2, "click", /*click_handler_2*/ ctx[8], false, false, false),
+    					listen_dev(li3, "click", /*click_handler_3*/ ctx[9], false, false, false),
+    					listen_dev(li4, "click", /*click_handler_4*/ ctx[10], false, false, false)
     				];
 
     				mounted = true;
@@ -5448,14 +5451,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(24:25)   <div class=\\\"maincontainer\\\">    <div class=\\\"menu\\\">      <div class=\\\"maincard\\\">        <ul>          <li  on:click={()=>setTab('themes')}",
+    		source: "(57:25)     <div class=\\\"maincontainer\\\">      <div class=\\\"menu\\\">        <div class=\\\"maincard\\\">          <ul>            <li on:click={() => setTab(\\\"themes\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (37:6) {:else}
+    // (70:8) {:else}
     function create_else_block(ctx) {
     	let p;
 
@@ -5463,8 +5466,8 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "No admin permissions";
-    			attr_dev(p, "class", "svelte-1l0f7w5");
-    			add_location(p, file$1, 37, 6, 1099);
+    			attr_dev(p, "class", "svelte-1ekekcp");
+    			add_location(p, file$1, 70, 10, 2167);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -5478,14 +5481,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(37:6) {:else}",
+    		source: "(70:8) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (35:6) {#if user.user==2}
+    // (68:8) {#if user.user == 2}
     function create_if_block_5(ctx) {
     	let p;
 
@@ -5493,8 +5496,8 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Admin";
-    			attr_dev(p, "class", "svelte-1l0f7w5");
-    			add_location(p, file$1, 35, 6, 1064);
+    			attr_dev(p, "class", "svelte-1ekekcp");
+    			add_location(p, file$1, 68, 10, 2126);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -5508,14 +5511,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(35:6) {#if user.user==2}",
+    		source: "(68:8) {#if user.user == 2}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (87:40) 
+    // (157:42) 
     function create_if_block_4(ctx) {
     	let div;
 
@@ -5523,7 +5526,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "pictures";
-    			add_location(div, file$1, 88, 6, 2689);
+    			add_location(div, file$1, 158, 8, 5085);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5538,14 +5541,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(87:40) ",
+    		source: "(157:42) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (82:40) 
+    // (154:42) 
     function create_if_block_3(ctx) {
     	let div;
 
@@ -5553,7 +5556,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "articles";
-    			add_location(div, file$1, 83, 6, 2570);
+    			add_location(div, file$1, 155, 8, 4978);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5568,14 +5571,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(82:40) ",
+    		source: "(154:42) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (77:36) 
+    // (149:38) 
     function create_if_block_2(ctx) {
     	let div;
 
@@ -5583,7 +5586,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "menu";
-    			add_location(div, file$1, 77, 6, 2425);
+    			add_location(div, file$1, 149, 8, 4821);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5598,14 +5601,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(77:36) ",
+    		source: "(149:38) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (51:38) 
+    // (81:40) 
     function create_if_block_1(ctx) {
     	let div1;
     	let div0;
@@ -5621,7 +5624,7 @@ var app = (function () {
     		pending: create_pending_block_1,
     		then: create_then_block_1,
     		catch: create_catch_block,
-    		value: 14
+    		value: 15
     	};
 
     	handle_promise(promise = /*sliderAsync*/ ctx[0], info);
@@ -5631,10 +5634,10 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			info.block.c();
-    			attr_dev(div0, "class", "card svelte-1l0f7w5");
-    			add_location(div0, file$1, 53, 8, 1495);
-    			attr_dev(div1, "class", "settings flex svelte-1l0f7w5");
-    			add_location(div1, file$1, 51, 6, 1411);
+    			attr_dev(div0, "class", "card svelte-1ekekcp");
+    			add_location(div0, file$1, 94, 10, 2883);
+    			attr_dev(div1, "class", "settings flex svelte-1ekekcp");
+    			add_location(div1, file$1, 81, 8, 2478);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -5670,14 +5673,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(51:38) ",
+    		source: "(81:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (44:4) {#if selectedTab=='themes'}
+    // (76:6) {#if selectedTab == "themes"}
     function create_if_block(ctx) {
     	let div1;
     	let div0;
@@ -5687,10 +5690,10 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			div0.textContent = "Themes";
-    			attr_dev(div0, "class", "line svelte-1l0f7w5");
-    			add_location(div0, file$1, 46, 8, 1297);
-    			attr_dev(div1, "class", "settings flex svelte-1l0f7w5");
-    			add_location(div1, file$1, 45, 6, 1260);
+    			attr_dev(div0, "class", "line svelte-1ekekcp");
+    			add_location(div0, file$1, 78, 10, 2380);
+    			attr_dev(div1, "class", "settings flex svelte-1ekekcp");
+    			add_location(div1, file$1, 77, 8, 2341);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -5706,14 +5709,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(44:4) {#if selectedTab=='themes'}",
+    		source: "(76:6) {#if selectedTab == \\\"themes\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch("/checkLoginStatus").then((response) => response.json())      return await temp    }
+    // (1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch("/checkLoginStatus").then((response) => response.json());      return await temp;    }
     function create_catch_block(ctx) {
     	const block = { c: noop, m: noop, p: noop, d: noop };
 
@@ -5721,17 +5724,17 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json())      return await temp    }",
+    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json());      return await temp;    }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (55:42)               {#each slider as item, i}
+    // (96:44)                 <form                  action="/uploadSlider"                  enctype="multipart/form-data"                  method="post"                >                  {#each slider as item, i}
     function create_then_block_1(ctx) {
-    	let each_1_anchor;
-    	let each_value = /*slider*/ ctx[14];
+    	let form;
+    	let each_value = /*slider*/ ctx[15];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -5741,22 +5744,27 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			form = element("form");
+
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			each_1_anchor = empty();
+    			attr_dev(form, "action", "/uploadSlider");
+    			attr_dev(form, "enctype", "multipart/form-data");
+    			attr_dev(form, "method", "post");
+    			add_location(form, file$1, 96, 14, 2963);
     		},
     		m: function mount(target, anchor) {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(target, anchor);
-    			}
+    			insert_dev(target, form, anchor);
 
-    			insert_dev(target, each_1_anchor, anchor);
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(form, null);
+    			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*files, checkImage, sliderAsync*/ 67) {
-    				each_value = /*slider*/ ctx[14];
+    			if (dirty & /*files, sliderAsync*/ 3) {
+    				each_value = /*slider*/ ctx[15];
     				validate_each_argument(each_value);
     				let i;
 
@@ -5768,7 +5776,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    						each_blocks[i].m(form, null);
     					}
     				}
 
@@ -5780,8 +5788,8 @@ var app = (function () {
     			}
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(form);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(each_1_anchor);
     		}
     	};
 
@@ -5789,14 +5797,14 @@ var app = (function () {
     		block,
     		id: create_then_block_1.name,
     		type: "then",
-    		source: "(55:42)               {#each slider as item, i}",
+    		source: "(96:44)                 <form                  action=\\\"/uploadSlider\\\"                  enctype=\\\"multipart/form-data\\\"                  method=\\\"post\\\"                >                  {#each slider as item, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (56:12) {#each slider as item, i}
+    // (102:16) {#each slider as item, i}
     function create_each_block(ctx) {
     	let div0;
     	let t0;
@@ -5816,10 +5824,18 @@ var app = (function () {
     	let t8;
     	let div3;
     	let h52;
+    	let t9;
+    	let br;
     	let t10;
-    	let input1;
+    	let a;
     	let t11;
+    	let a_href_value;
+    	let t12;
+    	let input1;
+    	let t13;
     	let hr;
+    	let t14;
+    	let button;
     	let mounted;
     	let dispose;
 
@@ -5827,7 +5843,7 @@ var app = (function () {
     		c: function create() {
     			div0 = element("div");
     			t0 = text("Slider card nr:");
-    			t1 = text(/*i*/ ctx[17]);
+    			t1 = text(/*i*/ ctx[18]);
     			t2 = space();
     			div1 = element("div");
     			h50 = element("h5");
@@ -5843,43 +5859,56 @@ var app = (function () {
     			t8 = space();
     			div3 = element("div");
     			h52 = element("h5");
-    			h52.textContent = "Picture";
+    			t9 = text("Picture");
+    			br = element("br");
     			t10 = space();
+    			a = element("a");
+    			t11 = text("Link to current picture");
+    			t12 = space();
     			input1 = element("input");
-    			t11 = space();
+    			t13 = space();
     			hr = element("hr");
-    			attr_dev(div0, "class", "card-header svelte-1l0f7w5");
-    			add_location(div0, file$1, 56, 14, 1612);
-    			add_location(h50, file$1, 60, 18, 1751);
+    			t14 = space();
+    			button = element("button");
+    			button.textContent = "Save";
+    			attr_dev(div0, "class", "card-header svelte-1ekekcp");
+    			add_location(div0, file$1, 102, 18, 3166);
+    			add_location(h50, file$1, 106, 20, 3317);
     			attr_dev(input0, "type", "text");
-    			attr_dev(input0, "name", "");
-    			input0.value = input0_value_value = /*item*/ ctx[15].label;
-    			attr_dev(input0, "id", "");
-    			attr_dev(input0, "class", "svelte-1l0f7w5");
-    			add_location(input0, file$1, 61, 18, 1792);
-    			attr_dev(div1, "class", "line svelte-1l0f7w5");
-    			add_location(div1, file$1, 59, 16, 1713);
-    			add_location(h51, file$1, 64, 18, 1924);
+    			attr_dev(input0, "name", `sliderLabel${/*i*/ ctx[18]}`);
+    			input0.value = input0_value_value = /*item*/ ctx[16].label;
+    			attr_dev(input0, "id", `slider${/*i*/ ctx[18]}`);
+    			attr_dev(input0, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
+    			add_location(input0, file$1, 107, 20, 3360);
+    			attr_dev(div1, "class", "line svelte-1ekekcp");
+    			add_location(div1, file$1, 105, 18, 3277);
+    			add_location(h51, file$1, 116, 20, 3686);
     			attr_dev(textarea, "rows", "10");
     			attr_dev(textarea, "type", "text");
-    			attr_dev(textarea, "name", "");
-    			textarea.value = textarea_value_value = /*item*/ ctx[15].texts;
-    			attr_dev(textarea, "id", "");
-    			attr_dev(textarea, "class", "svelte-1l0f7w5");
-    			add_location(textarea, file$1, 65, 18, 1964);
-    			attr_dev(div2, "class", "line svelte-1l0f7w5");
-    			add_location(div2, file$1, 63, 16, 1886);
-    			add_location(h52, file$1, 68, 18, 2110);
-    			attr_dev(input1, "class", "file");
+    			attr_dev(textarea, "name", `sliderText${/*i*/ ctx[18]}`);
+    			textarea.value = textarea_value_value = /*item*/ ctx[16].texts;
+    			attr_dev(textarea, "id", `slider${/*i*/ ctx[18]}`);
+    			attr_dev(textarea, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
+    			add_location(textarea, file$1, 117, 20, 3728);
+    			attr_dev(div2, "class", "line svelte-1ekekcp");
+    			add_location(div2, file$1, 115, 18, 3646);
+    			add_location(br, file$1, 128, 29, 4124);
+    			attr_dev(a, "href", a_href_value = /*item*/ ctx[16].src);
+    			add_location(a, file$1, 129, 22, 4154);
+    			add_location(h52, file$1, 127, 20, 4089);
+    			attr_dev(input1, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
     			attr_dev(input1, "type", "file");
-    			attr_dev(input1, "name", "");
-    			attr_dev(input1, "id", "");
+    			attr_dev(input1, "name", `sliderFile${/*i*/ ctx[18]}`);
+    			attr_dev(input1, "id", `slider${/*i*/ ctx[18]}`);
     			attr_dev(input1, "accept", "image/*");
-    			add_location(input1, file$1, 69, 18, 2146);
-    			attr_dev(div3, "class", "line svelte-1l0f7w5");
-    			add_location(div3, file$1, 67, 16, 2072);
-    			attr_dev(hr, "class", "sliderHR svelte-1l0f7w5");
-    			add_location(hr, file$1, 71, 16, 2287);
+    			add_location(input1, file$1, 131, 20, 4249);
+    			attr_dev(div3, "class", "line svelte-1ekekcp");
+    			add_location(div3, file$1, 126, 18, 4049);
+    			attr_dev(hr, "class", "sliderHR svelte-1ekekcp");
+    			add_location(hr, file$1, 141, 18, 4568);
+    			attr_dev(button, "type", "submit");
+    			attr_dev(button, "class", "btn btn-save");
+    			add_location(button, file$1, 142, 18, 4611);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -5898,27 +5927,34 @@ var app = (function () {
     			insert_dev(target, t8, anchor);
     			insert_dev(target, div3, anchor);
     			append_dev(div3, h52);
-    			append_dev(div3, t10);
+    			append_dev(h52, t9);
+    			append_dev(h52, br);
+    			append_dev(h52, t10);
+    			append_dev(h52, a);
+    			append_dev(a, t11);
+    			append_dev(div3, t12);
     			append_dev(div3, input1);
-    			insert_dev(target, t11, anchor);
+    			insert_dev(target, t13, anchor);
     			insert_dev(target, hr, anchor);
+    			insert_dev(target, t14, anchor);
+    			insert_dev(target, button, anchor);
 
     			if (!mounted) {
-    				dispose = [
-    					listen_dev(input1, "change", /*checkImage*/ ctx[6], false, false, false),
-    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[12])
-    				];
-
+    				dispose = listen_dev(input1, "change", /*input1_change_handler*/ ctx[11]);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*sliderAsync*/ 1 && input0_value_value !== (input0_value_value = /*item*/ ctx[15].label) && input0.value !== input0_value_value) {
+    			if (dirty & /*sliderAsync*/ 1 && input0_value_value !== (input0_value_value = /*item*/ ctx[16].label) && input0.value !== input0_value_value) {
     				prop_dev(input0, "value", input0_value_value);
     			}
 
-    			if (dirty & /*sliderAsync*/ 1 && textarea_value_value !== (textarea_value_value = /*item*/ ctx[15].texts)) {
+    			if (dirty & /*sliderAsync*/ 1 && textarea_value_value !== (textarea_value_value = /*item*/ ctx[16].texts)) {
     				prop_dev(textarea, "value", textarea_value_value);
+    			}
+
+    			if (dirty & /*sliderAsync*/ 1 && a_href_value !== (a_href_value = /*item*/ ctx[16].src)) {
+    				attr_dev(a, "href", a_href_value);
     			}
     		},
     		d: function destroy(detaching) {
@@ -5929,10 +5965,12 @@ var app = (function () {
     			if (detaching) detach_dev(div2);
     			if (detaching) detach_dev(t8);
     			if (detaching) detach_dev(div3);
-    			if (detaching) detach_dev(t11);
+    			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(hr);
+    			if (detaching) detach_dev(t14);
+    			if (detaching) detach_dev(button);
     			mounted = false;
-    			run_all(dispose);
+    			dispose();
     		}
     	};
 
@@ -5940,14 +5978,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(56:12) {#each slider as item, i}",
+    		source: "(102:16) {#each slider as item, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch("/checkLoginStatus").then((response) => response.json())      return await temp    }
+    // (1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch("/checkLoginStatus").then((response) => response.json());      return await temp;    }
     function create_pending_block_1(ctx) {
     	const block = { c: noop, m: noop, p: noop, d: noop };
 
@@ -5955,14 +5993,14 @@ var app = (function () {
     		block,
     		id: create_pending_block_1.name,
     		type: "pending",
-    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json())      return await temp    }",
+    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json());      return await temp;    }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch("/checkLoginStatus").then((response) => response.json())      return await temp    }
+    // (1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch("/checkLoginStatus").then((response) => response.json());      return await temp;    }
     function create_pending_block(ctx) {
     	const block = { c: noop, m: noop, p: noop, d: noop };
 
@@ -5970,7 +6008,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus(){      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json())      return await temp    }",
+    		source: "(1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json());      return await temp;    }",
     		ctx
     	});
 
@@ -5991,7 +6029,7 @@ var app = (function () {
     		pending: create_pending_block,
     		then: create_then_block,
     		catch: create_catch_block_1,
-    		value: 13
+    		value: 14
     	};
 
     	handle_promise(promise = /*status*/ ctx[3], info);
@@ -6003,7 +6041,7 @@ var app = (function () {
     			await_block_anchor = empty();
     			info.block.c();
     			attr_dev(div, "id", "backg");
-    			add_location(div, file$1, 21, 0, 547);
+    			add_location(div, file$1, 54, 0, 1572);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6066,12 +6104,43 @@ var app = (function () {
     		fetch("/getSlider").then(response => response.json()).then(data => $$invalidate(0, sliderAsync = data));
     	}
 
+    	let sliderLength = 0;
     	let sliderAsync = [];
     	let files;
 
-    	function checkImage() {
-    		console.log("asdasd");
-    		console.log(files);
+    	function updateSlider() {
+    		sliderLength = sliderAsync.length;
+    		let body = [];
+    		let bd = new FormData();
+
+    		for (let i = 0; i < sliderLength; i++) {
+    			let sliderCard = document.querySelectorAll(`.slider${i}`);
+    			let obj = {};
+
+    			if (sliderCard[2].files.length > 0) {
+    				console.log(sliderCard[2].files[0]);
+    				bd.append("file", sliderCard[2].files[0], String(i));
+    			} else {
+    				obj.url = "DEFAULT";
+    			}
+
+    			obj.label = sliderCard[0].value;
+    			obj.text = sliderCard[1].value;
+    			body.push(obj);
+    		}
+
+    		console.log(bd);
+
+    		bd.forEach(function (value, key) {
+    			console.log(value);
+    			console.log(key);
+    		});
+
+    		const headers = { "Content-Type": "application/json" };
+    		body = JSON.stringify(body);
+
+    		fetch("/uploadSlider", { method: "post", bd, headers }).then(response => response.json()).then(data => console.log(data)).catch(error => console.log(error)); // fetch
+    		// dane odpowiedzi z serwera
     	}
 
     	const writable_props = [];
@@ -6080,11 +6149,11 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<ConfigurationMenuUser> was created with unknown prop '${key}'`);
     	});
 
-    	const click_handler = () => setTab('themes');
-    	const click_handler_1 = () => setTab('slider');
-    	const click_handler_2 = () => setTab('menu');
-    	const click_handler_3 = () => setTab('articles');
-    	const click_handler_4 = () => setTab('pictures');
+    	const click_handler = () => setTab("themes");
+    	const click_handler_1 = () => setTab("slider");
+    	const click_handler_2 = () => setTab("menu");
+    	const click_handler_3 = () => setTab("articles");
+    	const click_handler_4 = () => setTab("pictures");
 
     	function input1_change_handler() {
     		files = this.files;
@@ -6095,14 +6164,16 @@ var app = (function () {
     		asyncCheckLoginStatus,
     		setTab,
     		sliderLoad,
+    		sliderLength,
     		sliderAsync,
     		files,
-    		checkImage,
+    		updateSlider,
     		selectedTab,
     		status
     	});
 
     	$$self.$inject_state = $$props => {
+    		if ('sliderLength' in $$props) sliderLength = $$props.sliderLength;
     		if ('sliderAsync' in $$props) $$invalidate(0, sliderAsync = $$props.sliderAsync);
     		if ('files' in $$props) $$invalidate(1, files = $$props.files);
     		if ('selectedTab' in $$props) $$invalidate(2, selectedTab = $$props.selectedTab);
@@ -6114,7 +6185,7 @@ var app = (function () {
     	}
 
     	$$invalidate(3, status = asyncCheckLoginStatus());
-    	$$invalidate(2, selectedTab = 'themes');
+    	$$invalidate(2, selectedTab = "themes");
 
     	return [
     		sliderAsync,
@@ -6123,7 +6194,6 @@ var app = (function () {
     		status,
     		setTab,
     		sliderLoad,
-    		checkImage,
     		click_handler,
     		click_handler_1,
     		click_handler_2,

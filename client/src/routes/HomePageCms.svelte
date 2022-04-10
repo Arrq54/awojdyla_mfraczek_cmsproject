@@ -30,12 +30,14 @@
     const res = await temp;
     return res;
   }
-  function logout(){
-    fetch("/logout").then((response) => response.json()).then((data)=>logged = data)
+  function logout() {
+    fetch("/logout")
+      .then((response) => response.json())
+      .then((data) => (logged = data));
   }
-  function settingsMenu(){
-    window.location.replace("/#/configurationuser")
-    location.reload()
+  function settingsMenu() {
+    window.location.replace("/#/configurationuser");
+    location.reload();
   }
 </script>
 
@@ -223,7 +225,7 @@
     background-color: white;
     transition: 0.3s all ease-in-out;
   }
- 
+
   .btn-login > a {
     color: #1f8a59;
     text-decoration: none;
@@ -256,8 +258,7 @@
     transition: 0.3s all ease-in-out;
   }
 
-
-  .btn-logout{
+  .btn-logout {
     border: 1px solid #e34245;
     background-color: white;
     transition: 0.3s all ease-in-out;
@@ -277,8 +278,7 @@
     transition: 0.3s all ease-in-out;
   }
 
-
-  .btn-menu{
+  .btn-menu {
     border: 1px solid #36a372;
     background-color: white;
     transition: 0.3s all ease-in-out;
@@ -297,7 +297,6 @@
     color: white;
     transition: 0.3s all ease-in-out;
   }
-
 
   .news {
     margin-top: 35px;
