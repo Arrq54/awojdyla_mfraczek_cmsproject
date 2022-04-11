@@ -138,10 +138,11 @@
                       bind:files
                     />
                   </div>
-
-                  <hr class="sliderHR" />
-                  <button type="submit" class="btn btn-save">Save</button>
+                  <hr />
                 {/each}
+                <hr class="sliderHR" />
+                <input type="hidden" name="length" value={slider.length} />
+                <button type="submit" class="btn btn-save">Save</button>
               </form>
             {/await}
           </div>

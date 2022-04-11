@@ -1,11 +1,11 @@
 import os
+import urllib
 from types import SimpleNamespace
 import sqlite3
 from flask import Flask, send_from_directory, request, redirect
 import random
 import json
 import sqlite3
-import requests
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -209,19 +209,36 @@ def getSlider():
 
 
 app.config['UPLOAD_FOLDER'] = 'client/public/images'
-
+app.config['IMAGES_LOCATION'] = "../../images/"
 
 @app.route("/uploadSlider", methods=['GET', 'POST'])
 def uploadSlider():
-    # data = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
-    # print(data)
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+
+    myCursor.execute("SELECT *,oid FROM slider")
+    records = [dict(row) for row in myCursor.fetchall()]
+
+
+    print(records)
+    for i in range(0,len(records)):
+        if(request.files[f'sliderFile{i}'].filename != ""):
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            # print(f"UPDATE slider SET src='{app.config['IMAGES_LOCATION'] + request.files[f'sliderFile{i}'].filename}' WHERE oid='{i}'")
+            myCursor.execute(f"ALTER TABLE slider ADD id;")
+            myConnection.commit()
+            myConnection.close()
+
+
     for i in request.files:
+        print(request.files[i])
         file = request.files[i]
         if file.filename != '':
             filename = secure_filename(file.filename)
             path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
-            directory = os.path.normpath(path)
-            file.save(directory, file.filename)
+            file.save(os.path.join(path, filename))
     return redirect("/#/configurationuser")
 
 

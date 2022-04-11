@@ -5518,7 +5518,7 @@ var app = (function () {
     	return block;
     }
 
-    // (157:42) 
+    // (158:42) 
     function create_if_block_4(ctx) {
     	let div;
 
@@ -5526,7 +5526,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "pictures";
-    			add_location(div, file$1, 158, 8, 5085);
+    			add_location(div, file$1, 159, 8, 5182);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5541,14 +5541,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(157:42) ",
+    		source: "(158:42) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:42) 
+    // (155:42) 
     function create_if_block_3(ctx) {
     	let div;
 
@@ -5556,7 +5556,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "articles";
-    			add_location(div, file$1, 155, 8, 4978);
+    			add_location(div, file$1, 156, 8, 5075);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5571,14 +5571,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(154:42) ",
+    		source: "(155:42) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (149:38) 
+    // (150:38) 
     function create_if_block_2(ctx) {
     	let div;
 
@@ -5586,7 +5586,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "menu";
-    			add_location(div, file$1, 149, 8, 4821);
+    			add_location(div, file$1, 150, 8, 4918);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5601,7 +5601,7 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(149:38) ",
+    		source: "(150:38) ",
     		ctx
     	});
 
@@ -5734,6 +5734,13 @@ var app = (function () {
     // (96:44)                 <form                  action="/uploadSlider"                  enctype="multipart/form-data"                  method="post"                >                  {#each slider as item, i}
     function create_then_block_1(ctx) {
     	let form;
+    	let t0;
+    	let hr;
+    	let t1;
+    	let input;
+    	let input_value_value;
+    	let t2;
+    	let button;
     	let each_value = /*slider*/ ctx[15];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -5750,6 +5757,22 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
+    			t0 = space();
+    			hr = element("hr");
+    			t1 = space();
+    			input = element("input");
+    			t2 = space();
+    			button = element("button");
+    			button.textContent = "Save";
+    			attr_dev(hr, "class", "sliderHR svelte-1ekekcp");
+    			add_location(hr, file$1, 142, 16, 4615);
+    			attr_dev(input, "type", "hidden");
+    			attr_dev(input, "name", "length");
+    			input.value = input_value_value = /*slider*/ ctx[15].length;
+    			add_location(input, file$1, 143, 16, 4656);
+    			attr_dev(button, "type", "submit");
+    			attr_dev(button, "class", "btn btn-save");
+    			add_location(button, file$1, 144, 16, 4733);
     			attr_dev(form, "action", "/uploadSlider");
     			attr_dev(form, "enctype", "multipart/form-data");
     			attr_dev(form, "method", "post");
@@ -5761,6 +5784,13 @@ var app = (function () {
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(form, null);
     			}
+
+    			append_dev(form, t0);
+    			append_dev(form, hr);
+    			append_dev(form, t1);
+    			append_dev(form, input);
+    			append_dev(form, t2);
+    			append_dev(form, button);
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*files, sliderAsync*/ 3) {
@@ -5776,7 +5806,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(form, null);
+    						each_blocks[i].m(form, t0);
     					}
     				}
 
@@ -5785,6 +5815,10 @@ var app = (function () {
     				}
 
     				each_blocks.length = each_value.length;
+    			}
+
+    			if (dirty & /*sliderAsync*/ 1 && input_value_value !== (input_value_value = /*slider*/ ctx[15].length)) {
+    				prop_dev(input, "value", input_value_value);
     			}
     		},
     		d: function destroy(detaching) {
@@ -5834,8 +5868,6 @@ var app = (function () {
     	let input1;
     	let t13;
     	let hr;
-    	let t14;
-    	let button;
     	let mounted;
     	let dispose;
 
@@ -5868,9 +5900,6 @@ var app = (function () {
     			input1 = element("input");
     			t13 = space();
     			hr = element("hr");
-    			t14 = space();
-    			button = element("button");
-    			button.textContent = "Save";
     			attr_dev(div0, "class", "card-header svelte-1ekekcp");
     			add_location(div0, file$1, 102, 18, 3166);
     			add_location(h50, file$1, 106, 20, 3317);
@@ -5904,11 +5933,7 @@ var app = (function () {
     			add_location(input1, file$1, 131, 20, 4249);
     			attr_dev(div3, "class", "line svelte-1ekekcp");
     			add_location(div3, file$1, 126, 18, 4049);
-    			attr_dev(hr, "class", "sliderHR svelte-1ekekcp");
-    			add_location(hr, file$1, 141, 18, 4568);
-    			attr_dev(button, "type", "submit");
-    			attr_dev(button, "class", "btn btn-save");
-    			add_location(button, file$1, 142, 18, 4611);
+    			add_location(hr, file$1, 140, 18, 4566);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -5936,8 +5961,6 @@ var app = (function () {
     			append_dev(div3, input1);
     			insert_dev(target, t13, anchor);
     			insert_dev(target, hr, anchor);
-    			insert_dev(target, t14, anchor);
-    			insert_dev(target, button, anchor);
 
     			if (!mounted) {
     				dispose = listen_dev(input1, "change", /*input1_change_handler*/ ctx[11]);
@@ -5967,8 +5990,6 @@ var app = (function () {
     			if (detaching) detach_dev(div3);
     			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(hr);
-    			if (detaching) detach_dev(t14);
-    			if (detaching) detach_dev(button);
     			mounted = false;
     			dispose();
     		}
