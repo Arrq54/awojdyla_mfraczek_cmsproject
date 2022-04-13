@@ -122,6 +122,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS ffn(
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
+    id INTEGER PRIMARY KEY,
     src text,
     label text,
     texts text
@@ -210,35 +211,81 @@ def getSlider():
 
 app.config['UPLOAD_FOLDER'] = 'client/public/images'
 app.config['IMAGES_LOCATION'] = "../../images/"
+app.config['DEFAULT_SLIDER_IMAGE_PATH'] = "../../images/sliderPlaceholder1.png"
 
 @app.route("/uploadSlider", methods=['GET', 'POST'])
 def uploadSlider():
     myConnection = sqlite3.connect('usersData.sqlite')
     myConnection.row_factory = sqlite3.Row
     myCursor = myConnection.cursor()
-
     myCursor.execute("SELECT *,oid FROM slider")
     records = [dict(row) for row in myCursor.fetchall()]
-
-
-    print(records)
-    for i in range(0,len(records)):
-        if(request.files[f'sliderFile{i}'].filename != ""):
-            myConnection = sqlite3.connect('usersData.sqlite')
-            myCursor = myConnection.cursor()
-            # print(f"UPDATE slider SET src='{app.config['IMAGES_LOCATION'] + request.files[f'sliderFile{i}'].filename}' WHERE oid='{i}'")
-            myCursor.execute(f"ALTER TABLE slider ADD id;")
-            myConnection.commit()
-            myConnection.close()
-
-
+    htmlSrc = {}
     for i in request.files:
-        print(request.files[i])
         file = request.files[i]
         if file.filename != '':
             filename = secure_filename(file.filename)
             path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
             file.save(os.path.join(path, filename))
+            htmlSrc[file.name] = f"../../images/{filename}"
+    print(htmlSrc)
+
+    print(request.form)
+    print(request.files)
+    for i in range(0,int(request.form['length'])):
+        if(i>len(records)-1):
+            myCursor = myConnection.cursor()
+            sqlLine = ""
+            if (request.files[f'sliderFile{i}'] == None or request.files[f'sliderFile{i}'].filename == ""):
+                sqlLine = f"INSERT INTO slider (src,label,texts) VALUES('{app.config['DEFAULT_SLIDER_IMAGE_PATH']}','{request.form[f'sliderLabel{i}']}','{request.form[f'sliderText{i}']}')"
+            else:
+                sqlLine = f"INSERT INTO slider (src,label,texts) VALUES('{htmlSrc[i]}','{request.form[f'sliderLabel{i}']}','{request.form[f'sliderText{i}']}')"
+            myCursor.execute()
+            myConnection.commit(sqlLine)
+            myConnection.close()
+            print(request.form[f'sliderText{i}'])
+        else:
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute(f"UPDATE slider SET")
+            myConnection.commit()
+            myConnection.close()
+
+
+
+
+
+
+
+    # myConnection = sqlite3.connect('usersData.sqlite')
+    # myCursor = myConnection.cursor()
+    # myCursor.execute(f"DELETE FROM slider")
+    # myConnection.commit()
+    # myConnection.close()
+    # for i in range(0,int((len(request.form)-1)/2)) :
+    #     if(request.files[f'sliderFile{i}'].filename != ""):
+    #         myConnection = sqlite3.connect('usersData.sqlite')
+    #         myCursor = myConnection.cursor()
+    #         myCursor.execute(f"INSERT INTO slider (src,label,texts) VALUES('{htmlSrc[f'sliderFile{i}']}','{request.form[i]['label']}','{request.form[i]['texts']}')")
+    #         myConnection.commit()
+    #         myConnection.close()
+    #     else:
+    #         if(i>len(records)-1):
+    #             myConnection = sqlite3.connect('usersData.sqlite')
+    #             myCursor = myConnection.cursor()
+    #             myCursor.execute(f"INSERT INTO slider (src,label,texts) VALUES('../../images/sliderPlaceholder1.png ','{request.form[i]['label']}','{request.form[i]['texts']}')")
+    #             myConnection.commit()
+    #             myConnection.close()
+    #         else:
+    #             myConnection = sqlite3.connect('usersData.sqlite')
+    #             myCursor = myConnection.cursor()
+    #             myCursor.execute(
+    #                 f"INSERT INTO slider (src,label,texts) VALUES('{records[i]['src']}','{records[i]['label']}','{records[i]['texts']}')")
+    #             myConnection.commit()
+    #             myConnection.close()
+
+
+
     return redirect("/#/configurationuser")
 
 

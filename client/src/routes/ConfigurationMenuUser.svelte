@@ -100,6 +100,7 @@
                 method="post"
               >
                 {#each slider as item, i}
+                <input type="hidden" name={`id${i}`} value={item.id}>
                   <div class="card-header">
                     Slider card nr:{i}
                   </div>
@@ -144,6 +145,7 @@
                 <input type="hidden" name="length" value={slider.length} />
                 <button type="submit" class="btn btn-save">Save</button>
               </form>
+              <button>Add slider card</button>
             {/await}
           </div>
         </div>

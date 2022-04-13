@@ -5518,7 +5518,7 @@ var app = (function () {
     	return block;
     }
 
-    // (158:42) 
+    // (160:42) 
     function create_if_block_4(ctx) {
     	let div;
 
@@ -5526,7 +5526,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "pictures";
-    			add_location(div, file$1, 159, 8, 5182);
+    			add_location(div, file$1, 161, 8, 5301);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5541,14 +5541,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(158:42) ",
+    		source: "(160:42) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (155:42) 
+    // (157:42) 
     function create_if_block_3(ctx) {
     	let div;
 
@@ -5556,7 +5556,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "articles";
-    			add_location(div, file$1, 156, 8, 5075);
+    			add_location(div, file$1, 158, 8, 5194);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5571,14 +5571,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(155:42) ",
+    		source: "(157:42) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:38) 
+    // (152:38) 
     function create_if_block_2(ctx) {
     	let div;
 
@@ -5586,7 +5586,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "menu";
-    			add_location(div, file$1, 150, 8, 4918);
+    			add_location(div, file$1, 152, 8, 5037);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5601,7 +5601,7 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(150:38) ",
+    		source: "(152:38) ",
     		ctx
     	});
 
@@ -5740,7 +5740,9 @@ var app = (function () {
     	let input;
     	let input_value_value;
     	let t2;
-    	let button;
+    	let button0;
+    	let t4;
+    	let button1;
     	let each_value = /*slider*/ ctx[15];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -5762,21 +5764,25 @@ var app = (function () {
     			t1 = space();
     			input = element("input");
     			t2 = space();
-    			button = element("button");
-    			button.textContent = "Save";
+    			button0 = element("button");
+    			button0.textContent = "Save";
+    			t4 = space();
+    			button1 = element("button");
+    			button1.textContent = "Add slider card";
     			attr_dev(hr, "class", "sliderHR svelte-1ekekcp");
-    			add_location(hr, file$1, 142, 16, 4615);
+    			add_location(hr, file$1, 143, 16, 4686);
     			attr_dev(input, "type", "hidden");
     			attr_dev(input, "name", "length");
     			input.value = input_value_value = /*slider*/ ctx[15].length;
-    			add_location(input, file$1, 143, 16, 4656);
-    			attr_dev(button, "type", "submit");
-    			attr_dev(button, "class", "btn btn-save");
-    			add_location(button, file$1, 144, 16, 4733);
+    			add_location(input, file$1, 144, 16, 4727);
+    			attr_dev(button0, "type", "submit");
+    			attr_dev(button0, "class", "btn btn-save");
+    			add_location(button0, file$1, 145, 16, 4804);
     			attr_dev(form, "action", "/uploadSlider");
     			attr_dev(form, "enctype", "multipart/form-data");
     			attr_dev(form, "method", "post");
     			add_location(form, file$1, 96, 14, 2963);
+    			add_location(button1, file$1, 147, 14, 4899);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -5790,7 +5796,9 @@ var app = (function () {
     			append_dev(form, t1);
     			append_dev(form, input);
     			append_dev(form, t2);
-    			append_dev(form, button);
+    			append_dev(form, button0);
+    			insert_dev(target, t4, anchor);
+    			insert_dev(target, button1, anchor);
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*files, sliderAsync*/ 3) {
@@ -5824,6 +5832,8 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(form);
     			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(t4);
+    			if (detaching) detach_dev(button1);
     		}
     	};
 
@@ -5840,136 +5850,151 @@ var app = (function () {
 
     // (102:16) {#each slider as item, i}
     function create_each_block(ctx) {
-    	let div0;
-    	let t0;
-    	let t1;
-    	let t2;
-    	let div1;
-    	let h50;
-    	let t4;
     	let input0;
     	let input0_value_value;
+    	let t0;
+    	let div0;
+    	let t1;
+    	let t2;
+    	let t3;
+    	let div1;
+    	let h50;
     	let t5;
+    	let input1;
+    	let input1_value_value;
+    	let t6;
     	let div2;
     	let h51;
-    	let t7;
+    	let t8;
     	let textarea;
     	let textarea_value_value;
-    	let t8;
+    	let t9;
     	let div3;
     	let h52;
-    	let t9;
-    	let br;
     	let t10;
-    	let a;
+    	let br;
     	let t11;
-    	let a_href_value;
+    	let a;
     	let t12;
-    	let input1;
+    	let a_href_value;
     	let t13;
+    	let input2;
+    	let t14;
     	let hr;
     	let mounted;
     	let dispose;
 
     	const block = {
     		c: function create() {
+    			input0 = element("input");
+    			t0 = space();
     			div0 = element("div");
-    			t0 = text("Slider card nr:");
-    			t1 = text(/*i*/ ctx[18]);
-    			t2 = space();
+    			t1 = text("Slider card nr:");
+    			t2 = text(/*i*/ ctx[18]);
+    			t3 = space();
     			div1 = element("div");
     			h50 = element("h5");
     			h50.textContent = "Slider label";
-    			t4 = space();
-    			input0 = element("input");
     			t5 = space();
+    			input1 = element("input");
+    			t6 = space();
     			div2 = element("div");
     			h51 = element("h5");
     			h51.textContent = "Slider text";
-    			t7 = space();
-    			textarea = element("textarea");
     			t8 = space();
+    			textarea = element("textarea");
+    			t9 = space();
     			div3 = element("div");
     			h52 = element("h5");
-    			t9 = text("Picture");
+    			t10 = text("Picture");
     			br = element("br");
-    			t10 = space();
+    			t11 = space();
     			a = element("a");
-    			t11 = text("Link to current picture");
-    			t12 = space();
-    			input1 = element("input");
+    			t12 = text("Link to current picture");
     			t13 = space();
+    			input2 = element("input");
+    			t14 = space();
     			hr = element("hr");
+    			attr_dev(input0, "type", "hidden");
+    			attr_dev(input0, "name", `id${/*i*/ ctx[18]}`);
+    			input0.value = input0_value_value = /*item*/ ctx[16].id;
+    			add_location(input0, file$1, 102, 16, 3164);
     			attr_dev(div0, "class", "card-header svelte-1ekekcp");
-    			add_location(div0, file$1, 102, 18, 3166);
-    			add_location(h50, file$1, 106, 20, 3317);
-    			attr_dev(input0, "type", "text");
-    			attr_dev(input0, "name", `sliderLabel${/*i*/ ctx[18]}`);
-    			input0.value = input0_value_value = /*item*/ ctx[16].label;
-    			attr_dev(input0, "id", `slider${/*i*/ ctx[18]}`);
-    			attr_dev(input0, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
-    			add_location(input0, file$1, 107, 20, 3360);
+    			add_location(div0, file$1, 103, 18, 3237);
+    			add_location(h50, file$1, 107, 20, 3388);
+    			attr_dev(input1, "type", "text");
+    			attr_dev(input1, "name", `sliderLabel${/*i*/ ctx[18]}`);
+    			input1.value = input1_value_value = /*item*/ ctx[16].label;
+    			attr_dev(input1, "id", `slider${/*i*/ ctx[18]}`);
+    			attr_dev(input1, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
+    			add_location(input1, file$1, 108, 20, 3431);
     			attr_dev(div1, "class", "line svelte-1ekekcp");
-    			add_location(div1, file$1, 105, 18, 3277);
-    			add_location(h51, file$1, 116, 20, 3686);
+    			add_location(div1, file$1, 106, 18, 3348);
+    			add_location(h51, file$1, 117, 20, 3757);
     			attr_dev(textarea, "rows", "10");
     			attr_dev(textarea, "type", "text");
     			attr_dev(textarea, "name", `sliderText${/*i*/ ctx[18]}`);
     			textarea.value = textarea_value_value = /*item*/ ctx[16].texts;
     			attr_dev(textarea, "id", `slider${/*i*/ ctx[18]}`);
     			attr_dev(textarea, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
-    			add_location(textarea, file$1, 117, 20, 3728);
+    			add_location(textarea, file$1, 118, 20, 3799);
     			attr_dev(div2, "class", "line svelte-1ekekcp");
-    			add_location(div2, file$1, 115, 18, 3646);
-    			add_location(br, file$1, 128, 29, 4124);
+    			add_location(div2, file$1, 116, 18, 3717);
+    			add_location(br, file$1, 129, 29, 4195);
     			attr_dev(a, "href", a_href_value = /*item*/ ctx[16].src);
-    			add_location(a, file$1, 129, 22, 4154);
-    			add_location(h52, file$1, 127, 20, 4089);
-    			attr_dev(input1, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
-    			attr_dev(input1, "type", "file");
-    			attr_dev(input1, "name", `sliderFile${/*i*/ ctx[18]}`);
-    			attr_dev(input1, "id", `slider${/*i*/ ctx[18]}`);
-    			attr_dev(input1, "accept", "image/*");
-    			add_location(input1, file$1, 131, 20, 4249);
+    			add_location(a, file$1, 130, 22, 4225);
+    			add_location(h52, file$1, 128, 20, 4160);
+    			attr_dev(input2, "class", "" + (null_to_empty(`slider${/*i*/ ctx[18]}`) + " svelte-1ekekcp"));
+    			attr_dev(input2, "type", "file");
+    			attr_dev(input2, "name", `sliderFile${/*i*/ ctx[18]}`);
+    			attr_dev(input2, "id", `slider${/*i*/ ctx[18]}`);
+    			attr_dev(input2, "accept", "image/*");
+    			add_location(input2, file$1, 132, 20, 4320);
     			attr_dev(div3, "class", "line svelte-1ekekcp");
-    			add_location(div3, file$1, 126, 18, 4049);
-    			add_location(hr, file$1, 140, 18, 4566);
+    			add_location(div3, file$1, 127, 18, 4120);
+    			add_location(hr, file$1, 141, 18, 4637);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, input0, anchor);
+    			insert_dev(target, t0, anchor);
     			insert_dev(target, div0, anchor);
-    			append_dev(div0, t0);
     			append_dev(div0, t1);
-    			insert_dev(target, t2, anchor);
+    			append_dev(div0, t2);
+    			insert_dev(target, t3, anchor);
     			insert_dev(target, div1, anchor);
     			append_dev(div1, h50);
-    			append_dev(div1, t4);
-    			append_dev(div1, input0);
-    			insert_dev(target, t5, anchor);
+    			append_dev(div1, t5);
+    			append_dev(div1, input1);
+    			insert_dev(target, t6, anchor);
     			insert_dev(target, div2, anchor);
     			append_dev(div2, h51);
-    			append_dev(div2, t7);
+    			append_dev(div2, t8);
     			append_dev(div2, textarea);
-    			insert_dev(target, t8, anchor);
+    			insert_dev(target, t9, anchor);
     			insert_dev(target, div3, anchor);
     			append_dev(div3, h52);
-    			append_dev(h52, t9);
-    			append_dev(h52, br);
     			append_dev(h52, t10);
+    			append_dev(h52, br);
+    			append_dev(h52, t11);
     			append_dev(h52, a);
-    			append_dev(a, t11);
-    			append_dev(div3, t12);
-    			append_dev(div3, input1);
-    			insert_dev(target, t13, anchor);
+    			append_dev(a, t12);
+    			append_dev(div3, t13);
+    			append_dev(div3, input2);
+    			insert_dev(target, t14, anchor);
     			insert_dev(target, hr, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(input1, "change", /*input1_change_handler*/ ctx[11]);
+    				dispose = listen_dev(input2, "change", /*input2_change_handler*/ ctx[11]);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*sliderAsync*/ 1 && input0_value_value !== (input0_value_value = /*item*/ ctx[16].label) && input0.value !== input0_value_value) {
+    			if (dirty & /*sliderAsync*/ 1 && input0_value_value !== (input0_value_value = /*item*/ ctx[16].id)) {
     				prop_dev(input0, "value", input0_value_value);
+    			}
+
+    			if (dirty & /*sliderAsync*/ 1 && input1_value_value !== (input1_value_value = /*item*/ ctx[16].label) && input1.value !== input1_value_value) {
+    				prop_dev(input1, "value", input1_value_value);
     			}
 
     			if (dirty & /*sliderAsync*/ 1 && textarea_value_value !== (textarea_value_value = /*item*/ ctx[16].texts)) {
@@ -5981,14 +6006,16 @@ var app = (function () {
     			}
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(input0);
+    			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(t3);
     			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(t6);
     			if (detaching) detach_dev(div2);
-    			if (detaching) detach_dev(t8);
+    			if (detaching) detach_dev(t9);
     			if (detaching) detach_dev(div3);
-    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(t14);
     			if (detaching) detach_dev(hr);
     			mounted = false;
     			dispose();
@@ -6176,7 +6203,7 @@ var app = (function () {
     	const click_handler_3 = () => setTab("articles");
     	const click_handler_4 = () => setTab("pictures");
 
-    	function input1_change_handler() {
+    	function input2_change_handler() {
     		files = this.files;
     		$$invalidate(1, files);
     	}
@@ -6220,7 +6247,7 @@ var app = (function () {
     		click_handler_2,
     		click_handler_3,
     		click_handler_4,
-    		input1_change_handler
+    		input2_change_handler
     	];
     }
 
