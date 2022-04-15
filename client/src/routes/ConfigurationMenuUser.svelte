@@ -14,41 +14,22 @@
       .then((response) => response.json())
       .then((data) => (sliderAsync = data));
   }
-  let sliderLength = 0;
   let sliderAsync = [];
   let files;
 
-  function updateSlider() {
-    sliderLength = sliderAsync.length;
-    let body = [];
-    let bd = new FormData();
-    for (let i = 0; i < sliderLength; i++) {
-      let sliderCard = document.querySelectorAll(`.slider${i}`);
-      let obj = {};
-
-      if (sliderCard[2].files.length > 0) {
-        console.log(sliderCard[2].files[0]);
-        bd.append("file", sliderCard[2].files[0], String(i));
-      } else {
-        obj.url = "DEFAULT";
-      }
-      obj.label = sliderCard[0].value;
-      obj.text = sliderCard[1].value;
-      body.push(obj);
+  function addSliderCard() {
+    console.log(sliderAsync);
+    let placeHolder = {};
+    placeHolder.src = "../../images/sliderPlaceholder1.png";
+    placeHolder.texts = "Placeholder text for new slider card";
+    placeHolder.label = "Placeholder label for new slider card";
+    let tempList = [...sliderAsync, placeHolder];
+    sliderAsync = tempList;
+  }
+  function removeCard(i) {
+    if (confirm(`Do you want to remove slider card nr ${i}?`)) {
+      sliderAsync = [...sliderAsync.filter((item, index) => index !== i)];
     }
-    console.log(bd);
-    bd.forEach(function (value, key) {
-      console.log(value);
-      console.log(key);
-    });
-    const headers = { "Content-Type": "application/json" };
-    body = JSON.stringify(body);
-    fetch("/uploadSlider", { method: "post", bd, headers }) // fetch
-      .then((response) => response.json())
-      .then(
-        (data) => console.log(data) // dane odpowiedzi z serwera
-      )
-      .catch((error) => console.log(error));
   }
 </script>
 
@@ -76,22 +57,23 @@
       {#if selectedTab == "themes"}
         <!-- THEMES EDYCJA -->
         <div class="settings flex">
-          <div class="line">Themes</div>
+          <div class="card">
+            <h3>Pick a color theme:</h3>
+            <br />
+            <div class="flex f-wrap">
+              <div
+                class="color-palette"
+                style="background-image: url(../../images/colorPalette/greenPalette.png);"
+              />
+              <div
+                class="color-palette"
+                style="background-image: url(../../images/colorPalette/bluePallette.png);"
+              />
+            </div>
+          </div>
         </div>
       {:else if selectedTab == "slider"}
         <div use:sliderLoad class="settings flex">
-          <!-- SLIDER EDYCJA -->
-          <!-- <form
-            action="/uploadSlider"
-            enctype="multipart/form-data"
-            method="post"
-          >
-            <h1>test</h1>
-            <input type="file" name="plik" id="" />
-            <button type="submit">submit</button>
-
-            <hr />
-          </form> -->
           <div class="card">
             {#await sliderAsync then slider}
               <form
@@ -100,9 +82,17 @@
                 method="post"
               >
                 {#each slider as item, i}
-                <input type="hidden" name={`id${i}`} value={item.id}>
                   <div class="card-header">
                     Slider card nr:{i}
+                    <svg
+                      class="removeButton"
+                      on:click={() => removeCard(i)}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 448 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM111.1 208V432C111.1 440.8 119.2 448 127.1 448C136.8 448 143.1 440.8 143.1 432V208C143.1 199.2 136.8 192 127.1 192C119.2 192 111.1 199.2 111.1 208zM207.1 208V432C207.1 440.8 215.2 448 223.1 448C232.8 448 240 440.8 240 432V208C240 199.2 232.8 192 223.1 192C215.2 192 207.1 199.2 207.1 208zM304 208V432C304 440.8 311.2 448 320 448C328.8 448 336 440.8 336 432V208C336 199.2 328.8 192 320 192C311.2 192 304 199.2 304 208z"
+                      /></svg
+                    >
                   </div>
                   <div class="line">
                     <h5>Slider label</h5>
@@ -128,7 +118,12 @@
                   <div class="line">
                     <h5>
                       Picture<br />
-                      <a href={item.src}>Link to current picture</a>
+                      <img src={item.src} alt="" class="showcaseImage" />
+                      <input
+                        type="hidden"
+                        name={`sliderFileName${i}`}
+                        value={item.src}
+                      />
                     </h5>
                     <input
                       class={`slider${i}`}
@@ -139,13 +134,12 @@
                       bind:files
                     />
                   </div>
-                  <hr />
                 {/each}
                 <hr class="sliderHR" />
                 <input type="hidden" name="length" value={slider.length} />
                 <button type="submit" class="btn btn-save">Save</button>
               </form>
-              <button>Add slider card</button>
+              <button on:click={addSliderCard}>Add slider card</button>
             {/await}
           </div>
         </div>
@@ -176,10 +170,10 @@
     opacity: 60%;
   }
   .maincontainer {
-    width: 60%;
+    width: 80%;
     position: relative;
-    margin-left: calc(50vw - 30%);
-    margin-top: calc(50vh - 250px);
+    margin-left: calc(50vw - 40%);
+    margin-top: 200px;
     font-family: "Roboto", sans-serif;
     background: whitesmoke;
     border: 1px solid whitesmoke;
@@ -224,7 +218,7 @@
   }
   .line {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
   }
   .card {
@@ -248,10 +242,37 @@
   }
   .settings {
     padding: 20px;
+    position: relative;
   }
 
   .sliderHR {
     margin: 20px;
     margin-top: 50px;
+  }
+  .showcaseImage {
+    width: 192px;
+    height: 50px;
+  }
+  .removeButton {
+    width: 20px;
+    height: 20px;
+    margin-left: 30px;
+    cursor: pointer;
+  }
+  .color-palette {
+    width: 332px;
+    height: 100px;
+    transition: 0.3s all ease;
+    cursor: pointer;
+    margin: 5px;
+    background-repeat: no-repeat;
+  }
+  .color-palette:hover {
+    width: 340px;
+    height: 110px;
+    transition: 0.3s all ease;
+  }
+  .f-wrap {
+    flex-wrap: wrap;
   }
 </style>

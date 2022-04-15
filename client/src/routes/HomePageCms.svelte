@@ -14,7 +14,7 @@
 
   function changeSliderSide(x, dataFromDatabase) {
     if (actualSliderSide == 0 && x == -1) {
-      actualSliderSide = 2;
+      actualSliderSide = dataFromDatabase.slider.length - 1;
     } else if (
       actualSliderSide == dataFromDatabase.slider.length - 1 &&
       x == 1
@@ -186,14 +186,18 @@
     width: 100%;
     height: 500px;
     position: relative;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
   }
+
   .arrow {
-    width: 20px;
-    height: 100px;
+    width: 30px;
+    height: 150px;
     position: absolute;
     top: 50%;
     cursor: pointer;
     transition: 0.5s all ease;
+    fill: rgb(183, 183, 183);
   }
   .arrow:hover {
     transition: 0.5s all ease;
