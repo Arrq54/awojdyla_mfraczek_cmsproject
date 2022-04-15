@@ -1,9 +1,12 @@
+import os
+import urllib
 from types import SimpleNamespace
 import sqlite3
-from flask import Flask, send_from_directory, request, session
+from flask import Flask, send_from_directory, request, redirect
 import random
 import json
 import sqlite3
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -18,6 +21,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS data(
 
 myConnection = sqlite3.connect('cmsProject.sqlite')
 app.config["Loggedin"] = 0
+
 
 @app.route("/")
 def main():
@@ -83,6 +87,7 @@ def getUserType():
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
 
+
 @app.route("/<path:path>")
 def home(path):
     return send_from_directory('client/public', path)
@@ -117,6 +122,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS ffn(
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
+    id INTEGER PRIMARY KEY,
     src text,
     label text,
     texts text
@@ -133,6 +139,8 @@ myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer_company(
     company text
 )""")
+
+
 @app.route("/getContentFromDatabase")
 def getContentFromDatabase():
     output = {}
@@ -140,7 +148,7 @@ def getContentFromDatabase():
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
     myCursor.execute("SELECT * FROM navbar_menu")
-    records =  myCursor.fetchall()
+    records = myCursor.fetchall()
     output['navbarItems'] = records
     # slider
     myConnection = sqlite3.connect('usersData.sqlite')
@@ -182,12 +190,65 @@ def getContentFromDatabase():
 
     return json.dumps(output)
 
+
 @app.route("/logout")
 def logout():
     print("logout")
     app.config["Loggedin"] = 0
     returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
     return json.loads(returnAnswer)
+
+
+@app.route("/getSlider")
+def getSlider():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM slider")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+
+app.config['UPLOAD_FOLDER'] = 'client/public/images'
+app.config['IMAGES_LOCATION'] = "../../images/"
+app.config['DEFAULT_SLIDER_IMAGE_PATH'] = "../../images/sliderPlaceholder1.png"
+
+@app.route("/uploadSlider", methods=['GET', 'POST'])
+def uploadSlider():
+    htmlSrc = {}
+    for i in request.files:
+        file = request.files[i]
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
+            file.save(os.path.join(path, filename))
+            htmlSrc[file.name] = f"../../images/{filename}"
+    newRecords = []
+    for i in range(0,int(request.form['length'])):
+        newRecord = {}
+        newRecord['id'] = i+1
+        if(f'sliderFile{i}' in htmlSrc):
+            newRecord['src'] = htmlSrc[f'sliderFile{i}']
+        else:
+            newRecord['src'] = request.form[f'sliderFileName{i}']
+        newRecord['label'] = request.form[f'sliderLabel{i}']
+        newRecord['texts'] = request.form[f'sliderText{i}']
+        newRecords.append(newRecord)
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM slider")
+    myConnection.commit()
+    myConnection.close()
+    for i in newRecords:
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute(f"INSERT INTO slider (src,label,texts) VALUES('{i['src']}','{i['label']}','{i['texts']}')")
+        myConnection.commit()
+        myConnection.close()
+
+
+    return redirect("/#/configurationuser")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
