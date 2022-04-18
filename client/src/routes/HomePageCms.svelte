@@ -1,6 +1,5 @@
 <script>
   import { Router, Link } from "svelte-navigator";
-
   async function getContentFromDatabase() {
     let temp = fetch("/getContentFromDatabase").then((response) =>
       response.json()
@@ -39,7 +38,49 @@
     window.location.replace("/#/configurationuser");
     location.reload();
   }
+  window.onload = () => {
+    getSettings();
+  };
+
+  async function getSettings() {
+    let settings = await fetch("/getSettings").then((response) =>
+      response.json()
+    );
+    var r = document.querySelector(":root");
+    r.style.setProperty(
+      "--body-backround-color",
+      settings["colors"]["body-background-color"]
+    );
+    r.style.setProperty(
+      "--slider-font-color",
+      settings["colors"]["slider-font-color"]
+    );
+    r.style.setProperty(
+      "--news-border-color",
+      settings["colors"]["news-border-color"]
+    );
+    r.style.setProperty(
+      "--news-background-color",
+      settings["colors"]["news-background-color"]
+    );
+    r.style.setProperty(
+      "--news-header-background-color",
+      settings["colors"]["news-header-background-color"]
+    );
+    r.style.setProperty(
+      "--btn-news-background-color",
+      settings["colors"]["btn-news-background-color"]
+    );
+    r.style.setProperty(
+      "--news-border-color",
+      settings["colors"]["news-border-color"]
+    );
+  }
 </script>
+
+<svelte:head>
+  <link rel="stylesheet" href="../../style/mainPageStylesheet.css" />
+</svelte:head>
 
 {#await promiseData then dataFromDatabase}
   <div class="main">
@@ -152,236 +193,3 @@
     </div>
   </div>
 {/await}
-
-<style>
-  .main {
-    background-color: white;
-    width: 100vw;
-    height: 100vh;
-  }
-  .justify-content-center {
-    justify-content: center;
-  }
-  .justify-space-between {
-    justify-content: space-between;
-  }
-  .flex-wrap {
-    flex-wrap: wrap;
-  }
-  .flex-column {
-    flex-direction: column;
-  }
-  .navbar-item {
-    margin: 5px 20px;
-    padding: 4px;
-  }
-  .navbar {
-    padding: 0 20%;
-    margin-bottom: 10px;
-  }
-  .flex {
-    display: flex;
-  }
-  .slider {
-    width: 100%;
-    height: 500px;
-    position: relative;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-  }
-
-  .arrow {
-    width: 30px;
-    height: 150px;
-    position: absolute;
-    top: 50%;
-    cursor: pointer;
-    transition: 0.5s all ease;
-    fill: rgb(183, 183, 183);
-  }
-  .arrow:hover {
-    transition: 0.5s all ease;
-    transform: translateY(-10px);
-  }
-  .arrow-left {
-    left: 5%;
-  }
-  .arrow-right {
-    right: 5%;
-  }
-  .slider-content {
-    position: absolute;
-    bottom: 20px;
-    width: 500px;
-    left: calc(50% - 250px);
-    text-align: center;
-  }
-  .btn {
-    border-radius: 5px;
-    padding: 4px;
-    border: 1px solid black;
-  }
-  .btn-a {
-    padding: 20px;
-  }
-  .btn-login {
-    border: 1px solid #1f8a59;
-    background-color: white;
-    transition: 0.3s all ease-in-out;
-  }
-
-  .btn-login > a {
-    color: #1f8a59;
-    text-decoration: none;
-  }
-  .btn-login:hover {
-    color: white;
-    background-color: #1f8a59;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-login:hover > a {
-    color: white;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-register {
-    border: 1px solid #1b76fd;
-    background-color: white;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-register > a {
-    color: #1b76fd;
-    text-decoration: none;
-  }
-  .btn-register:hover {
-    color: white;
-    background-color: #1b76fd;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-register:hover > a {
-    color: white;
-    transition: 0.3s all ease-in-out;
-  }
-
-  .btn-logout {
-    border: 1px solid #e34245;
-    background-color: white;
-    transition: 0.3s all ease-in-out;
-    cursor: pointer;
-  }
-  .btn-logout > a {
-    color: #e34245;
-    text-decoration: none;
-  }
-  .btn-logout:hover {
-    color: white;
-    background-color: #e34245;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-logout:hover > a {
-    color: white;
-    transition: 0.3s all ease-in-out;
-  }
-
-  .btn-menu {
-    border: 1px solid #36a372;
-    background-color: white;
-    transition: 0.3s all ease-in-out;
-    cursor: pointer;
-  }
-  .btn-menu > a {
-    color: #36a372;
-    text-decoration: none;
-  }
-  .btn-menu:hover {
-    color: white;
-    background-color: #36a372;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-menu:hover > a {
-    color: white;
-    transition: 0.3s all ease-in-out;
-  }
-
-  .news {
-    margin-top: 35px;
-  }
-  .newsBlock {
-    width: 400px;
-    min-height: 200px;
-    border: 1px solid rgb(172, 172, 172);
-    margin: 15px;
-    border-radius: 3px;
-  }
-  .news-header {
-    background-color: rgb(236, 236, 236);
-    border-bottom: 1px solid rgb(172, 172, 172);
-    padding: 7px;
-  }
-  .news-content {
-    padding: 10px;
-  }
-  .title {
-    font-size: large;
-    font-weight: bold;
-  }
-  .btn-news {
-    color: white;
-    text-decoration: none;
-
-    width: fit-content;
-  }
-  .btn-div-news:hover {
-    color: rgb(61, 60, 71);
-    background-color: white;
-    transition: 0.3s all ease-in-out;
-  }
-  .btn-div-news:hover > a {
-    color: rgb(61, 60, 71);
-    transition: 0.3s all ease-in-out;
-  }
-  .btn:hover {
-    transform: translateY(-5px);
-  }
-  .btn-div-news {
-    border-color: rgb(61, 60, 71);
-    background-color: rgb(61, 60, 71);
-    width: auto;
-    display: inline-block;
-    transition: 0.3s all ease-in-out;
-  }
-  hr {
-    margin: 20px 10%;
-  }
-  .first-featurette-news {
-    width: 80%;
-    margin-left: 10%;
-    height: 500px;
-  }
-  .ffn-content {
-    display: flex;
-    align-items: center;
-    width: 50%;
-  }
-  .ffn-image {
-    width: 500px;
-    height: 500px;
-  }
-  .upper-footer {
-    width: 100%;
-    height: 35px;
-  }
-  .footer-item {
-    margin: 5px 20px;
-    padding: 4px;
-  }
-  .lower-footer {
-    width: 100%;
-    height: 35px;
-  }
-  .copyright {
-    text-align: center;
-  }
-  .slider {
-    transition: 0.3s all ease;
-  }
-</style>

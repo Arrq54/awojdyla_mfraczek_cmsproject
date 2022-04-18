@@ -23,6 +23,7 @@
     placeHolder.src = "../../images/sliderPlaceholder1.png";
     placeHolder.texts = "Placeholder text for new slider card";
     placeHolder.label = "Placeholder label for new slider card";
+    placeHolder.sliderOrder = sliderAsync.length;
     let tempList = [...sliderAsync, placeHolder];
     sliderAsync = tempList;
   }
@@ -30,6 +31,45 @@
     if (confirm(`Do you want to remove slider card nr ${i}?`)) {
       sliderAsync = [...sliderAsync.filter((item, index) => index !== i)];
     }
+  }
+
+  function setColor(e) {
+    let newColors = {};
+    switch (e) {
+      case "gray":
+        newColors["body-background-color"] = "#FFFFFF";
+        newColors["slider-font-color"] = "#B7B7B7";
+        newColors["news-border-color"] = "#ACACAC";
+        newColors["news-background-color"] = "#FFFFFF";
+        newColors["news-header-background-color"] = "#ECECEC";
+        newColors["btn-news-background-color"] = "#3D3C47";
+        const body = JSON.stringify(newColors);
+        const headers = { "Content-Type": "application/json" };
+        fetch("/saveColors", { method: "post", body, headers });
+    }
+  }
+  function sliderOrder(type, index, id, list) {
+    console.log(type);
+    if (type == "up") {
+      if (index == list.length - 1) return;
+      list[index].sliderOrder += 1;
+      list[index + 1].sliderOrder -= 1;
+      [list[index], list[index + 1]] = [list[index + 1], list[index]];
+      sliderAsync = list;
+    } else if (type == "down") {
+      if (index == 0) return;
+      list[index].sliderOrder -= 1;
+      list[index + 1].sliderOrder += 1;
+      [list[index], list[index - 1]] = [list[index - 1], list[index]];
+      sliderAsync = list;
+    }
+  }
+
+  function fetchSaveSliderOrder() {
+    let temp = { body: sliderAsync };
+    const body = JSON.stringify(temp); // body czyli przesyłane na serwer dane
+    const headers = { "Content-Type": "application/json" }; // nagłowek czyli typ danych
+    fetch("/changeOrder", { method: "post", body, headers }); // fetch
   }
 </script>
 
@@ -63,11 +103,18 @@
             <div class="flex f-wrap">
               <div
                 class="color-palette"
-                style="background-image: url(../../images/colorPalette/greenPalette.png);"
+                style="background-image: url(../../images/colorPalette/grayPalette.png);"
+                on:click={() => setColor("gray")}
               />
               <div
                 class="color-palette"
-                style="background-image: url(../../images/colorPalette/bluePallette.png);"
+                style="background-image: url(../../images/colorPalette/greenPalette.png);"
+                on:click={() => setColor("green")}
+              />
+              <div
+                class="color-palette"
+                style="background-image: url(../../images/colorPalette/bluePalette.png);"
+                on:click={() => setColor("blue")}
               />
             </div>
           </div>
@@ -81,6 +128,11 @@
                 enctype="multipart/form-data"
                 method="post"
               >
+                <button
+                  type="button"
+                  on:click={() => setTab("changeOrderOfSlider")}
+                  >Change order of cards</button
+                >
                 {#each slider as item, i}
                   <div class="card-header">
                     Slider card nr:{i}
@@ -117,7 +169,6 @@
                   </div>
                   <div class="line">
                     <h5>
-                      Picture<br />
                       <img src={item.src} alt="" class="showcaseImage" />
                       <input
                         type="hidden"
@@ -134,13 +185,68 @@
                       bind:files
                     />
                   </div>
+                  <input
+                    type="hidden"
+                    name={`sliderOrder${i}`}
+                    value={item.sliderOrder}
+                  />
+                  <hr class="sliderHR" />
                 {/each}
-                <hr class="sliderHR" />
+
                 <input type="hidden" name="length" value={slider.length} />
                 <button type="submit" class="btn btn-save">Save</button>
               </form>
               <button on:click={addSliderCard}>Add slider card</button>
             {/await}
+          </div>
+        </div>
+      {:else if selectedTab == "changeOrderOfSlider"}
+        <div class="card">
+          <!-- MENU EDYCJA -->
+          <button on:click={() => setTab("slider")}>Go back</button>
+          <button on:click={() => fetchSaveSliderOrder()}>Save</button>
+          <div use:sliderLoad class="settings flex">
+            <div class="card">
+              {#await sliderAsync then slider}
+                {#each slider as item, i}
+                  <div class="left">
+                    <h5>Slider label: {item.label}</h5>
+                    <h5>Slider text: {item.texts}</h5>
+                    <h5>Photo:</h5>
+                    <h5>
+                      <img src={item.src} alt="" class="showcaseImage" />
+                    </h5>
+                  </div>
+                  <div class="right">
+                    <button
+                      on:click={() => sliderOrder("down", i, item.id, slider)}
+                    >
+                      <svg
+                        style="width: 20px; height: 20px"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                          d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
+                        /></svg
+                      >
+                    </button>
+                    <button
+                      on:click={() => sliderOrder("up", i, item.id, slider)}
+                    >
+                      <svg
+                        style="width: 20px; height: 20px"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                          d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                        /></svg
+                      >
+                    </button>
+                  </div>
+                  <hr class="sliderHR" />
+                {/each}
+              {/await}
+            </div>
           </div>
         </div>
       {:else if selectedTab == "menu"}
@@ -266,11 +372,16 @@
     cursor: pointer;
     margin: 5px;
     background-repeat: no-repeat;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-size: 100% 100%;
   }
   .color-palette:hover {
     width: 340px;
     height: 110px;
+    transform: translateX(10px);
+    transform: translateY(5px);
     transition: 0.3s all ease;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
   }
   .f-wrap {
     flex-wrap: wrap;
