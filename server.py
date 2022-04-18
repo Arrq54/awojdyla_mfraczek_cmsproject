@@ -125,7 +125,8 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
     id INTEGER PRIMARY KEY,
     src text,
     label text,
-    texts text
+    texts text,
+    sliderOrder integer
 )""")
 
 myConnection = sqlite3.connect('usersData.sqlite')
@@ -154,7 +155,7 @@ def getContentFromDatabase():
     myConnection = sqlite3.connect('usersData.sqlite')
     myConnection.row_factory = sqlite3.Row
     myCursor = myConnection.cursor()
-    myCursor.execute("SELECT * FROM slider")
+    myCursor.execute("SELECT * FROM slider ORDER BY sliderOrder")
     records = [dict(row) for row in myCursor.fetchall()]
     output['slider'] = records
     # news
@@ -204,7 +205,7 @@ def getSlider():
     myConnection = sqlite3.connect('usersData.sqlite')
     myConnection.row_factory = sqlite3.Row
     myCursor = myConnection.cursor()
-    myCursor.execute("SELECT * FROM slider")
+    myCursor.execute("SELECT * FROM slider ORDER BY sliderOrder")
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
 
@@ -233,6 +234,7 @@ def uploadSlider():
             newRecord['src'] = request.form[f'sliderFileName{i}']
         newRecord['label'] = request.form[f'sliderLabel{i}']
         newRecord['texts'] = request.form[f'sliderText{i}']
+        newRecord['sliderOrder'] = request.form[f'sliderOrder{i}']
         newRecords.append(newRecord)
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
@@ -242,13 +244,47 @@ def uploadSlider():
     for i in newRecords:
         myConnection = sqlite3.connect('usersData.sqlite')
         myCursor = myConnection.cursor()
-        myCursor.execute(f"INSERT INTO slider (src,label,texts) VALUES('{i['src']}','{i['label']}','{i['texts']}')")
+        myCursor.execute(f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES('{i['src']}','{i['label']}','{i['texts']}',{i['sliderOrder']})")
         myConnection.commit()
         myConnection.close()
-
-
     return redirect("/#/configurationuser")
 
+@app.route("/getSettings", methods=['GET', 'POST'])
+def getSettings():
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    with open(path, 'r+') as f:
+        temp = json.dumps(f.read())
+        return json.loads(temp)
+
+@app.route("/saveColors", methods=['GET', 'POST'])
+def saveColors():
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    with open(path, 'r+') as f:
+        content = json.loads(f.read())
+        object = {}
+        object['colors'] = json.dumps(request.get_json())
+        object['fonts'] = content['fonts']
+        f.truncate(0)
+        f.write(json.dumps(object))
+    return redirect("/#/configurationuser")
+
+@app.route("/changeOrder", methods=['GET', 'POST'])
+def changeOrder():
+   data = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+   body = data.body
+   myConnection = sqlite3.connect('usersData.sqlite')
+   myCursor = myConnection.cursor()
+   myCursor.execute(f"DELETE FROM slider")
+   myConnection.commit()
+   myConnection.close()
+   for i in body:
+       myConnection = sqlite3.connect('usersData.sqlite')
+       myCursor = myConnection.cursor()
+       myCursor.execute(
+           f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES('{i.src}','{i.label}','{i.texts}',{i.sliderOrder})")
+       myConnection.commit()
+       myConnection.close()
+   return redirect("/#/configurationuser")
 
 if __name__ == "__main__":
     app.run(debug=True)
