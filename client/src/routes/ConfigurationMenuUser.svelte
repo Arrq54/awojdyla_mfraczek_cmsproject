@@ -73,10 +73,9 @@
   }
 </script>
 
-<div id="backg" />
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
-  <div class="maincontainer">
+<div class="alls">
     <div class="menu">
       <div class="maincard">
         <ul>
@@ -87,9 +86,9 @@
           <li on:click={() => setTab("pictures")}>Pictures</li>
         </ul>
         {#if user.user == 2}
-          <p>Admin</p>
+          <p class="statusAdmin">Admin</p>
         {:else}
-          <p>No admin permissions</p>
+          <p class="statusAdmin">No admin permissions</p>
         {/if}
       </div>
     </div>
@@ -267,6 +266,13 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
+  .alls{
+    width:100%;
+    height:100%;
+    background-color: #ddd;
+    overflow:auto;
+    margin:0;
+}
   p {
     color: rgb(210, 255, 229);
     margin-bottom: 25px;
@@ -275,24 +281,14 @@
     font-size: 14px;
     opacity: 60%;
   }
-  .maincontainer {
-    width: 80%;
-    position: relative;
-    margin-left: calc(50vw - 40%);
-    margin-top: 200px;
-    font-family: "Roboto", sans-serif;
-    background: whitesmoke;
-    border: 1px solid whitesmoke;
-    border-radius: 26px;
-    display: flex;
-  }
   .menu {
-    border: 1px solid #16a060;
-    width: 22%;
+    width: 15%;
+    height:100%;
     padding: 0px;
     background-color: #16a060;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
+    margin:0px;
+    top:0;
+    position:absolute;
   }
   .maincard > ul {
     padding: 0px;
@@ -315,9 +311,10 @@
     position: relative;
   }
   .content {
-    width: 88%;
-    height: 100%;
+    width: 85%;
+    height: 100vh;
     padding: 0px;
+    margin-left:15%;
   }
   .flex {
     display: flex;
@@ -386,4 +383,15 @@
   .f-wrap {
     flex-wrap: wrap;
   }
+  *{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+ .statusAdmin{
+   position:absolute;
+   bottom:10px;
+   left:40px;
+   font-size:18px;
+ }
 </style>

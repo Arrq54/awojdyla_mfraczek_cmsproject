@@ -39,18 +39,20 @@
 </script>
 
 
-  <div id="backg"></div>
+<div class="all">
   <div class="login-box">
-      <h1>Sign up</h1>
-      <input type="text" name="username" placeholder="Username" />
-      <input type="text" name="email" placeholder="E-mail" />
-      <input type="password" name="password" placeholder="Password" />
-      <input type="password" name="password2" placeholder="Retype password" />
-      <input type="submit" id="submitbutton" name="signup_submit" value="Sign me up" on:click={submit}/>
-      <a href="/#/login" class="switchlogin">I already have an account</a>
-  </div>
-  <div class="errorloginregister" id="errordisplay">
-  </div>
+    <h1>Sign up</h1>
+    <input type="text" name="username" placeholder="Username" />
+    <input type="text" name="email" placeholder="E-mail" />
+    <input type="password" name="password" placeholder="Password" />
+    <input type="password" name="password2" placeholder="Retype password" />
+    <input type="submit" id="submitbutton" name="signup_submit" value="Sign me up" on:click={submit}/>
+    <a href="/#/login" class="switchlogin">I already have an account</a>
+</div>
+<div class="errorloginregister" id="errordisplay">
+</div>
+</div>
+
 
 <style>
   :global(body) {
