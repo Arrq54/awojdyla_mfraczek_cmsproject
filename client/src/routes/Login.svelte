@@ -27,13 +27,14 @@
    }
   } 
 </script>
-  <div id="backg"></div>
+<div class="all"> 
   <div class="login-box" style="height:310px">
-      <h1>Log in</h1>
-      <input type="text" name="username" placeholder="Username" />
-      <input type="password" name="password" placeholder="Password" />
-      <input type="submit" id="submitbutton" name="signup_submit" value="Log me in" on:click={submit}/>
-      <a href="/#/register" class="switchlogin">Create an account</a>
+    <h1>Log in</h1>
+    <input type="text" name="username" placeholder="Username" />
+    <input type="password" name="password" placeholder="Password" />
+    <input type="submit" id="submitbutton" name="signup_submit" value="Log me in" on:click={submit}/>
+    <a href="/#/register" class="switchlogin">Create an account</a>
   </div>
   <div class="errorloginregister" id="errordisplay">
   </div>
+</div>
