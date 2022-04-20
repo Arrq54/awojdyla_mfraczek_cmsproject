@@ -17,12 +17,12 @@
   let sliderAsync = [];
   let files;
 
-  async function getUsers(){
+  async function getUsers() {
     fetch("/getUsers")
       .then((response) => response.json())
-      .then((data) => (usersData = data))
+      .then((data) => (usersData = data));
   }
-  let usersData = []
+  let usersData = [];
 
   function addSliderCard() {
     console.log(sliderAsync);
@@ -42,6 +42,7 @@
 
   function setColor(e) {
     let newColors = {};
+    let body, headers;
     switch (e) {
       case "gray":
         newColors["body-background-color"] = "#FFFFFF";
@@ -50,9 +51,32 @@
         newColors["news-background-color"] = "#FFFFFF";
         newColors["news-header-background-color"] = "#ECECEC";
         newColors["btn-news-background-color"] = "#3D3C47";
-        const body = JSON.stringify(newColors);
-        const headers = { "Content-Type": "application/json" };
+        body = JSON.stringify(newColors);
+        headers = { "Content-Type": "application/json" };
         fetch("/saveColors", { method: "post", body, headers });
+        break;
+      case "green":
+        newColors["body-background-color"] = "#d8f3dc";
+        newColors["slider-font-color"] = "#ffffff";
+        newColors["news-border-color"] = "#081c15";
+        newColors["news-background-color"] = "#f0fff1";
+        newColors["news-header-background-color"] = "#dbfeb8";
+        newColors["btn-news-background-color"] = "#081c15";
+        body = JSON.stringify(newColors);
+        headers = { "Content-Type": "application/json" };
+        fetch("/saveColors", { method: "post", body, headers });
+      case "blue":
+        newColors["body-background-color"] = "#caf0f8";
+        newColors["slider-font-color"] = "#ffffff";
+        newColors["news-border-color"] = "#03045e";
+        newColors["news-background-color"] = "#ade8f4";
+        newColors["news-header-background-color"] = "#90e0ef";
+        newColors["btn-news-background-color"] = "#03045e";
+        body = JSON.stringify(newColors);
+        headers = { "Content-Type": "application/json" };
+        fetch("/saveColors", { method: "post", body, headers });
+      default:
+        break;
     }
   }
   function sliderOrder(type, index, id, list) {
@@ -78,11 +102,28 @@
     const headers = { "Content-Type": "application/json" }; // nagłowek czyli typ danych
     fetch("/changeOrder", { method: "post", body, headers }); // fetch
   }
+
+  function setFont(x) {
+    let temp = { fontFamily: x };
+    const body = JSON.stringify(temp);
+    const headers = { "Content-Type": "application/json" };
+    fetch("/saveFont", { method: "post", body, headers });
+  }
 </script>
 
+<svelte:head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Poppins:wght@300&family=Raleway&family=Roboto+Slab:wght@300&family=Work+Sans:wght@349&display=swap"
+    rel="stylesheet"
+  />
+</svelte:head>
+
+<div id="backg" />
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
-<div class="alls">
+  <div class="alls">
     <div class="menu">
       <div class="maincard">
         <ul>
@@ -103,7 +144,7 @@
     <div class="content">
       {#if selectedTab == "themes"}
         <!-- THEMES EDYCJA -->
-        <div class="settings flex">
+        <div class="settings">
           <div class="card">
             <h3>Pick a color theme:</h3>
             <br />
@@ -125,6 +166,71 @@
               />
             </div>
           </div>
+          <div class="card">
+            <h3>Select font</h3>
+            <div class="fonts flex f-wrap">
+              <div
+                class="font-showcase"
+                on:click={() => setFont("'Poppins', sans-serif")}
+              >
+                <div style="font-family: Poppins, sans-serif">
+                  <h3>Poppins</h3>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis
+                  atque quod, facere commodi quae nobis magni laboriosam deleniti
+                  earum esse impedit cumque ab a dolore veritatis porro vitae fugiat
+                  quis!
+                </div>
+              </div>
+              <div
+                class="font-showcase"
+                on:click={() => setFont("'Oswald', sans-serif")}
+              >
+                <div style="font-family: Oswald, sans-serif">
+                  <h3>Oswald</h3>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis
+                  atque quod, facere commodi quae nobis magni laboriosam deleniti
+                  earum esse impedit cumque ab a dolore veritatis porro vitae fugiat
+                  quis!
+                </div>
+              </div>
+              <div
+                class="font-showcase"
+                on:click={() => setFont("'Raleway', sans-serif")}
+              >
+                <div style="font-family: Raleway, sans-serif">
+                  <h3>Raleway</h3>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis
+                  atque quod, facere commodi quae nobis magni laboriosam deleniti
+                  earum esse impedit cumque ab a dolore veritatis porro vitae fugiat
+                  quis!
+                </div>
+              </div>
+              <div
+                class="font-showcase"
+                on:click={() => setFont("'Roboto Slab', serif")}
+              >
+                <div style="font-family: Roboto Slab, serif">
+                  <h3>Roboto Slab</h3>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis
+                  atque quod, facere commodi quae nobis magni laboriosam deleniti
+                  earum esse impedit cumque ab a dolore veritatis porro vitae fugiat
+                  quis!
+                </div>
+              </div>
+              <div
+                class="font-showcase"
+                on:click={() => setFont("'Work Sans', serif")}
+              >
+                <div style="font-family: Work Sans, serif">
+                  <h3>Work Sans</h3>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis
+                  atque quod, facere commodi quae nobis magni laboriosam deleniti
+                  earum esse impedit cumque ab a dolore veritatis porro vitae fugiat
+                  quis!
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       {:else if selectedTab == "slider"}
         <div use:sliderLoad class="settings flex">
@@ -140,6 +246,7 @@
                   on:click={() => setTab("changeOrderOfSlider")}
                   >Change order of cards</button
                 >
+                <button type="submit" class="btn btn-save">Save</button>
                 {#each slider as item, i}
                   <div class="card-header">
                     Slider card nr:{i}
@@ -201,7 +308,6 @@
                 {/each}
 
                 <input type="hidden" name="length" value={slider.length} />
-                <button type="submit" class="btn btn-save">Save</button>
               </form>
               <button on:click={addSliderCard}>Add slider card</button>
             {/await}
@@ -269,17 +375,22 @@
         <div>pictures</div>
       {:else if selectedTab == "users"}
         <div use:getUsers class="card users">
-        {#await usersData then users}
-          {#each users as item,i}
-            <div class="userCard">
-              <img src="./images/avatar.png" alt="avatar" width="200px" height="200px"/>
-              <h2>{item.username}</h2>
-              <p>{item.email}</p>
-              <p>password: <i>{item.password}</i></p>
-            </div>
-          {/each}
-        {/await}
-      </div>
+          {#await usersData then users}
+            {#each users as item, i}
+              <div class="userCard">
+                <img
+                  src="./images/avatar.png"
+                  alt="avatar"
+                  width="200px"
+                  height="200px"
+                />
+                <h2>{item.username}</h2>
+                <p>{item.email}</p>
+                <p>password: <i>{item.password}</i></p>
+              </div>
+            {/each}
+          {/await}
+        </div>
       {/if}
     </div>
   </div>
@@ -287,33 +398,33 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
-  .userCard > p{
-    font-size:18px;
-    color:black;
-    margin:0;
-    opacity:100%;
+  .userCard > p {
+    font-size: 18px;
+    color: black;
+    margin: 0;
+    opacity: 100%;
   }
-  .users{
-    padding:20px;
-    display:flex;
+  .users {
+    padding: 20px;
+    display: flex;
     align-items: start;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
   }
-  .userCard{
-    overflow:hidden;
-    width:240px;
-    height:380px;
-    border-radius:20px;
-    margin:30px;
+  .userCard {
+    overflow: hidden;
+    width: 240px;
+    height: 380px;
+    border-radius: 20px;
+    margin: 30px;
     background-color: #b7e4c7;
   }
-  .alls{
-    width:100%;
-    height:100%;
+  .alls {
+    width: 100%;
+    height: 100%;
     background-color: whitesmoke;
-    overflow:auto;
-    margin:0;
-}
+    overflow: auto;
+    margin: 0;
+  }
   p {
     color: rgb(210, 255, 229);
     margin-bottom: 25px;
@@ -324,12 +435,12 @@
   }
   .menu {
     width: 15%;
-    height:100%;
+    height: 100%;
     padding: 0px;
     background-color: #16a060;
-    margin:0px;
-    top:0;
-    position:absolute;
+    margin: 0px;
+    top: 0;
+    position: absolute;
   }
   .maincard > ul {
     padding: 0px;
@@ -355,7 +466,7 @@
     width: 85%;
     height: 100vh;
     padding: 0px;
-    margin-left:15%;
+    margin-left: 15%;
   }
   .flex {
     display: flex;
@@ -424,15 +535,37 @@
   .f-wrap {
     flex-wrap: wrap;
   }
-  *{
+  * {
     box-sizing: border-box;
-    margin:0;
-    padding:0;
-}
- .statusAdmin{
-   position:absolute;
-   bottom:10px;
-   left:25px;
-   font-size:18px;
- }
+    margin: 0;
+    padding: 0;
+  }
+  .statusAdmin {
+    position: absolute;
+    bottom: 10px;
+    left: 25px;
+    font-size: 18px;
+  }
+  .font-showcase {
+    padding: 20px;
+    margin: 10px;
+    width: 350px;
+    transition: 0.3s all ease;
+    cursor: pointer;
+    margin: 5px;
+    background-repeat: no-repeat;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-size: 100% 100%;
+  }
+  .font-showcase:hover {
+    width: 370px;
+    transform: translateX(10px);
+    transform: translateY(5px);
+    transition: 0.3s all ease;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
+  }
+  .fonts {
+    padding: 15px;
+    margin-bottom: 30px;
+  }
 </style>

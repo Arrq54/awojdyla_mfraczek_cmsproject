@@ -268,12 +268,14 @@ def getSettings():
 @app.route("/saveColors", methods=['GET', 'POST'])
 def saveColors():
     path = os.path.join(app.root_path, "client/public/data/settings.json")
-    with open(path, 'r+') as f:
+    content = {}
+    with open(path, 'r') as f:
         content = json.loads(f.read())
+    with open(path, 'w') as f: f.close()
+    with open(path, 'w') as f:
         object = {}
-        object['colors'] = json.dumps(request.get_json())
+        object['colors'] = request.get_json()
         object['fonts'] = content['fonts']
-        f.truncate(0)
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
 
@@ -294,6 +296,26 @@ def changeOrder():
        myConnection.commit()
        myConnection.close()
    return redirect("/#/configurationuser")
+
+
+@app.route("/saveFont", methods=['GET', 'POST'])
+def saveFont():
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    font = request.get_json()
+    content = {}
+    with open(path, 'r') as f:
+        content = json.loads(f.read())
+    with open(path, 'w') as f:f.close()
+    with open(path, 'w') as f:
+        object = {}
+        object['colors'] = content['colors']
+        object['fonts'] = font['fontFamily']
+        print(json.dumps(object))
+
+        f.write(json.dumps(object))
+    return redirect("/#/configurationuser")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

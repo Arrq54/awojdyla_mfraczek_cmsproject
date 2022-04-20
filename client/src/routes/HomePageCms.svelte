@@ -31,7 +31,7 @@
   }
   function logout() {
     fetch("/logout")
-      .then((response) => response.json())
+      .then((response) => response.fjson())
       .then((data) => (logged = data));
   }
   function settingsMenu() {
@@ -40,13 +40,19 @@
   }
   window.onload = () => {
     getSettings();
+    
+
   };
+  
 
   async function getSettings() {
     let settings = await fetch("/getSettings").then((response) =>
       response.json()
     );
+    console.log(settings.fonts)
     var r = document.querySelector(":root");
+
+    
     r.style.setProperty(
       "--body-backround-color",
       settings["colors"]["body-background-color"]
@@ -75,11 +81,19 @@
       "--news-border-color",
       settings["colors"]["news-border-color"]
     );
+    console.log(settings.fonts)
+    r.style.setProperty(
+      "--font-family",
+       `${settings.fonts}`
+    );
   }
 </script>
 
 <svelte:head>
   <link rel="stylesheet" href="../../style/mainPageStylesheet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Poppins:wght@300&family=Raleway&family=Roboto+Slab:wght@300&family=Work+Sans:wght@349&display=swap" rel="stylesheet">
 </svelte:head>
 
 {#await promiseData then dataFromDatabase}
