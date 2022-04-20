@@ -17,6 +17,13 @@
   let sliderAsync = [];
   let files;
 
+  async function getUsers(){
+    fetch("/getUsers")
+      .then((response) => response.json())
+      .then((data) => (usersData = data))
+  }
+  let usersData = []
+
   function addSliderCard() {
     console.log(sliderAsync);
     let placeHolder = {};
@@ -82,6 +89,7 @@
           <li on:click={() => setTab("themes")}>Themes</li>
           <li on:click={() => setTab("slider")}>Slider</li>
           <li on:click={() => setTab("menu")}>Menu</li>
+          <li on:click={() => setTab("users")}>Users</li>
           <li on:click={() => setTab("articles")}>Articles</li>
           <li on:click={() => setTab("pictures")}>Pictures</li>
         </ul>
@@ -259,6 +267,19 @@
       {:else if selectedTab == "pictures"}
         <!-- Pictures EDYCJA -->
         <div>pictures</div>
+      {:else if selectedTab == "users"}
+        <div use:getUsers class="card users">
+        {#await usersData then users}
+          {#each users as item,i}
+            <div class="userCard">
+              <img src="./images/avatar.png" alt="avatar" width="200px" height="200px"/>
+              <h2>{item.username}</h2>
+              <p>{item.email}</p>
+              <p>password: <i>{item.password}</i></p>
+            </div>
+          {/each}
+        {/await}
+      </div>
       {/if}
     </div>
   </div>
@@ -266,10 +287,30 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
+  .userCard > p{
+    font-size:18px;
+    color:black;
+    margin:0;
+    opacity:100%;
+  }
+  .users{
+    padding:20px;
+    display:flex;
+    align-items: start;
+    flex-wrap:wrap;
+  }
+  .userCard{
+    overflow:hidden;
+    width:240px;
+    height:380px;
+    border-radius:20px;
+    margin:30px;
+    background-color: #b7e4c7;
+  }
   .alls{
     width:100%;
     height:100%;
-    background-color: #ddd;
+    background-color: whitesmoke;
     overflow:auto;
     margin:0;
 }
@@ -391,7 +432,7 @@
  .statusAdmin{
    position:absolute;
    bottom:10px;
-   left:40px;
+   left:25px;
    font-size:18px;
  }
 </style>
