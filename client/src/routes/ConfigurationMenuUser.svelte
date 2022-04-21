@@ -464,22 +464,19 @@
 {/await}
 
 <style>
-
-  
-=======
   @import url("https://fonts.googleapis.com/css?family=Roboto");
-  #showSite{
-    margin-top:40px;
+  #showSite {
+    margin-top: 40px;
   }
-  #showSite:hover{
+  #showSite:hover {
     color: rgb(210, 255, 229);
     background-color: #16a060;
     text-decoration: underline;
     transform: scale(1.1);
     transform: translateX(3%);
-    font-size:22px;
+    font-size: 22px;
   }
-  .buttonUs{
+  .buttonUs {
     margin-top: 10px;
     width: 120px;
     height: 32px;
@@ -490,17 +487,17 @@
     transition: 0.1s ease;
     cursor: pointer;
   }
-  .btnEdit{
+  .btnEdit {
     background-color: #88aaf5;
   }
-  .btnDelete{
+  .btnDelete {
     background-color: #e64141c0;
   }
-  .buttonUs:hover{
+  .buttonUs:hover {
     transform: scale(1.1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
-  .userCard:hover{
+  .userCard:hover {
     transform: scale(1.1);
     box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4);
   }
@@ -519,15 +516,19 @@
   .userCard {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     transition: 0.1s ease;
-    text-align:center;
+    text-align: center;
     overflow: hidden;
     width: 240px;
     height: 380px;
     border-radius: 20px;
     margin: 30px;
 
-    background: rgb(183,228,199);
-    background: linear-gradient(180deg, rgba(183,228,199,1) 0%, rgba(183,228,199,0.41780462184873945) 100%);
+    background: rgb(183, 228, 199);
+    background: linear-gradient(
+      180deg,
+      rgba(183, 228, 199, 1) 0%,
+      rgba(183, 228, 199, 0.41780462184873945) 100%
+    );
   }
   .alls {
     width: 100%;
@@ -680,9 +681,8 @@
     padding: 15px;
     margin-bottom: 30px;
   }
-  .active{
-    background-color:#3b8d67b0;
-    font-weight:500;
+  .active {
+    background-color: #3b8d67b0;
+    font-weight: 500;
   }
-
 </style>
