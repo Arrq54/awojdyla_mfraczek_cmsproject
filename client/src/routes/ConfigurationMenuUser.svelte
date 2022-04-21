@@ -4,13 +4,16 @@
     return await temp;
   }
   $: status = asyncCheckLoginStatus();
-  $: selectedTab = (sessionStorage.getItem('selectedTab')==null) ? "themes" : sessionStorage.getItem('selectedTab')
+  $: selectedTab =
+    sessionStorage.getItem("selectedTab") == null
+      ? "themes"
+      : sessionStorage.getItem("selectedTab");
 
   function setTab(tab) {
-    document.getElementById(selectedTab).classList.remove("active")
+    document.getElementById(selectedTab).classList.remove("active");
     selectedTab = tab;
-    sessionStorage.setItem('selectedTab',tab);
-    document.getElementById(tab).classList.add("active")
+    sessionStorage.setItem("selectedTab", tab);
+    document.getElementById(tab).classList.add("active");
   }
 
   async function sliderLoad() {
@@ -102,8 +105,8 @@
 
   function fetchSaveSliderOrder() {
     let temp = { body: sliderAsync };
-    const body = JSON.stringify(temp); 
-    const headers = { "Content-Type": "application/json" }; 
+    const body = JSON.stringify(temp);
+    const headers = { "Content-Type": "application/json" };
     fetch("/changeOrder", { method: "post", body, headers });
   }
 
@@ -114,19 +117,17 @@
     fetch("/saveFont", { method: "post", body, headers });
   }
 
-  function toggle(e){
-    console.log(e.target.id)
+  function toggle(e) {
+    console.log(e.target.id);
     let temp = { id: e.target.id, value: e.target.checked };
     const body = JSON.stringify(temp);
     const headers = { "Content-Type": "application/json" };
     fetch("/changeBlockSettings", { method: "post", body, headers });
   }
 
-
-    async function setFirstTab(){
-      document.getElementById(selectedTab).classList.add("active")
-    }
-
+  async function setFirstTab() {
+    document.getElementById(selectedTab).classList.add("active");
+  }
 </script>
 
 <svelte:head>
@@ -151,10 +152,14 @@
           <li id="users" on:click={() => setTab("users")}>Users</li>
           <li id="articles" on:click={() => setTab("articles")}>Articles</li>
           <li id="pictures" on:click={() => setTab("pictures")}>Pictures</li>
-          <li id="showSite" on:click={() => {window.open(
-            '/',
-            '_blank'
-          );}}>Show the site</li>
+          <li
+            id="showSite"
+            on:click={() => {
+              window.open("/", "_blank");
+            }}
+          >
+            Show the site
+          </li>
         </ul>
         {#if user.user == 2}
           <p class="statusAdmin">Admin</p>
@@ -258,19 +263,27 @@
             <div class="block-theme-section">
               <h4 class="theme-header">Navbar menu</h4>
               <div class="line-theme">
-                  <div class="title-theme">Menu on/off</div>
-                  <label class="switch">
-                    <input type="checkbox" id="toggle_menu" on:input={(e)=>toggle(e)}>
-                    <span class="slider round"></span>
-                  </label>
+                <div class="title-theme">Menu on/off</div>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle_menu"
+                    on:input={(e) => toggle(e)}
+                  />
+                  <span class="slider round" />
+                </label>
               </div>
               <div class="line-theme">
                 <div class="title-theme">Menu Vertical (Off - horizontal)</div>
                 <label class="switch">
-                  <input type="checkbox" id="toggle_menu_orientation" on:input={(e)=>toggle(e)}>
-                  <span class="slider round"></span>
+                  <input
+                    type="checkbox"
+                    id="toggle_menu_orientation"
+                    on:input={(e) => toggle(e)}
+                  />
+                  <span class="slider round" />
                 </label>
-            </div>                   
+              </div>
             </div>
           </div>
         </div>
@@ -429,8 +442,18 @@
                 <h3>{item.username}</h3>
                 <p>email: {item.email}</p>
                 <p>password: <i>{item.password}</i></p>
-                <button on:click={() => {EditUser(item.id)}} class="buttonUs btnEdit">Edit</button><br>
-                <button on:click={() => {DeleteUser(item.id)}} class="buttonUs btnDelete">Delete</button>
+                <button
+                  on:click={() => {
+                    EditUser(item.id);
+                  }}
+                  class="buttonUs btnEdit">Edit</button
+                ><br />
+                <button
+                  on:click={() => {
+                    DeleteUser(item.id);
+                  }}
+                  class="buttonUs btnDelete">Delete</button
+                >
               </div>
             {/each}
           {/await}
