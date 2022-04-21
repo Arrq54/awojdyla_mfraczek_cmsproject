@@ -1,0 +1,248 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+.userCard > p {
+  font-size: 18px;
+  color: black;
+  margin: 0;
+  opacity: 100%;
+}
+.users {
+  padding: 20px;
+  display: flex;
+  align-items: start;
+  flex-wrap: wrap;
+}
+.userCard {
+  overflow: hidden;
+  width: 240px;
+  height: 380px;
+  border-radius: 20px;
+  margin: 30px;
+  background-color: #b7e4c7;
+}
+.alls {
+  width: 100%;
+  height: 100%;
+  background-color: whitesmoke;
+  overflow: auto;
+  margin: 0;
+}
+p {
+  color: rgb(210, 255, 229);
+  margin-bottom: 25px;
+  margin-top: 80%;
+  margin-left: 15%;
+  font-size: 14px;
+  opacity: 60%;
+}
+.menu {
+  width: 15%;
+  height: 100%;
+  padding: 0px;
+  background-color: #16a060;
+  margin: 0px;
+  top: 0;
+  position: absolute;
+}
+.maincard > ul {
+  padding: 0px;
+}
+.maincard li {
+  transition: 0.2s all;
+  font-size: 19px;
+  padding: 22px 10px 15px 30px;
+  margin-top: 0px;
+  color: rgb(210, 255, 229);
+  list-style: none;
+}
+.maincard li:hover {
+  color: rgb(90, 1, 179);
+  background-color: #81ffc45e;
+  cursor: pointer;
+}
+.maincard {
+  height: 100%;
+  position: relative;
+}
+.content {
+  width: 85%;
+  height: 100vh;
+  padding: 0px;
+  margin-left: 15%;
+}
+.flex {
+  display: flex;
+}
+.line {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.card {
+  position: relative;
+  width: 100%;
+}
+.card-header {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+input[type="text"] {
+  width: 400px;
+}
+textarea {
+  padding: 0;
+  margin: 0;
+  resize: none;
+  width: 400px;
+  height: auto;
+}
+.settings {
+  padding: 20px;
+  position: relative;
+}
+
+.sliderHR {
+  margin: 20px;
+  margin-top: 50px;
+}
+.showcaseImage {
+  width: 192px;
+  height: 50px;
+}
+.removeButton {
+  width: 20px;
+  height: 20px;
+  margin-left: 30px;
+  cursor: pointer;
+}
+.color-palette {
+  width: 332px;
+  height: 100px;
+  transition: 0.3s all ease;
+  cursor: pointer;
+  margin: 5px;
+  background-repeat: no-repeat;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-size: 100% 100%;
+}
+.color-palette:hover {
+  width: 340px;
+  height: 110px;
+  transform: translateX(10px);
+  transform: translateY(5px);
+  transition: 0.3s all ease;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
+}
+.f-wrap {
+  flex-wrap: wrap;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.statusAdmin {
+  position: absolute;
+  bottom: 10px;
+  left: 25px;
+  font-size: 18px;
+}
+.font-showcase {
+  padding: 20px;
+  margin: 10px;
+  width: 350px;
+  transition: 0.3s all ease;
+  cursor: pointer;
+  margin: 5px;
+  background-repeat: no-repeat;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-size: 100% 100%;
+}
+.font-showcase:hover {
+  width: 370px;
+  transform: translateX(10px);
+  transform: translateY(5px);
+  transition: 0.3s all ease;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
+}
+.fonts {
+  padding: 15px;
+  margin-bottom: 30px;
+}
+.block-theme-section {
+  margin-top: 20px;
+}
+.theme-header {
+  text-align: center;
+}
+.line-theme {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.title-theme {
+  font-size: 25px;
+  margin-right: 10%;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.1s;
+  transition: 0.3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.1s;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #16a060;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #16a060;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.w-25 {
+  width: 25px;
+}

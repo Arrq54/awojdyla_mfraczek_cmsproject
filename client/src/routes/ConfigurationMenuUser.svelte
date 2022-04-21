@@ -98,9 +98,9 @@
 
   function fetchSaveSliderOrder() {
     let temp = { body: sliderAsync };
-    const body = JSON.stringify(temp); // body czyli przesyłane na serwer dane
-    const headers = { "Content-Type": "application/json" }; // nagłowek czyli typ danych
-    fetch("/changeOrder", { method: "post", body, headers }); // fetch
+    const body = JSON.stringify(temp); 
+    const headers = { "Content-Type": "application/json" }; 
+    fetch("/changeOrder", { method: "post", body, headers });
   }
 
   function setFont(x) {
@@ -108,6 +108,13 @@
     const body = JSON.stringify(temp);
     const headers = { "Content-Type": "application/json" };
     fetch("/saveFont", { method: "post", body, headers });
+  }
+  function toggle(e){
+    console.log(e.target.id)
+    let temp = { id: e.target.id, value: e.target.checked };
+    const body = JSON.stringify(temp);
+    const headers = { "Content-Type": "application/json" };
+    fetch("/changeBlockSettings", { method: "post", body, headers });
   }
 </script>
 
@@ -118,6 +125,7 @@
     href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Poppins:wght@300&family=Raleway&family=Roboto+Slab:wght@300&family=Work+Sans:wght@349&display=swap"
     rel="stylesheet"
   />
+  <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
 
 <div id="backg" />
@@ -229,6 +237,26 @@
                   quis!
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Site sections/blocks theme</h3>
+            <div class="block-theme-section">
+              <h4 class="theme-header">Navbar menu</h4>
+              <div class="line-theme">
+                  <div class="title-theme">Menu on/off</div>
+                  <label class="switch">
+                    <input type="checkbox" id="toggle_menu" on:input={(e)=>toggle(e)}>
+                    <span class="slider round"></span>
+                  </label>
+              </div>
+              <div class="line-theme">
+                <div class="title-theme">Menu Vertical (Off - horizontal)</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggle_menu_orientation" on:input={(e)=>toggle(e)}>
+                  <span class="slider round"></span>
+                </label>
+            </div>                   
             </div>
           </div>
         </div>
@@ -397,175 +425,5 @@
 {/await}
 
 <style>
-  @import url("https://fonts.googleapis.com/css?family=Roboto");
-  .userCard > p {
-    font-size: 18px;
-    color: black;
-    margin: 0;
-    opacity: 100%;
-  }
-  .users {
-    padding: 20px;
-    display: flex;
-    align-items: start;
-    flex-wrap: wrap;
-  }
-  .userCard {
-    overflow: hidden;
-    width: 240px;
-    height: 380px;
-    border-radius: 20px;
-    margin: 30px;
-    background-color: #b7e4c7;
-  }
-  .alls {
-    width: 100%;
-    height: 100%;
-    background-color: whitesmoke;
-    overflow: auto;
-    margin: 0;
-  }
-  p {
-    color: rgb(210, 255, 229);
-    margin-bottom: 25px;
-    margin-top: 80%;
-    margin-left: 15%;
-    font-size: 14px;
-    opacity: 60%;
-  }
-  .menu {
-    width: 15%;
-    height: 100%;
-    padding: 0px;
-    background-color: #16a060;
-    margin: 0px;
-    top: 0;
-    position: absolute;
-  }
-  .maincard > ul {
-    padding: 0px;
-  }
-  .maincard li {
-    transition: 0.2s all;
-    font-size: 19px;
-    padding: 22px 10px 15px 30px;
-    margin-top: 0px;
-    color: rgb(210, 255, 229);
-    list-style: none;
-  }
-  .maincard li:hover {
-    color: rgb(90, 1, 179);
-    background-color: #81ffc45e;
-    cursor: pointer;
-  }
-  .maincard {
-    height: 100%;
-    position: relative;
-  }
-  .content {
-    width: 85%;
-    height: 100vh;
-    padding: 0px;
-    margin-left: 15%;
-  }
-  .flex {
-    display: flex;
-  }
-  .line {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .card {
-    position: relative;
-    width: 100%;
-  }
-  .card-header {
-    text-align: center;
-    font-size: 25px;
-    font-weight: bold;
-  }
-  input[type="text"] {
-    width: 400px;
-  }
-  textarea {
-    padding: 0;
-    margin: 0;
-    resize: none;
-    width: 400px;
-    height: auto;
-  }
-  .settings {
-    padding: 20px;
-    position: relative;
-  }
-
-  .sliderHR {
-    margin: 20px;
-    margin-top: 50px;
-  }
-  .showcaseImage {
-    width: 192px;
-    height: 50px;
-  }
-  .removeButton {
-    width: 20px;
-    height: 20px;
-    margin-left: 30px;
-    cursor: pointer;
-  }
-  .color-palette {
-    width: 332px;
-    height: 100px;
-    transition: 0.3s all ease;
-    cursor: pointer;
-    margin: 5px;
-    background-repeat: no-repeat;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    background-size: 100% 100%;
-  }
-  .color-palette:hover {
-    width: 340px;
-    height: 110px;
-    transform: translateX(10px);
-    transform: translateY(5px);
-    transition: 0.3s all ease;
-    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
-  }
-  .f-wrap {
-    flex-wrap: wrap;
-  }
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  .statusAdmin {
-    position: absolute;
-    bottom: 10px;
-    left: 25px;
-    font-size: 18px;
-  }
-  .font-showcase {
-    padding: 20px;
-    margin: 10px;
-    width: 350px;
-    transition: 0.3s all ease;
-    cursor: pointer;
-    margin: 5px;
-    background-repeat: no-repeat;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    background-size: 100% 100%;
-  }
-  .font-showcase:hover {
-    width: 370px;
-    transform: translateX(10px);
-    transform: translateY(5px);
-    transition: 0.3s all ease;
-    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
-  }
-  .fonts {
-    padding: 15px;
-    margin-bottom: 30px;
-  }
+  
 </style>
