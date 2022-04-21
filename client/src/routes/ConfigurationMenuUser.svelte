@@ -128,6 +128,53 @@
   async function setFirstTab() {
     document.getElementById(selectedTab).classList.add("active");
   }
+
+  async function DeleteUser(id){
+    const body = JSON.stringify(id);
+    const headers = { "Content-Type": "application/json" };
+    fetch("/deleteUser", { method: "post", body, headers });
+    window.location.reload()
+  }
+
+  async function EditUser(id, username, email, password, admin){
+
+    if(admin == 1) document.getElementById('edImg').src = "./images/admin.png"
+
+    document.getElementById('ed').style.display="block"
+    document.getElementsByName('username')[0].value = username
+    document.getElementsByName('email')[0].value = email
+    document.getElementsByName('password')[0].value = password
+    
+    document.getElementById('saveme').onclick = () => {saveme(id)}
+
+    let darkDiv = document.createElement('div')
+    darkDiv.onclick = goBackEditing
+    darkDiv.style = `position:absolute; width:100%; height:100%; top:0; left:0; background-color:black; z-index:100; opacity:90%;`
+    document.getElementsByClassName("users")[0].append(darkDiv)
+  }
+
+  async function saveme(id){
+    let username = document.getElementsByName('username')[0].value
+    let email = document.getElementsByName('email')[0].value
+    let password = document.getElementsByName('password')[0].value
+    let canGoFurther = true;
+
+      if(username=="" || email=="" || password == "") canGoFurther = false
+      if(canGoFurther) saveChanges(id, username, email, password)
+      else document.getElementById("err").style.display = "block"
+  }
+
+  async function saveChanges(id, username, email, password){
+    console.log(id, username, email, password)
+    const body = JSON.stringify({id:id, username:username, email:email, password:password});
+    const headers = { "Content-Type": "application/json" };
+    fetch("/editUser", { method: "post", body, headers });
+    goBackEditing()
+  }
+
+  async function goBackEditing(){
+    window.location.reload()
+  }
 </script>
 
 <svelte:head>
@@ -139,6 +186,9 @@
   />
   <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
+
+<div style="transform:translateX(-1000%)" class="darkdiv"></div>
+
 
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
@@ -430,9 +480,32 @@
         <div>pictures</div>
       {:else if selectedTab == "users"}
         <div use:getUsers class="card users">
+          <div class="editedCard" style="display:none">
+            <input type="text" style="display:none">
+          </div>
           {#await usersData then users}
             {#each users as item, i}
-              <div class="userCard">
+              {#if item.admin == 1}
+              <div class="userCard" id={"card" + item.rowid}>
+                <img
+                  src="./images/admin.png"
+                  alt="avatar"
+                  width="200px"
+                  height="200px"
+                />
+                <h3>{item.username}</h3>
+                <p>email: {item.email}</p>
+                <p>password: {item.password}</p>
+                <h3 style="color:brown; margin:10px;">Administrator</h3>
+                <button
+                  on:click={() => {
+                    EditUser(item.rowid, item.username, item.email, item.password, 1);
+                  }}
+                  class="buttonUs btnEdit">Edit</button
+                ><br />
+              </div>
+              {:else}
+              <div class="userCard" id={"card" + item.rowid}>
                 <img
                   src="./images/avatar.png"
                   alt="avatar"
@@ -441,21 +514,39 @@
                 />
                 <h3>{item.username}</h3>
                 <p>email: {item.email}</p>
-                <p>password: <i>{item.password}</i></p>
-                <button
+                <p>password: {item.password}</p>
+                <button 
                   on:click={() => {
-                    EditUser(item.id);
+                    EditUser(item.rowid, item.username, item.email, item.password, 0);
                   }}
                   class="buttonUs btnEdit">Edit</button
                 ><br />
                 <button
                   on:click={() => {
-                    DeleteUser(item.id);
+                    DeleteUser(item.rowid);
                   }}
                   class="buttonUs btnDelete">Delete</button
                 >
               </div>
+              {/if}
             {/each}
+            <div class="editedCard" id="ed"style="display:none">
+              <img
+                src="./images/avatar.png"
+                alt="avatar"
+                width="200px"
+                height="200px"
+                id="edImg"
+              />
+              <label for="username">Username</label>
+              <input type="text" name="username">
+              <label for="email">Email</label>
+              <input type="text" name="email">
+              <label for="password">Password</label>
+              <input type="text" name="password">
+              <button class="buttonUs btnEdit" id="saveme">Save</button>
+            </div>
+            <div id="err" style="display:none;">You must fill in all the blanks!</div>
           {/await}
         </div>
       {/if}
@@ -465,6 +556,58 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
+  #err{
+    color:red;
+    font-size:20px;
+    height:30px;
+    text-align:center;
+    width:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    margin-top:320px;
+    margin-left:25px;
+    z-index:101;
+  }
+  .editedCard > input[type="text"]{
+    width:75%;
+    height: 24px;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    font-weight: 400;
+    font-size: 15px;
+    transition: 0.2s ease;
+  }
+  .editedCard > input[type="text"]:focus{
+    outline: none;
+    border-bottom: 2px solid #16a085;
+    color: #1b643e;
+    transition: 0.2s ease;  
+  }
+  .editedCard{
+    overflow:auto;
+    z-index:101;
+    padding-top:10px;
+    padding:5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.1s ease;
+    text-align: center;
+    overflow: hidden;
+    width: 245px;
+    height: 390px;
+    border-radius: 20px;
+    margin: 30px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -65%) scale(1.5) perspective(1px);
+    background: rgb(183, 228, 199);
+    background: linear-gradient(
+      180deg,
+      rgba(183, 228, 199, 1) 0%,
+      rgb(211, 240, 221)    );
+  }
   #showSite {
     margin-top: 40px;
   }
@@ -508,18 +651,20 @@
     opacity: 100%;
   }
   .users {
+    height:100%;
     padding: 20px;
     display: flex;
     align-items: start;
     flex-wrap: wrap;
   }
   .userCard {
+    padding-top:10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     transition: 0.1s ease;
     text-align: center;
     overflow: hidden;
-    width: 240px;
-    height: 380px;
+    width: 245px;
+    height: 390px;
     border-radius: 20px;
     margin: 30px;
 

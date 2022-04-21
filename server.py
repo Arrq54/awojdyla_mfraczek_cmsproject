@@ -217,6 +217,7 @@ def getUsers():
     myCursor = myConnection.cursor()
     myCursor.execute("SELECT *, oid FROM data")
     records = [dict(row) for row in myCursor.fetchall()]
+    print(records)
     return json.dumps(records)
 
 
@@ -344,6 +345,37 @@ def changeBlockSettings():
 
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
+
+@app.route("/deleteUser", methods=['GET', 'POST'])
+def deleteUser():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute('DELETE FROM data WHERE oid=' + str(request.get_json()))
+    myConnection.commit()
+    myConnection.close()
+    return True
+
+
+@app.route("/editUser", methods=['GET', 'POST'])
+def editUser():
+    data = request.get_json()
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute("""UPDATE data SET
+                    username = :username,
+                    email = :email,
+                    password =  :password
+
+                    WHERE oid = :oid""",
+                     {
+                         'username': data["username"],
+                         'email': data["email"],
+                         'password': data["password"],
+                         'oid': data["id"]
+                     })
+    myConnection.commit()
+    myConnection.close()
+    return True
 
 
 if __name__ == "__main__":
