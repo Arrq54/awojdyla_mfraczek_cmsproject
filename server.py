@@ -209,6 +209,7 @@ def getSlider():
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
 
+
 @app.route("/getUsers")
 def getUsers():
     myConnection = sqlite3.connect('usersData.sqlite')
@@ -223,6 +224,7 @@ app.config['UPLOAD_FOLDER'] = 'client/public/images'
 app.config['IMAGES_LOCATION'] = "../../images/"
 app.config['DEFAULT_SLIDER_IMAGE_PATH'] = "../../images/sliderPlaceholder1.png"
 
+
 @app.route("/uploadSlider", methods=['GET', 'POST'])
 def uploadSlider():
     htmlSrc = {}
@@ -234,10 +236,10 @@ def uploadSlider():
             file.save(os.path.join(path, filename))
             htmlSrc[file.name] = f"../../images/{filename}"
     newRecords = []
-    for i in range(0,int(request.form['length'])):
+    for i in range(0, int(request.form['length'])):
         newRecord = {}
-        newRecord['id'] = i+1
-        if(f'sliderFile{i}' in htmlSrc):
+        newRecord['id'] = i + 1
+        if (f'sliderFile{i}' in htmlSrc):
             newRecord['src'] = htmlSrc[f'sliderFile{i}']
         else:
             newRecord['src'] = request.form[f'sliderFileName{i}']
@@ -253,10 +255,12 @@ def uploadSlider():
     for i in newRecords:
         myConnection = sqlite3.connect('usersData.sqlite')
         myCursor = myConnection.cursor()
-        myCursor.execute(f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES('{i['src']}','{i['label']}','{i['texts']}',{i['sliderOrder']})")
+        myCursor.execute(
+            f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES('{i['src']}','{i['label']}','{i['texts']}',{i['sliderOrder']})")
         myConnection.commit()
         myConnection.close()
     return redirect("/#/configurationuser")
+
 
 @app.route("/getSettings", methods=['GET', 'POST'])
 def getSettings():
@@ -264,6 +268,7 @@ def getSettings():
     with open(path, 'r+') as f:
         temp = json.dumps(f.read())
         return json.loads(temp)
+
 
 @app.route("/saveColors", methods=['GET', 'POST'])
 def saveColors():
@@ -275,27 +280,29 @@ def saveColors():
     with open(path, 'w') as f:
         object = {}
         object['colors'] = request.get_json()
+        object['blocks'] = content['blocks']
         object['fonts'] = content['fonts']
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
 
+
 @app.route("/changeOrder", methods=['GET', 'POST'])
 def changeOrder():
-   data = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
-   body = data.body
-   myConnection = sqlite3.connect('usersData.sqlite')
-   myCursor = myConnection.cursor()
-   myCursor.execute(f"DELETE FROM slider")
-   myConnection.commit()
-   myConnection.close()
-   for i in body:
-       myConnection = sqlite3.connect('usersData.sqlite')
-       myCursor = myConnection.cursor()
-       myCursor.execute(
-           f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES('{i.src}','{i.label}','{i.texts}',{i.sliderOrder})")
-       myConnection.commit()
-       myConnection.close()
-   return redirect("/#/configurationuser")
+    data = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+    body = data.body
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM slider")
+    myConnection.commit()
+    myConnection.close()
+    for i in body:
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute(
+            f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES('{i.src}','{i.label}','{i.texts}',{i.sliderOrder})")
+        myConnection.commit()
+        myConnection.close()
+    return redirect("/#/configurationuser")
 
 
 @app.route("/saveFont", methods=['GET', 'POST'])
@@ -305,16 +312,38 @@ def saveFont():
     content = {}
     with open(path, 'r') as f:
         content = json.loads(f.read())
-    with open(path, 'w') as f:f.close()
+    with open(path, 'w') as f: f.close()
     with open(path, 'w') as f:
         object = {}
         object['colors'] = content['colors']
+        object['blocks'] = content['blocks']
         object['fonts'] = font['fontFamily']
         print(json.dumps(object))
 
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
 
+
+@app.route("/changeBlockSettings", methods=['GET', 'POST'])
+def changeBlockSettings():
+    print(request.get_json()['id'])
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    font = request.get_json()
+    content = {}
+    with open(path, 'r') as f:
+        content = json.loads(f.read())
+    with open(path, 'w') as f: f.close()
+    with open(path, 'w') as f:
+        object = {}
+        object['colors'] = content['colors']
+        object['fonts'] = content['fonts']
+        tempSettings = content['blocks']
+        tempSettings[request.get_json()['id']] = 1 if request.get_json()['value'] == True else 0
+        object['blocks'] = tempSettings
+        print(json.dumps(object))
+
+        f.write(json.dumps(object))
+    return redirect("/#/configurationuser")
 
 
 if __name__ == "__main__":

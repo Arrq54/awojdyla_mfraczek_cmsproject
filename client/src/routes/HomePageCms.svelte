@@ -45,7 +45,7 @@
 
   };
   
-
+  let menuOn = true;
   async function getSettings() {
     let settings = await fetch("/getSettings").then((response) =>
       response.json()
@@ -87,6 +87,13 @@
       "--font-family",
        `${settings.fonts}`
     );
+    if(settings.blocks.toggle_menu=="1"){
+      menuOn = true;
+    }else{
+      menuOn=false;
+    }
+    console.log(menuOn)
+
   }
 </script>
 
@@ -100,35 +107,40 @@
 {#await promiseData then dataFromDatabase}
   <div class="main">
     <!--NAVBAR MENU-->
-    <div class="navbar flex justify-space-between">
-      <div class="flex">
-        <div class="navbar-item">Icon</div>
-        <Router>
-          {#each dataFromDatabase.navbarItems as item}
-            <div class="navbar-item"><Link to={item[0]}>{item[0]}</Link></div>
-          {/each}
-        </Router>
-      </div>
+      {#if menuOn==true }
+        <div class="navbar flex justify-space-between horizontal">
+          <div class="flex">
+            <div class="navbar-item">Icon</div>
+            <Router>
+              {#each dataFromDatabase.navbarItems as item}
+                <div class="navbar-item"><Link to={item[0]}>{item[0]}</Link></div>
+              {/each}
+            </Router>
+          </div>
+          <div class="register-login-buttons flex">
+            {#await logged then status}
+              {#if status.user > 0}
+                <div class="navbar-item btn  btn-menu">
+                  <a href={null} on:click={settingsMenu} class="btn-a">Menu</a>
+                </div>
+                <div class="navbar-item btn btn-logout">
+                  <a href={null} on:click={logout} class="btn-a ">Log out</a>
+                </div>
+              {:else}
+                <div class="navbar-item btn  btn-login">
+                  <a href="/#/login" class="btn-a">Login</a>
+                </div>
+                <div class="navbar-item btn btn-register">
+                  <a href="/#/register" class="btn-a ">Register</a>
+                </div>
+              {/if}
+            {/await}  
+          </div>
+        </div>
+      {/if}
+    
 
-      <div class="register-login-buttons flex">
-        {#await logged then status}
-          {#if status.user > 0}
-            <div class="navbar-item btn  btn-menu">
-              <a href={null} on:click={settingsMenu} class="btn-a">Menu</a>
-            </div>
-            <div class="navbar-item btn btn-logout">
-              <a href={null} on:click={logout} class="btn-a ">Log out</a>
-            </div>
-          {:else}
-            <div class="navbar-item btn  btn-login">
-              <a href="/#/login" class="btn-a">Login</a>
-            </div>
-            <div class="navbar-item btn btn-register">
-              <a href="/#/register" class="btn-a ">Register</a>
-            </div>
-          {/if}
-        {/await}
-      </div>
+      
     </div>
     <!--SLIDER to do-->
     <div
@@ -206,5 +218,5 @@
         <h4 class="copyright">{dataFromDatabase.footer.company}</h4>
       </div>
     </div>
-  </div>
+ 
 {/await}

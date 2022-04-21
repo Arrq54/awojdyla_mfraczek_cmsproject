@@ -102,9 +102,9 @@
 
   function fetchSaveSliderOrder() {
     let temp = { body: sliderAsync };
-    const body = JSON.stringify(temp); // body czyli przesyłane na serwer dane
-    const headers = { "Content-Type": "application/json" }; // nagłowek czyli typ danych
-    fetch("/changeOrder", { method: "post", body, headers }); // fetch
+    const body = JSON.stringify(temp); 
+    const headers = { "Content-Type": "application/json" }; 
+    fetch("/changeOrder", { method: "post", body, headers });
   }
 
   function setFont(x) {
@@ -113,6 +113,15 @@
     const headers = { "Content-Type": "application/json" };
     fetch("/saveFont", { method: "post", body, headers });
   }
+
+  function toggle(e){
+    console.log(e.target.id)
+    let temp = { id: e.target.id, value: e.target.checked };
+    const body = JSON.stringify(temp);
+    const headers = { "Content-Type": "application/json" };
+    fetch("/changeBlockSettings", { method: "post", body, headers });
+  }
+
 
     async function setFirstTab(){
       document.getElementById(selectedTab).classList.add("active")
@@ -127,6 +136,7 @@
     href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Poppins:wght@300&family=Raleway&family=Roboto+Slab:wght@300&family=Work+Sans:wght@349&display=swap"
     rel="stylesheet"
   />
+  <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
 
 <!-- svelte-ignore missing-declaration -->
@@ -241,6 +251,26 @@
                   quis!
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Site sections/blocks theme</h3>
+            <div class="block-theme-section">
+              <h4 class="theme-header">Navbar menu</h4>
+              <div class="line-theme">
+                  <div class="title-theme">Menu on/off</div>
+                  <label class="switch">
+                    <input type="checkbox" id="toggle_menu" on:input={(e)=>toggle(e)}>
+                    <span class="slider round"></span>
+                  </label>
+              </div>
+              <div class="line-theme">
+                <div class="title-theme">Menu Vertical (Off - horizontal)</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggle_menu_orientation" on:input={(e)=>toggle(e)}>
+                  <span class="slider round"></span>
+                </label>
+            </div>                   
             </div>
           </div>
         </div>
@@ -411,6 +441,9 @@
 {/await}
 
 <style>
+
+  
+=======
   @import url("https://fonts.googleapis.com/css?family=Roboto");
   #showSite{
     margin-top:40px;
@@ -628,4 +661,5 @@
     background-color:#3b8d67b0;
     font-weight:500;
   }
+
 </style>
