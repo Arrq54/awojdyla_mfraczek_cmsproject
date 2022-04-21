@@ -1862,104 +1862,101 @@ var app = (function () {
     const file$6 = "src\\routes\\Register.svelte";
 
     function create_fragment$6(ctx) {
-    	let div0;
-    	let t0;
-    	let div1;
-    	let h1;
-    	let t2;
-    	let input0;
-    	let t3;
-    	let input1;
-    	let t4;
-    	let input2;
-    	let t5;
-    	let input3;
-    	let t6;
-    	let input4;
-    	let t7;
-    	let a;
-    	let t9;
     	let div2;
+    	let div0;
+    	let h1;
+    	let t1;
+    	let input0;
+    	let t2;
+    	let input1;
+    	let t3;
+    	let input2;
+    	let t4;
+    	let input3;
+    	let t5;
+    	let input4;
+    	let t6;
+    	let a;
+    	let t8;
+    	let div1;
     	let mounted;
     	let dispose;
 
     	const block = {
     		c: function create() {
+    			div2 = element("div");
     			div0 = element("div");
-    			t0 = space();
-    			div1 = element("div");
     			h1 = element("h1");
     			h1.textContent = "Sign up";
-    			t2 = space();
+    			t1 = space();
     			input0 = element("input");
-    			t3 = space();
+    			t2 = space();
     			input1 = element("input");
-    			t4 = space();
+    			t3 = space();
     			input2 = element("input");
-    			t5 = space();
+    			t4 = space();
     			input3 = element("input");
-    			t6 = space();
+    			t5 = space();
     			input4 = element("input");
-    			t7 = space();
+    			t6 = space();
     			a = element("a");
     			a.textContent = "I already have an account";
-    			t9 = space();
-    			div2 = element("div");
-    			attr_dev(div0, "id", "backg");
-    			add_location(div0, file$6, 41, 2, 1762);
-    			add_location(h1, file$6, 43, 6, 1819);
+    			t8 = space();
+    			div1 = element("div");
+    			add_location(h1, file$6, 43, 4, 1810);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "username");
     			attr_dev(input0, "placeholder", "Username");
-    			add_location(input0, file$6, 44, 6, 1843);
+    			add_location(input0, file$6, 44, 4, 1832);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "name", "email");
     			attr_dev(input1, "placeholder", "E-mail");
-    			add_location(input1, file$6, 45, 6, 1911);
+    			add_location(input1, file$6, 45, 4, 1898);
     			attr_dev(input2, "type", "password");
     			attr_dev(input2, "name", "password");
     			attr_dev(input2, "placeholder", "Password");
-    			add_location(input2, file$6, 46, 6, 1974);
+    			add_location(input2, file$6, 46, 4, 1959);
     			attr_dev(input3, "type", "password");
     			attr_dev(input3, "name", "password2");
     			attr_dev(input3, "placeholder", "Retype password");
-    			add_location(input3, file$6, 47, 6, 2046);
+    			add_location(input3, file$6, 47, 4, 2029);
     			attr_dev(input4, "type", "submit");
     			attr_dev(input4, "id", "submitbutton");
     			attr_dev(input4, "name", "signup_submit");
     			input4.value = "Sign me up";
-    			add_location(input4, file$6, 48, 6, 2126);
+    			add_location(input4, file$6, 48, 4, 2107);
     			attr_dev(a, "href", "/#/login");
     			attr_dev(a, "class", "switchlogin");
-    			add_location(a, file$6, 49, 6, 2232);
-    			attr_dev(div1, "class", "login-box");
-    			add_location(div1, file$6, 42, 2, 1788);
-    			attr_dev(div2, "class", "errorloginregister");
-    			attr_dev(div2, "id", "errordisplay");
-    			add_location(div2, file$6, 51, 2, 2314);
+    			add_location(a, file$6, 49, 4, 2211);
+    			attr_dev(div0, "class", "login-box");
+    			add_location(div0, file$6, 42, 2, 1781);
+    			attr_dev(div1, "class", "errorloginregister");
+    			attr_dev(div1, "id", "errordisplay");
+    			add_location(div1, file$6, 51, 0, 2289);
+    			attr_dev(div2, "class", "all");
+    			add_location(div2, file$6, 41, 0, 1760);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div0, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, h1);
-    			append_dev(div1, t2);
-    			append_dev(div1, input0);
-    			append_dev(div1, t3);
-    			append_dev(div1, input1);
-    			append_dev(div1, t4);
-    			append_dev(div1, input2);
-    			append_dev(div1, t5);
-    			append_dev(div1, input3);
-    			append_dev(div1, t6);
-    			append_dev(div1, input4);
-    			append_dev(div1, t7);
-    			append_dev(div1, a);
-    			insert_dev(target, t9, anchor);
     			insert_dev(target, div2, anchor);
+    			append_dev(div2, div0);
+    			append_dev(div0, h1);
+    			append_dev(div0, t1);
+    			append_dev(div0, input0);
+    			append_dev(div0, t2);
+    			append_dev(div0, input1);
+    			append_dev(div0, t3);
+    			append_dev(div0, input2);
+    			append_dev(div0, t4);
+    			append_dev(div0, input3);
+    			append_dev(div0, t5);
+    			append_dev(div0, input4);
+    			append_dev(div0, t6);
+    			append_dev(div0, a);
+    			append_dev(div2, t8);
+    			append_dev(div2, div1);
 
     			if (!mounted) {
     				dispose = listen_dev(input4, "click", submit$1, false, false, false);
@@ -1970,10 +1967,6 @@ var app = (function () {
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t9);
     			if (detaching) detach_dev(div2);
     			mounted = false;
     			dispose();
@@ -2065,85 +2058,82 @@ var app = (function () {
     const file$5 = "src\\routes\\Login.svelte";
 
     function create_fragment$5(ctx) {
-    	let div0;
-    	let t0;
-    	let div1;
-    	let h1;
-    	let t2;
-    	let input0;
-    	let t3;
-    	let input1;
-    	let t4;
-    	let input2;
-    	let t5;
-    	let a;
-    	let t7;
     	let div2;
+    	let div0;
+    	let h1;
+    	let t1;
+    	let input0;
+    	let t2;
+    	let input1;
+    	let t3;
+    	let input2;
+    	let t4;
+    	let a;
+    	let t6;
+    	let div1;
     	let mounted;
     	let dispose;
 
     	const block = {
     		c: function create() {
+    			div2 = element("div");
     			div0 = element("div");
-    			t0 = space();
-    			div1 = element("div");
     			h1 = element("h1");
     			h1.textContent = "Log in";
-    			t2 = space();
+    			t1 = space();
     			input0 = element("input");
-    			t3 = space();
+    			t2 = space();
     			input1 = element("input");
-    			t4 = space();
+    			t3 = space();
     			input2 = element("input");
-    			t5 = space();
+    			t4 = space();
     			a = element("a");
     			a.textContent = "Create an account";
-    			t7 = space();
-    			div2 = element("div");
-    			attr_dev(div0, "id", "backg");
-    			add_location(div0, file$5, 29, 2, 1190);
-    			add_location(h1, file$5, 31, 6, 1268);
+    			t6 = space();
+    			div1 = element("div");
+    			add_location(h1, file$5, 31, 4, 1260);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "username");
     			attr_dev(input0, "placeholder", "Username");
-    			add_location(input0, file$5, 32, 6, 1291);
+    			add_location(input0, file$5, 32, 4, 1281);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "name", "password");
     			attr_dev(input1, "placeholder", "Password");
-    			add_location(input1, file$5, 33, 6, 1359);
+    			add_location(input1, file$5, 33, 4, 1347);
     			attr_dev(input2, "type", "submit");
     			attr_dev(input2, "id", "submitbutton");
     			attr_dev(input2, "name", "signup_submit");
     			input2.value = "Log me in";
-    			add_location(input2, file$5, 34, 6, 1431);
+    			add_location(input2, file$5, 34, 4, 1417);
     			attr_dev(a, "href", "/#/register");
     			attr_dev(a, "class", "switchlogin");
-    			add_location(a, file$5, 35, 6, 1536);
-    			attr_dev(div1, "class", "login-box");
-    			set_style(div1, "height", "310px");
-    			add_location(div1, file$5, 30, 2, 1216);
-    			attr_dev(div2, "class", "errorloginregister");
-    			attr_dev(div2, "id", "errordisplay");
-    			add_location(div2, file$5, 37, 2, 1613);
+    			add_location(a, file$5, 35, 4, 1520);
+    			attr_dev(div0, "class", "login-box");
+    			set_style(div0, "height", "310px");
+    			add_location(div0, file$5, 30, 2, 1210);
+    			attr_dev(div1, "class", "errorloginregister");
+    			attr_dev(div1, "id", "errordisplay");
+    			add_location(div1, file$5, 37, 2, 1597);
+    			attr_dev(div2, "class", "all");
+    			add_location(div2, file$5, 29, 0, 1188);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div0, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, h1);
-    			append_dev(div1, t2);
-    			append_dev(div1, input0);
-    			append_dev(div1, t3);
-    			append_dev(div1, input1);
-    			append_dev(div1, t4);
-    			append_dev(div1, input2);
-    			append_dev(div1, t5);
-    			append_dev(div1, a);
-    			insert_dev(target, t7, anchor);
     			insert_dev(target, div2, anchor);
+    			append_dev(div2, div0);
+    			append_dev(div0, h1);
+    			append_dev(div0, t1);
+    			append_dev(div0, input0);
+    			append_dev(div0, t2);
+    			append_dev(div0, input1);
+    			append_dev(div0, t3);
+    			append_dev(div0, input2);
+    			append_dev(div0, t4);
+    			append_dev(div0, a);
+    			append_dev(div2, t6);
+    			append_dev(div2, div1);
 
     			if (!mounted) {
     				dispose = listen_dev(input2, "click", submit, false, false, false);
@@ -2154,10 +2144,6 @@ var app = (function () {
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t7);
     			if (detaching) detach_dev(div2);
     			mounted = false;
     			dispose();
@@ -4001,7 +3987,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    function get_each_context_2(ctx, list, i) {
+    function get_each_context_2$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[8] = list[i];
     	return child_ctx;
@@ -4441,6 +4427,8 @@ var app = (function () {
     	return block;
     }
 
+    // (92:10) {#each dataFromDatabase.navbarItems as item}
+    function create_each_block_2$1(ctx) {
     // (106:10) {#each dataFromDatabase.navbarItems as item}
     function create_each_block_2(ctx) {
     	let div;
@@ -4494,7 +4482,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_2.name,
+    		id: create_each_block_2$1.name,
     		type: "each",
     		source: "(106:10) {#each dataFromDatabase.navbarItems as item}",
     		ctx
@@ -4512,7 +4500,7 @@ var app = (function () {
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value_2.length; i += 1) {
-    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    		each_blocks[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
     	}
 
     	const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -4542,13 +4530,13 @@ var app = (function () {
     				let i;
 
     				for (i = 0; i < each_value_2.length; i += 1) {
-    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+    					const child_ctx = get_each_context_2$1(ctx, each_value_2, i);
 
     					if (each_blocks[i]) {
     						each_blocks[i].p(child_ctx, dirty);
     						transition_in(each_blocks[i], 1);
     					} else {
-    						each_blocks[i] = create_each_block_2(child_ctx);
+    						each_blocks[i] = create_each_block_2$1(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
     						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
@@ -5331,6 +5319,13 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file$1 = "src\\routes\\ConfigurationMenuUser.svelte";
 
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[30] = list[i];
+    	child_ctx[32] = i;
+    	return child_ctx;
+    }
+
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[32] = list[i];
@@ -5346,12 +5341,12 @@ var app = (function () {
     }
 
     // (1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch("/checkLoginStatus").then((response) => response.json());      return await temp;    }
-    function create_catch_block_2(ctx) {
+    function create_catch_block_3(ctx) {
     	const block = { c: noop, m: noop, p: noop, d: noop };
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_catch_block_2.name,
+    		id: create_catch_block_3.name,
     		type: "catch",
     		source: "(1:0) <script defer>    async function asyncCheckLoginStatus() {      let temp = fetch(\\\"/checkLoginStatus\\\").then((response) => response.json());      return await temp;    }",
     		ctx
@@ -5376,7 +5371,9 @@ var app = (function () {
     	let t7;
     	let li4;
     	let t9;
-    	let t10;
+    	let li5;
+    	let t11;
+    	let t12;
     	let div2;
     	let mounted;
     	let dispose;
@@ -5390,12 +5387,13 @@ var app = (function () {
     	let if_block0 = current_block_type(ctx);
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*selectedTab*/ ctx[2] == "themes") return create_if_block;
-    		if (/*selectedTab*/ ctx[2] == "slider") return create_if_block_1;
-    		if (/*selectedTab*/ ctx[2] == "changeOrderOfSlider") return create_if_block_2;
-    		if (/*selectedTab*/ ctx[2] == "menu") return create_if_block_3;
-    		if (/*selectedTab*/ ctx[2] == "articles") return create_if_block_4;
-    		if (/*selectedTab*/ ctx[2] == "pictures") return create_if_block_5;
+    		if (/*selectedTab*/ ctx[3] == "themes") return create_if_block;
+    		if (/*selectedTab*/ ctx[3] == "slider") return create_if_block_1;
+    		if (/*selectedTab*/ ctx[3] == "changeOrderOfSlider") return create_if_block_2;
+    		if (/*selectedTab*/ ctx[3] == "menu") return create_if_block_3;
+    		if (/*selectedTab*/ ctx[3] == "articles") return create_if_block_4;
+    		if (/*selectedTab*/ ctx[3] == "pictures") return create_if_block_5;
+    		if (/*selectedTab*/ ctx[3] == "users") return create_if_block_6;
     	}
 
     	let current_block_type_1 = select_block_type_1(ctx);
@@ -5417,13 +5415,16 @@ var app = (function () {
     			li2.textContent = "Menu";
     			t5 = space();
     			li3 = element("li");
-    			li3.textContent = "Articles";
+    			li3.textContent = "Users";
     			t7 = space();
     			li4 = element("li");
-    			li4.textContent = "Pictures";
+    			li4.textContent = "Articles";
     			t9 = space();
+    			li5 = element("li");
+    			li5.textContent = "Pictures";
+    			t11 = space();
     			if_block0.c();
-    			t10 = space();
+    			t12 = space();
     			div2 = element("div");
     			if (if_block1) if_block1.c();
     			attr_dev(li0, "class", "svelte-zu2syt");
@@ -5461,19 +5462,22 @@ var app = (function () {
     			append_dev(ul, li3);
     			append_dev(ul, t7);
     			append_dev(ul, li4);
-    			append_dev(div0, t9);
+    			append_dev(ul, t9);
+    			append_dev(ul, li5);
+    			append_dev(div0, t11);
     			if_block0.m(div0, null);
-    			append_dev(div3, t10);
+    			append_dev(div3, t12);
     			append_dev(div3, div2);
     			if (if_block1) if_block1.m(div2, null);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(li0, "click", /*click_handler*/ ctx[10], false, false, false),
-    					listen_dev(li1, "click", /*click_handler_1*/ ctx[11], false, false, false),
-    					listen_dev(li2, "click", /*click_handler_2*/ ctx[12], false, false, false),
-    					listen_dev(li3, "click", /*click_handler_3*/ ctx[13], false, false, false),
-    					listen_dev(li4, "click", /*click_handler_4*/ ctx[14], false, false, false)
+    					listen_dev(li0, "click", /*click_handler*/ ctx[12], false, false, false),
+    					listen_dev(li1, "click", /*click_handler_1*/ ctx[13], false, false, false),
+    					listen_dev(li2, "click", /*click_handler_2*/ ctx[14], false, false, false),
+    					listen_dev(li3, "click", /*click_handler_3*/ ctx[15], false, false, false),
+    					listen_dev(li4, "click", /*click_handler_4*/ ctx[16], false, false, false),
+    					listen_dev(li5, "click", /*click_handler_5*/ ctx[17], false, false, false)
     				];
 
     				mounted = true;
@@ -5577,7 +5581,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_6.name,
+    		id: create_if_block_7.name,
     		type: "if",
     		source: "(126:8) {#if user.user == 2}",
     		ctx
@@ -5813,7 +5817,7 @@ var app = (function () {
     			info.anchor = null;
 
     			if (!mounted) {
-    				dispose = action_destroyer(/*sliderLoad*/ ctx[5].call(null, div1));
+    				dispose = action_destroyer(/*sliderLoad*/ ctx[6].call(null, div1));
     				mounted = true;
     			}
     		},
@@ -6741,7 +6745,7 @@ var app = (function () {
     		value: 30
     	};
 
-    	handle_promise(promise = /*status*/ ctx[3], info);
+    	handle_promise(promise = /*status*/ ctx[4], info);
 
     	const block = {
     		c: function create() {
@@ -6874,7 +6878,7 @@ var app = (function () {
     	validate_slots('ConfigurationMenuUser', slots, []);
 
     	function setTab(tab) {
-    		$$invalidate(2, selectedTab = tab);
+    		$$invalidate(3, selectedTab = tab);
     	}
 
     	async function sliderLoad() {
@@ -6883,6 +6887,12 @@ var app = (function () {
 
     	let sliderAsync = [];
     	let files;
+
+    	async function getUsers() {
+    		fetch("/getUsers").then(response => response.json()).then(data => $$invalidate(2, usersData = data));
+    	}
+
+    	let usersData = [];
 
     	function addSliderCard() {
     		console.log(sliderAsync);
@@ -6964,6 +6974,8 @@ var app = (function () {
     		sliderLoad,
     		sliderAsync,
     		files,
+    		getUsers,
+    		usersData,
     		addSliderCard,
     		removeCard,
     		setColor,
@@ -6977,24 +6989,27 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ('sliderAsync' in $$props) $$invalidate(0, sliderAsync = $$props.sliderAsync);
     		if ('files' in $$props) $$invalidate(1, files = $$props.files);
-    		if ('selectedTab' in $$props) $$invalidate(2, selectedTab = $$props.selectedTab);
-    		if ('status' in $$props) $$invalidate(3, status = $$props.status);
+    		if ('usersData' in $$props) $$invalidate(2, usersData = $$props.usersData);
+    		if ('selectedTab' in $$props) $$invalidate(3, selectedTab = $$props.selectedTab);
+    		if ('status' in $$props) $$invalidate(4, status = $$props.status);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$invalidate(3, status = asyncCheckLoginStatus());
-    	$$invalidate(2, selectedTab = "themes");
+    	$$invalidate(4, status = asyncCheckLoginStatus());
+    	$$invalidate(3, selectedTab = "themes");
 
     	return [
     		sliderAsync,
     		files,
+    		usersData,
     		selectedTab,
     		status,
     		setTab,
     		sliderLoad,
+    		getUsers,
     		addSliderCard,
     		removeCard,
     		sliderOrder,
@@ -7010,6 +7025,7 @@ var app = (function () {
     		click_handler_8,
     		click_handler_9,
     		click_handler_10,
+    		input2_change_handler,
     		click_handler_11,
     		click_handler_12,
     		click_handler_13,
@@ -7169,5 +7185,5 @@ var app = (function () {
 
     return app;
 
-})();
-//# sourceMappingURL=bundle.js.map
+}})
+

@@ -209,6 +209,15 @@ def getSlider():
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
 
+@app.route("/getUsers")
+def getUsers():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT *, oid FROM data")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
 
 app.config['UPLOAD_FOLDER'] = 'client/public/images'
 app.config['IMAGES_LOCATION'] = "../../images/"
