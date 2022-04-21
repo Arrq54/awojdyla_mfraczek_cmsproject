@@ -4,9 +4,13 @@
     return await temp;
   }
   $: status = asyncCheckLoginStatus();
-  $: selectedTab = "themes";
+  $: selectedTab = (sessionStorage.getItem('selectedTab')==null) ? "themes" : sessionStorage.getItem('selectedTab')
+
   function setTab(tab) {
+    document.getElementById(selectedTab).classList.remove("active")
     selectedTab = tab;
+    sessionStorage.setItem('selectedTab',tab);
+    document.getElementById(tab).classList.add("active")
   }
 
   async function sliderLoad() {
@@ -109,6 +113,7 @@
     const headers = { "Content-Type": "application/json" };
     fetch("/saveFont", { method: "post", body, headers });
   }
+
   function toggle(e){
     console.log(e.target.id)
     let temp = { id: e.target.id, value: e.target.checked };
@@ -116,6 +121,12 @@
     const headers = { "Content-Type": "application/json" };
     fetch("/changeBlockSettings", { method: "post", body, headers });
   }
+
+
+    async function setFirstTab(){
+      document.getElementById(selectedTab).classList.add("active")
+    }
+
 </script>
 
 <svelte:head>
@@ -128,19 +139,22 @@
   <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
 
-<div id="backg" />
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
-  <div class="alls">
+  <div use:setFirstTab class="alls">
     <div class="menu">
       <div class="maincard">
         <ul>
-          <li on:click={() => setTab("themes")}>Themes</li>
-          <li on:click={() => setTab("slider")}>Slider</li>
-          <li on:click={() => setTab("menu")}>Menu</li>
-          <li on:click={() => setTab("users")}>Users</li>
-          <li on:click={() => setTab("articles")}>Articles</li>
-          <li on:click={() => setTab("pictures")}>Pictures</li>
+          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+          <li id="menu" on:click={() => setTab("menu")}>Menu</li>
+          <li id="users" on:click={() => setTab("users")}>Users</li>
+          <li id="articles" on:click={() => setTab("articles")}>Articles</li>
+          <li id="pictures" on:click={() => setTab("pictures")}>Pictures</li>
+          <li id="showSite" on:click={() => {window.open(
+            '/',
+            '_blank'
+          );}}>Show the site</li>
         </ul>
         {#if user.user == 2}
           <p class="statusAdmin">Admin</p>
@@ -412,9 +426,11 @@
                   width="200px"
                   height="200px"
                 />
-                <h2>{item.username}</h2>
-                <p>{item.email}</p>
+                <h3>{item.username}</h3>
+                <p>email: {item.email}</p>
                 <p>password: <i>{item.password}</i></p>
+                <button on:click={() => {EditUser(item.id)}} class="buttonUs btnEdit">Edit</button><br>
+                <button on:click={() => {DeleteUser(item.id)}} class="buttonUs btnDelete">Delete</button>
               </div>
             {/each}
           {/await}
@@ -425,5 +441,225 @@
 {/await}
 
 <style>
+
   
+=======
+  @import url("https://fonts.googleapis.com/css?family=Roboto");
+  #showSite{
+    margin-top:40px;
+  }
+  #showSite:hover{
+    color: rgb(210, 255, 229);
+    background-color: #16a060;
+    text-decoration: underline;
+    transform: scale(1.1);
+    transform: translateX(3%);
+    font-size:22px;
+  }
+  .buttonUs{
+    margin-top: 10px;
+    width: 120px;
+    height: 32px;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.1s ease;
+    cursor: pointer;
+  }
+  .btnEdit{
+    background-color: #88aaf5;
+  }
+  .btnDelete{
+    background-color: #e64141c0;
+  }
+  .buttonUs:hover{
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  .userCard:hover{
+    transform: scale(1.1);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4);
+  }
+  .userCard > p {
+    font-size: 15px;
+    color: black;
+    margin: 0;
+    opacity: 100%;
+  }
+  .users {
+    padding: 20px;
+    display: flex;
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  .userCard {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.1s ease;
+    text-align:center;
+    overflow: hidden;
+    width: 240px;
+    height: 380px;
+    border-radius: 20px;
+    margin: 30px;
+
+    background: rgb(183,228,199);
+    background: linear-gradient(180deg, rgba(183,228,199,1) 0%, rgba(183,228,199,0.41780462184873945) 100%);
+  }
+  .alls {
+    width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+    overflow: auto;
+    margin: 0;
+  }
+  p {
+    color: rgb(210, 255, 229);
+    margin-bottom: 25px;
+    margin-top: 80%;
+    margin-left: 15%;
+    font-size: 14px;
+    opacity: 60%;
+  }
+  .menu {
+    overflow: hidden;
+    width: 15%;
+    height: 100%;
+    padding: 0px;
+    background-color: #16a060;
+    margin: 0px;
+    top: 0;
+    position: absolute;
+  }
+  .maincard > ul {
+    padding: 0px;
+  }
+  .maincard li {
+    transition: 0.2s all;
+    font-size: 19px;
+    padding: 22px 10px 15px 30px;
+    margin-top: 0px;
+    color: rgb(210, 255, 229);
+    list-style: none;
+  }
+  .maincard li:hover {
+    color: rgb(90, 1, 179);
+    background-color: #81ffc45e;
+    cursor: pointer;
+  }
+  .maincard {
+    height: 100%;
+    position: relative;
+  }
+  .content {
+    width: 85%;
+    height: 100vh;
+    padding: 0px;
+    margin-left: 15%;
+  }
+  .flex {
+    display: flex;
+  }
+  .line {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+  }
+  .card-header {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  input[type="text"] {
+    width: 400px;
+  }
+  textarea {
+    padding: 0;
+    margin: 0;
+    resize: none;
+    width: 400px;
+    height: auto;
+  }
+  .settings {
+    padding: 20px;
+    position: relative;
+  }
+
+  .sliderHR {
+    margin: 20px;
+    margin-top: 50px;
+  }
+  .showcaseImage {
+    width: 192px;
+    height: 50px;
+  }
+  .removeButton {
+    width: 20px;
+    height: 20px;
+    margin-left: 30px;
+    cursor: pointer;
+  }
+  .color-palette {
+    width: 332px;
+    height: 100px;
+    transition: 0.3s all ease;
+    cursor: pointer;
+    margin: 5px;
+    background-repeat: no-repeat;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-size: 100% 100%;
+  }
+  .color-palette:hover {
+    width: 340px;
+    height: 110px;
+    transform: translateX(10px);
+    transform: translateY(5px);
+    transition: 0.3s all ease;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
+  }
+  .f-wrap {
+    flex-wrap: wrap;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  .statusAdmin {
+    position: absolute;
+    bottom: 10px;
+    left: 25px;
+    font-size: 18px;
+  }
+  .font-showcase {
+    padding: 20px;
+    margin: 10px;
+    width: 350px;
+    transition: 0.3s all ease;
+    cursor: pointer;
+    margin: 5px;
+    background-repeat: no-repeat;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-size: 100% 100%;
+  }
+  .font-showcase:hover {
+    width: 370px;
+    transform: translateX(10px);
+    transform: translateY(5px);
+    transition: 0.3s all ease;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
+  }
+  .fonts {
+    padding: 15px;
+    margin-bottom: 30px;
+  }
+  .active{
+    background-color:#3b8d67b0;
+    font-weight:500;
+  }
+
 </style>

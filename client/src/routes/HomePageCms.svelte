@@ -35,6 +35,7 @@
       .then((data) => (logged = data));
   }
   function settingsMenu() {
+    sessionStorage.setItem('selectedTab','themes');
     window.location.replace("/#/configurationuser");
     location.reload();
   }
