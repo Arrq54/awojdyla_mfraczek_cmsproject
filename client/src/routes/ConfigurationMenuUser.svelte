@@ -4,9 +4,13 @@
     return await temp;
   }
   $: status = asyncCheckLoginStatus();
-  $: selectedTab = "themes";
+  $: selectedTab = (sessionStorage.getItem('selectedTab')==null) ? "themes" : sessionStorage.getItem('selectedTab')
+
   function setTab(tab) {
+    document.getElementById(selectedTab).classList.remove("active")
     selectedTab = tab;
+    sessionStorage.setItem('selectedTab',tab);
+    document.getElementById(tab).classList.add("active")
   }
 
   async function sliderLoad() {
@@ -31,6 +35,7 @@
       sliderAsync = [...sliderAsync.filter((item, index) => index !== i)];
     }
   }
+<<<<<<< HEAD
 </script>
 
 <div id="backg" />
@@ -45,6 +50,110 @@
           <li on:click={() => setTab("menu")}>Menu</li>
           <li on:click={() => setTab("articles")}>Articles</li>
           <li on:click={() => setTab("pictures")}>Pictures</li>
+=======
+
+  function setColor(e) {
+    let newColors = {};
+    let body, headers;
+    switch (e) {
+      case "gray":
+        newColors["body-background-color"] = "#FFFFFF";
+        newColors["slider-font-color"] = "#B7B7B7";
+        newColors["news-border-color"] = "#ACACAC";
+        newColors["news-background-color"] = "#FFFFFF";
+        newColors["news-header-background-color"] = "#ECECEC";
+        newColors["btn-news-background-color"] = "#3D3C47";
+        body = JSON.stringify(newColors);
+        headers = { "Content-Type": "application/json" };
+        fetch("/saveColors", { method: "post", body, headers });
+        break;
+      case "green":
+        newColors["body-background-color"] = "#d8f3dc";
+        newColors["slider-font-color"] = "#ffffff";
+        newColors["news-border-color"] = "#081c15";
+        newColors["news-background-color"] = "#f0fff1";
+        newColors["news-header-background-color"] = "#dbfeb8";
+        newColors["btn-news-background-color"] = "#081c15";
+        body = JSON.stringify(newColors);
+        headers = { "Content-Type": "application/json" };
+        fetch("/saveColors", { method: "post", body, headers });
+      case "blue":
+        newColors["body-background-color"] = "#caf0f8";
+        newColors["slider-font-color"] = "#ffffff";
+        newColors["news-border-color"] = "#03045e";
+        newColors["news-background-color"] = "#ade8f4";
+        newColors["news-header-background-color"] = "#90e0ef";
+        newColors["btn-news-background-color"] = "#03045e";
+        body = JSON.stringify(newColors);
+        headers = { "Content-Type": "application/json" };
+        fetch("/saveColors", { method: "post", body, headers });
+      default:
+        break;
+    }
+  }
+  function sliderOrder(type, index, id, list) {
+    console.log(type);
+    if (type == "up") {
+      if (index == list.length - 1) return;
+      list[index].sliderOrder += 1;
+      list[index + 1].sliderOrder -= 1;
+      [list[index], list[index + 1]] = [list[index + 1], list[index]];
+      sliderAsync = list;
+    } else if (type == "down") {
+      if (index == 0) return;
+      list[index].sliderOrder -= 1;
+      list[index + 1].sliderOrder += 1;
+      [list[index], list[index - 1]] = [list[index - 1], list[index]];
+      sliderAsync = list;
+    }
+  }
+
+  function fetchSaveSliderOrder() {
+    let temp = { body: sliderAsync };
+    const body = JSON.stringify(temp); // body czyli przesyłane na serwer dane
+    const headers = { "Content-Type": "application/json" }; // nagłowek czyli typ danych
+    fetch("/changeOrder", { method: "post", body, headers }); // fetch
+  }
+
+  function setFont(x) {
+    let temp = { fontFamily: x };
+    const body = JSON.stringify(temp);
+    const headers = { "Content-Type": "application/json" };
+    fetch("/saveFont", { method: "post", body, headers });
+  }
+
+    async function setFirstTab(){
+      document.getElementById(selectedTab).classList.add("active")
+    }
+
+</script>
+
+<svelte:head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Poppins:wght@300&family=Raleway&family=Roboto+Slab:wght@300&family=Work+Sans:wght@349&display=swap"
+    rel="stylesheet"
+  />
+</svelte:head>
+
+<!-- svelte-ignore missing-declaration -->
+{#await status then user}
+  <div use:setFirstTab class="alls">
+    <div class="menu">
+      <div class="maincard">
+        <ul>
+          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+          <li id="menu" on:click={() => setTab("menu")}>Menu</li>
+          <li id="users" on:click={() => setTab("users")}>Users</li>
+          <li id="articles" on:click={() => setTab("articles")}>Articles</li>
+          <li id="pictures" on:click={() => setTab("pictures")}>Pictures</li>
+          <li id="showSite" on:click={() => {window.open(
+            '/',
+            '_blank'
+          );}}>Show the site</li>
+>>>>>>> 9b8ab17 (chujdupacycedonice)
         </ul>
         {#if user.user == 2}
           <p>Admin</p>
@@ -154,6 +263,29 @@
       {:else if selectedTab == "pictures"}
         <!-- Pictures EDYCJA -->
         <div>pictures</div>
+<<<<<<< HEAD
+=======
+      {:else if selectedTab == "users"}
+        <div use:getUsers class="card users">
+          {#await usersData then users}
+            {#each users as item, i}
+              <div class="userCard">
+                <img
+                  src="./images/avatar.png"
+                  alt="avatar"
+                  width="200px"
+                  height="200px"
+                />
+                <h3>{item.username}</h3>
+                <p>email: {item.email}</p>
+                <p>password: <i>{item.password}</i></p>
+                <button on:click={() => {EditUser(item.id)}} class="buttonUs btnEdit">Edit</button><br>
+                <button on:click={() => {DeleteUser(item.id)}} class="buttonUs btnDelete">Delete</button>
+              </div>
+            {/each}
+          {/await}
+        </div>
+>>>>>>> 9b8ab17 (chujdupacycedonice)
       {/if}
     </div>
   </div>
@@ -161,6 +293,77 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
+<<<<<<< HEAD
+=======
+  #showSite{
+    margin-top:40px;
+  }
+  #showSite:hover{
+    color: rgb(210, 255, 229);
+    background-color: #16a060;
+    text-decoration: underline;
+    transform: scale(1.1);
+    transform: translateX(3%);
+    font-size:22px;
+  }
+  .buttonUs{
+    margin-top: 10px;
+    width: 120px;
+    height: 32px;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.1s ease;
+    cursor: pointer;
+  }
+  .btnEdit{
+    background-color: #88aaf5;
+  }
+  .btnDelete{
+    background-color: #e64141c0;
+  }
+  .buttonUs:hover{
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  .userCard:hover{
+    transform: scale(1.1);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4);
+  }
+  .userCard > p {
+    font-size: 15px;
+    color: black;
+    margin: 0;
+    opacity: 100%;
+  }
+  .users {
+    padding: 20px;
+    display: flex;
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  .userCard {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.1s ease;
+    text-align:center;
+    overflow: hidden;
+    width: 240px;
+    height: 380px;
+    border-radius: 20px;
+    margin: 30px;
+
+    background: rgb(183,228,199);
+    background: linear-gradient(180deg, rgba(183,228,199,1) 0%, rgba(183,228,199,0.41780462184873945) 100%);
+  }
+  .alls {
+    width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+    overflow: auto;
+    margin: 0;
+  }
+>>>>>>> 9b8ab17 (chujdupacycedonice)
   p {
     color: rgb(210, 255, 229);
     margin-bottom: 25px;
@@ -181,8 +384,14 @@
     display: flex;
   }
   .menu {
+<<<<<<< HEAD
     border: 1px solid #16a060;
     width: 22%;
+=======
+    overflow: hidden;
+    width: 15%;
+    height: 100%;
+>>>>>>> 9b8ab17 (chujdupacycedonice)
     padding: 0px;
     background-color: #16a060;
     border-top-left-radius: 25px;
@@ -275,4 +484,44 @@
   .f-wrap {
     flex-wrap: wrap;
   }
+<<<<<<< HEAD
+=======
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  .statusAdmin {
+    position: absolute;
+    bottom: 10px;
+    left: 25px;
+    font-size: 18px;
+  }
+  .font-showcase {
+    padding: 20px;
+    margin: 10px;
+    width: 350px;
+    transition: 0.3s all ease;
+    cursor: pointer;
+    margin: 5px;
+    background-repeat: no-repeat;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-size: 100% 100%;
+  }
+  .font-showcase:hover {
+    width: 370px;
+    transform: translateX(10px);
+    transform: translateY(5px);
+    transition: 0.3s all ease;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 15px 25px;
+  }
+  .fonts {
+    padding: 15px;
+    margin-bottom: 30px;
+  }
+  .active{
+    background-color:#3b8d67b0;
+    font-weight:500;
+  }
+>>>>>>> 9b8ab17 (chujdupacycedonice)
 </style>
