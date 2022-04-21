@@ -4,9 +4,13 @@
     return await temp;
   }
   $: status = asyncCheckLoginStatus();
-  $: selectedTab = "themes";
+  $: selectedTab = (sessionStorage.getItem('selectedTab')==null) ? "themes" : sessionStorage.getItem('selectedTab')
+
   function setTab(tab) {
+    document.getElementById(selectedTab).classList.remove("active")
     selectedTab = tab;
+    sessionStorage.setItem('selectedTab',tab);
+    document.getElementById(tab).classList.add("active")
   }
 
   async function sliderLoad() {
@@ -109,6 +113,11 @@
     const headers = { "Content-Type": "application/json" };
     fetch("/saveFont", { method: "post", body, headers });
   }
+
+    async function setFirstTab(){
+      document.getElementById(selectedTab).classList.add("active")
+    }
+
 </script>
 
 <svelte:head>
@@ -120,19 +129,22 @@
   />
 </svelte:head>
 
-<div id="backg" />
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
-  <div class="alls">
+  <div use:setFirstTab class="alls">
     <div class="menu">
       <div class="maincard">
         <ul>
-          <li on:click={() => setTab("themes")}>Themes</li>
-          <li on:click={() => setTab("slider")}>Slider</li>
-          <li on:click={() => setTab("menu")}>Menu</li>
-          <li on:click={() => setTab("users")}>Users</li>
-          <li on:click={() => setTab("articles")}>Articles</li>
-          <li on:click={() => setTab("pictures")}>Pictures</li>
+          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+          <li id="menu" on:click={() => setTab("menu")}>Menu</li>
+          <li id="users" on:click={() => setTab("users")}>Users</li>
+          <li id="articles" on:click={() => setTab("articles")}>Articles</li>
+          <li id="pictures" on:click={() => setTab("pictures")}>Pictures</li>
+          <li id="showSite" on:click={() => {window.open(
+            '/',
+            '_blank'
+          );}}>Show the site</li>
         </ul>
         {#if user.user == 2}
           <p class="statusAdmin">Admin</p>
@@ -384,9 +396,11 @@
                   width="200px"
                   height="200px"
                 />
-                <h2>{item.username}</h2>
-                <p>{item.email}</p>
+                <h3>{item.username}</h3>
+                <p>email: {item.email}</p>
                 <p>password: <i>{item.password}</i></p>
+                <button on:click={() => {EditUser(item.id)}} class="buttonUs btnEdit">Edit</button><br>
+                <button on:click={() => {DeleteUser(item.id)}} class="buttonUs btnDelete">Delete</button>
               </div>
             {/each}
           {/await}
@@ -398,8 +412,44 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
+  #showSite{
+    margin-top:40px;
+  }
+  #showSite:hover{
+    color: rgb(210, 255, 229);
+    background-color: #16a060;
+    text-decoration: underline;
+    transform: scale(1.1);
+    transform: translateX(3%);
+    font-size:22px;
+  }
+  .buttonUs{
+    margin-top: 10px;
+    width: 120px;
+    height: 32px;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.1s ease;
+    cursor: pointer;
+  }
+  .btnEdit{
+    background-color: #88aaf5;
+  }
+  .btnDelete{
+    background-color: #e64141c0;
+  }
+  .buttonUs:hover{
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  .userCard:hover{
+    transform: scale(1.1);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4);
+  }
   .userCard > p {
-    font-size: 18px;
+    font-size: 15px;
     color: black;
     margin: 0;
     opacity: 100%;
@@ -411,12 +461,17 @@
     flex-wrap: wrap;
   }
   .userCard {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.1s ease;
+    text-align:center;
     overflow: hidden;
     width: 240px;
     height: 380px;
     border-radius: 20px;
     margin: 30px;
-    background-color: #b7e4c7;
+
+    background: rgb(183,228,199);
+    background: linear-gradient(180deg, rgba(183,228,199,1) 0%, rgba(183,228,199,0.41780462184873945) 100%);
   }
   .alls {
     width: 100%;
@@ -434,6 +489,7 @@
     opacity: 60%;
   }
   .menu {
+    overflow: hidden;
     width: 15%;
     height: 100%;
     padding: 0px;
@@ -567,5 +623,9 @@
   .fonts {
     padding: 15px;
     margin-bottom: 30px;
+  }
+  .active{
+    background-color:#3b8d67b0;
+    font-weight:500;
   }
 </style>
