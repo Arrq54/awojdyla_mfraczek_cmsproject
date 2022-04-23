@@ -129,6 +129,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
     sliderOrder integer
 )""")
 
+
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer(
@@ -139,6 +140,13 @@ myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer_company(
     company text
+)""")
+
+myConnection = sqlite3.connect('usersData.sqlite')
+myCursor = myConnection.cursor()
+myCursor.execute("""CREATE TABLE IF NOT EXISTS sectionOrder(
+    name text,
+    sectionOrder integer
 )""")
 
 
@@ -165,7 +173,6 @@ def getContentFromDatabase():
     myCursor.execute("SELECT * FROM news")
     records = [dict(row) for row in myCursor.fetchall()]
     output['news'] = records
-
     # ffn
     myConnection = sqlite3.connect('usersData.sqlite')
     myConnection.row_factory = sqlite3.Row
@@ -173,7 +180,6 @@ def getContentFromDatabase():
     myCursor.execute("SELECT * FROM ffn")
     records = [dict(row) for row in myCursor.fetchall()]
     output['firstFeaturetteNews'] = records
-
     # footer
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
@@ -181,13 +187,14 @@ def getContentFromDatabase():
     records = myCursor.fetchall()
     output['footer'] = {}
     output['footer']['links'] = records
-
     # footer company
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
     myCursor.execute("SELECT * FROM footer_company")
     records = myCursor.fetchall()
     output['footer']['company'] = records
+
+
 
     return json.dumps(output)
 
