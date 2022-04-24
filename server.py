@@ -194,9 +194,28 @@ def getContentFromDatabase():
     records = myCursor.fetchall()
     output['footer']['company'] = records
 
+    res = []
 
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM sectionOrder ORDER BY sectionOrder")
+    records = [dict(row) for row in myCursor.fetchall()]
 
-    return json.dumps(output)
+    obj = {}
+    obj['type'] = 'navbarItems'
+    obj['content'] = output['navbarItems']
+    res.append(obj)
+    for i in records:
+        obj = {}
+        obj['type'] = i['name']
+        obj['content'] = output[i['name']]
+        res.append(obj)
+    obj = {}
+    obj['type'] = 'footer'
+    obj['content'] = output['footer']
+    res.append(obj)
+    return json.dumps(res)
 
 
 @app.route("/logout")
@@ -349,7 +368,6 @@ def changeBlockSettings():
         tempSettings[request.get_json()['id']] = 1 if request.get_json()['value'] == True else 0
         object['blocks'] = tempSettings
         print(json.dumps(object))
-
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
 
@@ -384,6 +402,15 @@ def editUser():
     myConnection.close()
     return True
 
+
+@app.route("/getCurrentSectionOrder", methods=['GET', 'POST'])
+def getCurrentSectionOrder():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM sectionOrder ORDER BY sectionOrder")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
 
 if __name__ == "__main__":
     app.run(debug=True)

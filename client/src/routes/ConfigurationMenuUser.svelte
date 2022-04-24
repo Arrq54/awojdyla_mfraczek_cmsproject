@@ -191,6 +191,34 @@
   async function goBackEditing() {
     window.location.reload();
   }
+
+  async function getCurrentSectionOrder() {
+    let temp = await fetch("/getCurrentSectionOrder").then((response) =>
+      response.json()
+    );
+    console.log(temp);
+    return temp;
+  }
+  let sectionOrder = getCurrentSectionOrder();
+  function changeSectionOrder(i, index, list) {
+    console.log(list[index]);
+    if (i == "up") {
+      if (index == list.length - 1) return;
+      list[index].sectionOrder += 1;
+      list[index + 1].sectionOrder -= 1;
+      [list[index], list[index + 1]] = [list[index + 1], list[index]];
+      sectionOrder = list;
+    } else if (i == "down") {
+      if (index == 0) return;
+
+      list[index].sectionOrder -= 1;
+      list[index + 1].sectionOrder += 1;
+      console.log(list[index]);
+      console.log(list[index - 1]);
+      [list[index], list[index - 1]] = [list[index - 1], list[index]];
+      sectionOrder = list;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -393,7 +421,60 @@
       {:else if selectedTab == "block_order"}
         <div>
           <!-- MENU EDYCJA -->
-          kolejnosc
+          {#await sectionOrder then order}
+            <div class="sections">
+              <div class="section-block">Main menu</div>
+              <div class="vertical-line" />
+              {#each order as itemOrder, i}
+                <div class="section-block">
+                  {itemOrder.name}
+                  {#if i != 0 && i != order.length - 1}
+                    <svg
+                      on:click={() => changeSectionOrder("down", i, order)}
+                      style="width: 20px; height: 20px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
+                      /></svg
+                    >
+                    <svg
+                      style="width: 20px; height: 20px"
+                      on:click={() => changeSectionOrder("up", i, order)}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                      /></svg
+                    >
+                  {:else if i == order.length - 1}
+                    <svg
+                      on:click={() => changeSectionOrder("down", i, order)}
+                      style="width: 20px; height: 20px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
+                      /></svg
+                    >
+                  {:else}
+                    <svg
+                      style="width: 20px; height: 20px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      on:click={() => changeSectionOrder("up", i, order)}
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                      /></svg
+                    >
+                  {/if}
+                </div>
+                <div class="vertical-line" />
+              {/each}
+
+              <div class="section-block">Footer</div>
+            </div>
+          {/await}
         </div>
       {:else if selectedTab == "slider"}
         <div use:sliderLoad class="settings flex">
@@ -902,5 +983,30 @@
   .active {
     background-color: #3b8d67b0;
     font-weight: 500;
+  }
+  .section-block {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 250px;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid black;
+    text-align: center;
+  }
+  .sections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .vertical-line {
+    width: 2px;
+    background-color: black;
+    height: 75px;
+  }
+  svg {
+    cursor: pointer;
   }
 </style>

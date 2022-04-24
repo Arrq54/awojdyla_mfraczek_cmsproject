@@ -12,13 +12,10 @@
 
   let actualSliderSide = 0;
 
-  function changeSliderSide(x, dataFromDatabase) {
+  function changeSliderSide(x, item) {
     if (actualSliderSide == 0 && x == -1) {
-      actualSliderSide = dataFromDatabase.slider.length - 1;
-    } else if (
-      actualSliderSide == dataFromDatabase.slider.length - 1 &&
-      x == 1
-    ) {
+      actualSliderSide = item.content.length - 1;
+    } else if (actualSliderSide == item.content.length - 1 && x == 1) {
       actualSliderSide = 0;
     } else {
       actualSliderSide += x;
@@ -127,9 +124,9 @@
             <div class="flex vertical">
               <div class="navbar-item">Icon</div>
               <Router>
-                {#each dataFromDatabase.navbarItems as item}
+                {#each dataFromDatabase[0].content as menuitem}
                   <div class="navbar-item">
-                    <Link to={item[0]}>{item[0]}</Link>
+                    <Link to={menuitem[0]}>{menuitem[0]}</Link>
                   </div>
                 {/each}
               </Router>
@@ -159,89 +156,97 @@
       </div>
     </div>
     <div class="content">
-      <!--SLIDER to do-->
-      {#if sliderOn}
-        <div
-          class="slider"
-          style="background-image: url({dataFromDatabase.slider[
-            actualSliderSide
-          ].src});"
-        >
-          <div
-            class="arrow arrow-left"
-            on:click={() => changeSliderSide(-1, dataFromDatabase)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
-              ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-                d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
-              /></svg
+      {#each dataFromDatabase as item}
+        <!--SLIDER to do-->
+        {#if item.type == "slider"}
+          {#if sliderOn}
+            <div
+              class="slider"
+              style="background-image: url({item.content[actualSliderSide]
+                .src});"
             >
-          </div>
-          <div
-            class="arrow arrow-right"
-            on:click={() => changeSliderSide(1, dataFromDatabase)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
-              ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-                d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
-              /></svg
-            >
-          </div>
-          <div class="slider-content">
-            <h4>{dataFromDatabase.slider[actualSliderSide].label}</h4>
-            <p>{dataFromDatabase.slider[actualSliderSide].texts}</p>
-          </div>
-        </div>
-      {/if}
-      {#if newsOn}
-        <div class="flex justify-content-center news flex-wrap">
-          {#each dataFromDatabase.news as news}
-            <div class="newsBlock">
-              <div class="news-header">{news.header}</div>
-              <div class="news-content">
-                <p class="title">{news.title}</p>
-                {news.text_content}
-                <br />
-                <br />
-                <div class="btn btn-div-news">
-                  <a href={news.src} class="btn-news">{news.button_text}</a>
-                </div>
+              <div
+                class="arrow arrow-left"
+                on:click={() => changeSliderSide(-1, item)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                  ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                    d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
+                  /></svg
+                >
+              </div>
+              <div
+                class="arrow arrow-right"
+                on:click={() => changeSliderSide(1, item)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                  ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                    d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
+                  /></svg
+                >
+              </div>
+              <div class="slider-content">
+                <h4>{item.content[actualSliderSide].label}</h4>
+                <p>{item.content[actualSliderSide].texts}</p>
               </div>
             </div>
-          {/each}
-        </div>
-        <hr />
-      {/if}
-      {#if ffnOn}
-        <div class="first-featurette-news flex justify-space-between">
-          <div class="ffn-content">
-            <div>
-              <h3>{dataFromDatabase.firstFeaturetteNews[0].title}</h3>
-              <p>{dataFromDatabase.firstFeaturetteNews[0].text_content}</p>
+          {/if}
+        {:else if item.type == "news"}
+          {#if newsOn}
+            <div class="flex justify-content-center news flex-wrap">
+              {#each item.content as news}
+                <div class="newsBlock">
+                  <div class="news-header">{news.header}</div>
+                  <div class="news-content">
+                    <p class="title">{news.title}</p>
+                    {news.text_content}
+                    <br />
+                    <br />
+                    <div class="btn btn-div-news">
+                      <a href={news.src} class="btn-news">{news.button_text}</a>
+                    </div>
+                  </div>
+                </div>
+              {/each}
+            </div>
+            <hr />
+          {/if}
+        {:else if item.type == "firstFeaturetteNews"}
+          {#if ffnOn}
+            <div class="first-featurette-news flex justify-space-between">
+              <div class="ffn-content">
+                <div>
+                  <h3>{item.content[0].title}</h3>
+                  <p>
+                    {item.content[0].text_content}
+                  </p>
+                </div>
+              </div>
+              <div
+                class="ffn-image"
+                style="background-image: url({item.content[0].src});"
+              />
+            </div>
+            <hr />
+          {/if}
+        {:else if item.type == "footer"}
+          <div class="footer">
+            <div class="upper-footer flex justify-content-center">
+              <Router>
+                {#each item.content.links as item}
+                  <div class="footer-item">
+                    <Link to={item[0]}>{item[0]}</Link>
+                  </div>
+                {/each}
+              </Router>
+            </div>
+            <hr />
+            <div class="lower-footer">
+              <h4 class="copyright">{item.content.company}</h4>
             </div>
           </div>
-          <div
-            class="ffn-image"
-            style="background-image: url({dataFromDatabase
-              .firstFeaturetteNews[0].src});"
-          />
-        </div>
-        <hr />
-      {/if}
-
-      <div class="footer">
-        <div class="upper-footer flex justify-content-center">
-          <Router>
-            {#each dataFromDatabase.footer.links as item}
-              <div class="footer-item"><Link to={item[0]}>{item[0]}</Link></div>
-            {/each}
-          </Router>
-        </div>
-        <hr />
-        <div class="lower-footer">
-          <h4 class="copyright">{dataFromDatabase.footer.company}</h4>
-        </div>
-      </div>
+        {/if}
+      {/each}
     </div>
   </div>
 {/await}
