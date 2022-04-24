@@ -6,6 +6,12 @@
   --news-header-background-color: rgb(236, 236, 236);
   --btn-news-background-color: rgb(61, 60, 71);
   --font-family: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif";
+  --menu-flex-direction: row;
+  --menu-vetical-horizontal: column;
+
+  --menu-width: 100%;
+  --content-width: 100%;
+  --menu-border-right: none;
 }
 body {
   background-color: var(--body-backround-color);
@@ -243,4 +249,19 @@ hr {
 }
 .slider {
   transition: 0.3s all ease;
+}
+.page{
+  display: flex;
+  flex-direction: var(--menu-vetical-horizontal);
+  width: 100vw;
+}
+.vertical{
+  flex-direction: var(--menu-flex-direction);
+}
+.menu{
+  width: var(--menu-width);
+  border-right: var(--menu-border-right);
+} 
+.content{
+  width: var(--content-width);
 }

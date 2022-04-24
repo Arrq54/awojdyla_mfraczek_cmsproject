@@ -129,6 +129,7 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
     sliderOrder integer
 )""")
 
+
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer(
@@ -139,6 +140,13 @@ myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer_company(
     company text
+)""")
+
+myConnection = sqlite3.connect('usersData.sqlite')
+myCursor = myConnection.cursor()
+myCursor.execute("""CREATE TABLE IF NOT EXISTS sectionOrder(
+    name text,
+    sectionOrder integer
 )""")
 
 
@@ -165,7 +173,6 @@ def getContentFromDatabase():
     myCursor.execute("SELECT * FROM news")
     records = [dict(row) for row in myCursor.fetchall()]
     output['news'] = records
-
     # ffn
     myConnection = sqlite3.connect('usersData.sqlite')
     myConnection.row_factory = sqlite3.Row
@@ -173,7 +180,6 @@ def getContentFromDatabase():
     myCursor.execute("SELECT * FROM ffn")
     records = [dict(row) for row in myCursor.fetchall()]
     output['firstFeaturetteNews'] = records
-
     # footer
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
@@ -181,7 +187,6 @@ def getContentFromDatabase():
     records = myCursor.fetchall()
     output['footer'] = {}
     output['footer']['links'] = records
-
     # footer company
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
@@ -189,7 +194,28 @@ def getContentFromDatabase():
     records = myCursor.fetchall()
     output['footer']['company'] = records
 
-    return json.dumps(output)
+    res = []
+
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM sectionOrder ORDER BY sectionOrder")
+    records = [dict(row) for row in myCursor.fetchall()]
+
+    obj = {}
+    obj['type'] = 'navbarItems'
+    obj['content'] = output['navbarItems']
+    res.append(obj)
+    for i in records:
+        obj = {}
+        obj['type'] = i['name']
+        obj['content'] = output[i['name']]
+        res.append(obj)
+    obj = {}
+    obj['type'] = 'footer'
+    obj['content'] = output['footer']
+    res.append(obj)
+    return json.dumps(res)
 
 
 @app.route("/logout")
@@ -342,7 +368,6 @@ def changeBlockSettings():
         tempSettings[request.get_json()['id']] = 1 if request.get_json()['value'] == True else 0
         object['blocks'] = tempSettings
         print(json.dumps(object))
-
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
 
@@ -377,6 +402,15 @@ def editUser():
     myConnection.close()
     return True
 
+
+@app.route("/getCurrentSectionOrder", methods=['GET', 'POST'])
+def getCurrentSectionOrder():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM sectionOrder ORDER BY sectionOrder")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -10,10 +10,10 @@
       : sessionStorage.getItem("selectedTab");
 
   function setTab(tab) {
-    document.getElementById(selectedTab).classList.remove("active");
+    // document.getElementById(selectedTab).classList.remove("active");
     selectedTab = tab;
     sessionStorage.setItem("selectedTab", tab);
-    document.getElementById(tab).classList.add("active");
+    // document.getElementById(tab).classList.add("active");
   }
 
   async function sliderLoad() {
@@ -21,9 +21,23 @@
       .then((response) => response.json())
       .then((data) => (sliderAsync = data));
   }
+  async function loadThemes() {
+    let settings = await fetch("/getSettings").then((response) =>
+      response.json()
+    );
+    if (settings.blocks.toggle_menu_orientation == "1")
+      document.querySelector("#toggle_menu_orientation").checked = true;
+    if (settings.blocks.toggle_menu == "1")
+      document.querySelector("#toggle_menu").checked = true;
+    if (settings.blocks.toggle_slider == "1")
+      document.querySelector("#toggle_slider").checked = true;
+    if (settings.blocks.toggle_ffn == "1")
+      document.querySelector("#toggle_ffn").checked = true;
+    if (settings.blocks.toggle_news == "1")
+      document.querySelector("#toggle_news").checked = true;
+  }
   let sliderAsync = [];
   let files;
-
   async function getUsers() {
     fetch("/getUsers")
       .then((response) => response.json())
@@ -32,7 +46,6 @@
   let usersData = [];
 
   function addSliderCard() {
-    console.log(sliderAsync);
     let placeHolder = {};
     placeHolder.src = "../../images/sliderPlaceholder1.png";
     placeHolder.texts = "Placeholder text for new slider card";
@@ -87,7 +100,6 @@
     }
   }
   function sliderOrder(type, index, id, list) {
-    console.log(type);
     if (type == "up") {
       if (index == list.length - 1) return;
       list[index].sliderOrder += 1;
@@ -118,7 +130,6 @@
   }
 
   function toggle(e) {
-    console.log(e.target.id);
     let temp = { id: e.target.id, value: e.target.checked };
     const body = JSON.stringify(temp);
     const headers = { "Content-Type": "application/json" };
@@ -126,54 +137,87 @@
   }
 
   async function setFirstTab() {
-    document.getElementById(selectedTab).classList.add("active");
+    // document.getElementById(selectedTab).classList.add("active");
   }
 
-  async function DeleteUser(id){
+  async function DeleteUser(id) {
     const body = JSON.stringify(id);
     const headers = { "Content-Type": "application/json" };
     fetch("/deleteUser", { method: "post", body, headers });
-    window.location.reload()
+    window.location.reload();
   }
 
-  async function EditUser(id, username, email, password, admin){
+  async function EditUser(id, username, email, password, admin) {
+    if (admin == 1) document.getElementById("edImg").src = "./images/admin.png";
 
-    if(admin == 1) document.getElementById('edImg').src = "./images/admin.png"
+    document.getElementById("ed").style.display = "block";
+    document.getElementsByName("username")[0].value = username;
+    document.getElementsByName("email")[0].value = email;
+    document.getElementsByName("password")[0].value = password;
 
-    document.getElementById('ed').style.display="block"
-    document.getElementsByName('username')[0].value = username
-    document.getElementsByName('email')[0].value = email
-    document.getElementsByName('password')[0].value = password
-    
-    document.getElementById('saveme').onclick = () => {saveme(id)}
+    document.getElementById("saveme").onclick = () => {
+      saveme(id);
+    };
 
-    let darkDiv = document.createElement('div')
-    darkDiv.onclick = goBackEditing
-    darkDiv.style = `position:absolute; width:100%; height:100%; top:0; left:0; background-color:black; z-index:100; opacity:90%;`
-    document.getElementsByClassName("users")[0].append(darkDiv)
+    let darkDiv = document.createElement("div");
+    darkDiv.onclick = goBackEditing;
+    darkDiv.style = `position:absolute; width:100%; height:100%; top:0; left:0; background-color:black; z-index:100; opacity:90%;`;
+    document.getElementsByClassName("users")[0].append(darkDiv);
   }
 
-  async function saveme(id){
-    let username = document.getElementsByName('username')[0].value
-    let email = document.getElementsByName('email')[0].value
-    let password = document.getElementsByName('password')[0].value
+  async function saveme(id) {
+    let username = document.getElementsByName("username")[0].value;
+    let email = document.getElementsByName("email")[0].value;
+    let password = document.getElementsByName("password")[0].value;
     let canGoFurther = true;
 
-      if(username=="" || email=="" || password == "") canGoFurther = false
-      if(canGoFurther) saveChanges(id, username, email, password)
-      else document.getElementById("err").style.display = "block"
+    if (username == "" || email == "" || password == "") canGoFurther = false;
+    if (canGoFurther) saveChanges(id, username, email, password);
+    else document.getElementById("err").style.display = "block";
   }
 
-  async function saveChanges(id, username, email, password){
-    console.log(id, username, email, password)
-    const body = JSON.stringify({id:id, username:username, email:email, password:password});
+  async function saveChanges(id, username, email, password) {
+    const body = JSON.stringify({
+      id: id,
+      username: username,
+      email: email,
+      password: password,
+    });
     const headers = { "Content-Type": "application/json" };
     fetch("/editUser", { method: "post", body, headers });
-    goBackEditing()
+    goBackEditing();
   }
 
-  async function goBackEditing(){
-    window.location.reload()
+  async function goBackEditing() {
+    window.location.reload();
+  }
+
+  async function getCurrentSectionOrder() {
+    let temp = await fetch("/getCurrentSectionOrder").then((response) =>
+      response.json()
+    );
+    console.log(temp);
+    return temp;
+  }
+  let sectionOrder = getCurrentSectionOrder();
+  function changeSectionOrder(i, index, list) {
+    console.log(list[index]);
+    if (i == "up") {
+      if (index == list.length - 1) return;
+      list[index].sectionOrder += 1;
+      list[index + 1].sectionOrder -= 1;
+      [list[index], list[index + 1]] = [list[index + 1], list[index]];
+      sectionOrder = list;
+    } else if (i == "down") {
+      if (index == 0) return;
+
+      list[index].sectionOrder -= 1;
+      list[index + 1].sectionOrder += 1;
+      console.log(list[index]);
+      console.log(list[index - 1]);
+      [list[index], list[index - 1]] = [list[index - 1], list[index]];
+      sectionOrder = list;
+    }
   }
 </script>
 
@@ -187,8 +231,7 @@
   <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
 
-<div style="transform:translateX(-1000%)" class="darkdiv"></div>
-
+<div style="transform:translateX(-1000%)" class="darkdiv" />
 
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
@@ -197,6 +240,9 @@
       <div class="maincard">
         <ul>
           <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+          <li id="slider" on:click={() => setTab("block_order")}>
+            Block order
+          </li>
           <li id="slider" on:click={() => setTab("slider")}>Slider</li>
           <li id="menu" on:click={() => setTab("menu")}>Menu</li>
           <li id="users" on:click={() => setTab("users")}>Users</li>
@@ -221,7 +267,7 @@
     <div class="content">
       {#if selectedTab == "themes"}
         <!-- THEMES EDYCJA -->
-        <div class="settings">
+        <div class="settings" use:loadThemes>
           <div class="card">
             <h3>Pick a color theme:</h3>
             <br />
@@ -334,8 +380,101 @@
                   <span class="slider round" />
                 </label>
               </div>
+              <h4 class="theme-header">Slider</h4>
+              <div class="line-theme">
+                <div class="title-theme">Slider on/off</div>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle_slider"
+                    on:input={(e) => toggle(e)}
+                  />
+                  <span class="slider round" />
+                </label>
+              </div>
+              <h4 class="theme-header">News</h4>
+              <div class="line-theme">
+                <div class="title-theme">Important news on/off</div>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle_ffn"
+                    on:input={(e) => toggle(e)}
+                  />
+                  <span class="slider round" />
+                </label>
+              </div>
+              <div class="line-theme">
+                <div class="title-theme">News on/off</div>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle_news"
+                    on:input={(e) => toggle(e)}
+                  />
+                  <span class="slider round" />
+                </label>
+              </div>
             </div>
           </div>
+        </div>
+      {:else if selectedTab == "block_order"}
+        <div>
+          <!-- MENU EDYCJA -->
+          {#await sectionOrder then order}
+            <div class="sections">
+              <div class="section-block">Main menu</div>
+              <div class="vertical-line" />
+              {#each order as itemOrder, i}
+                <div class="section-block">
+                  {itemOrder.name}
+                  {#if i != 0 && i != order.length - 1}
+                    <svg
+                      on:click={() => changeSectionOrder("down", i, order)}
+                      style="width: 20px; height: 20px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
+                      /></svg
+                    >
+                    <svg
+                      style="width: 20px; height: 20px"
+                      on:click={() => changeSectionOrder("up", i, order)}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                      /></svg
+                    >
+                  {:else if i == order.length - 1}
+                    <svg
+                      on:click={() => changeSectionOrder("down", i, order)}
+                      style="width: 20px; height: 20px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
+                      /></svg
+                    >
+                  {:else}
+                    <svg
+                      style="width: 20px; height: 20px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      on:click={() => changeSectionOrder("up", i, order)}
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                      /></svg
+                    >
+                  {/if}
+                </div>
+                <div class="vertical-line" />
+              {/each}
+
+              <div class="section-block">Footer</div>
+            </div>
+          {/await}
         </div>
       {:else if selectedTab == "slider"}
         <div use:sliderLoad class="settings flex">
@@ -481,56 +620,68 @@
       {:else if selectedTab == "users"}
         <div use:getUsers class="card users">
           <div class="editedCard" style="display:none">
-            <input type="text" style="display:none">
+            <input type="text" style="display:none" />
           </div>
           {#await usersData then users}
             {#each users as item, i}
               {#if item.admin == 1}
-              <div class="userCard" id={"card" + item.rowid}>
-                <img
-                  src="./images/admin.png"
-                  alt="avatar"
-                  width="200px"
-                  height="200px"
-                />
-                <h3>{item.username}</h3>
-                <p>email: {item.email}</p>
-                <p>password: {item.password}</p>
-                <h3 style="color:brown; margin:10px;">Administrator</h3>
-                <button
-                  on:click={() => {
-                    EditUser(item.rowid, item.username, item.email, item.password, 1);
-                  }}
-                  class="buttonUs btnEdit">Edit</button
-                ><br />
-              </div>
+                <div class="userCard" id={"card" + item.rowid}>
+                  <img
+                    src="./images/admin.png"
+                    alt="avatar"
+                    width="200px"
+                    height="200px"
+                  />
+                  <h3>{item.username}</h3>
+                  <p>email: {item.email}</p>
+                  <p>password: {item.password}</p>
+                  <h3 style="color:brown; margin:10px;">Administrator</h3>
+                  <button
+                    on:click={() => {
+                      EditUser(
+                        item.rowid,
+                        item.username,
+                        item.email,
+                        item.password,
+                        1
+                      );
+                    }}
+                    class="buttonUs btnEdit">Edit</button
+                  ><br />
+                </div>
               {:else}
-              <div class="userCard" id={"card" + item.rowid}>
-                <img
-                  src="./images/avatar.png"
-                  alt="avatar"
-                  width="200px"
-                  height="200px"
-                />
-                <h3>{item.username}</h3>
-                <p>email: {item.email}</p>
-                <p>password: {item.password}</p>
-                <button 
-                  on:click={() => {
-                    EditUser(item.rowid, item.username, item.email, item.password, 0);
-                  }}
-                  class="buttonUs btnEdit">Edit</button
-                ><br />
-                <button
-                  on:click={() => {
-                    DeleteUser(item.rowid);
-                  }}
-                  class="buttonUs btnDelete">Delete</button
-                >
-              </div>
+                <div class="userCard" id={"card" + item.rowid}>
+                  <img
+                    src="./images/avatar.png"
+                    alt="avatar"
+                    width="200px"
+                    height="200px"
+                  />
+                  <h3>{item.username}</h3>
+                  <p>email: {item.email}</p>
+                  <p>password: {item.password}</p>
+                  <button
+                    on:click={() => {
+                      EditUser(
+                        item.rowid,
+                        item.username,
+                        item.email,
+                        item.password,
+                        0
+                      );
+                    }}
+                    class="buttonUs btnEdit">Edit</button
+                  ><br />
+                  <button
+                    on:click={() => {
+                      DeleteUser(item.rowid);
+                    }}
+                    class="buttonUs btnDelete">Delete</button
+                  >
+                </div>
               {/if}
             {/each}
-            <div class="editedCard" id="ed"style="display:none">
+            <div class="editedCard" id="ed" style="display:none">
               <img
                 src="./images/avatar.png"
                 alt="avatar"
@@ -539,14 +690,16 @@
                 id="edImg"
               />
               <label for="username">Username</label>
-              <input type="text" name="username">
+              <input type="text" name="username" />
               <label for="email">Email</label>
-              <input type="text" name="email">
+              <input type="text" name="email" />
               <label for="password">Password</label>
-              <input type="text" name="password">
+              <input type="text" name="password" />
               <button class="buttonUs btnEdit" id="saveme">Save</button>
             </div>
-            <div id="err" style="display:none;">You must fill in all the blanks!</div>
+            <div id="err" style="display:none;">
+              You must fill in all the blanks!
+            </div>
           {/await}
         </div>
       {/if}
@@ -556,22 +709,22 @@
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Roboto");
-  #err{
-    color:red;
-    font-size:20px;
-    height:30px;
-    text-align:center;
-    width:100%;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    margin-top:320px;
-    margin-left:25px;
-    z-index:101;
+  #err {
+    color: red;
+    font-size: 20px;
+    height: 30px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 320px;
+    margin-left: 25px;
+    z-index: 101;
   }
-  .editedCard > input[type="text"]{
-    width:75%;
+  .editedCard > input[type="text"] {
+    width: 75%;
     height: 24px;
     border: none;
     border-bottom: 1px solid #aaa;
@@ -579,17 +732,17 @@
     font-size: 15px;
     transition: 0.2s ease;
   }
-  .editedCard > input[type="text"]:focus{
+  .editedCard > input[type="text"]:focus {
     outline: none;
     border-bottom: 2px solid #16a085;
     color: #1b643e;
-    transition: 0.2s ease;  
+    transition: 0.2s ease;
   }
-  .editedCard{
-    overflow:auto;
-    z-index:101;
-    padding-top:10px;
-    padding:5px;
+  .editedCard {
+    overflow: auto;
+    z-index: 101;
+    padding-top: 10px;
+    padding: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     transition: 0.1s ease;
     text-align: center;
@@ -598,15 +751,16 @@
     height: 390px;
     border-radius: 20px;
     margin: 30px;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -65%) scale(1.5) perspective(1px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -65%) scale(1.5) perspective(1px);
     background: rgb(183, 228, 199);
     background: linear-gradient(
       180deg,
       rgba(183, 228, 199, 1) 0%,
-      rgb(211, 240, 221)    );
+      rgb(211, 240, 221)
+    );
   }
   #showSite {
     margin-top: 40px;
@@ -651,14 +805,14 @@
     opacity: 100%;
   }
   .users {
-    height:100%;
+    height: 100%;
     padding: 20px;
     display: flex;
     align-items: start;
     flex-wrap: wrap;
   }
   .userCard {
-    padding-top:10px;
+    padding-top: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     transition: 0.1s ease;
     text-align: center;
@@ -829,5 +983,30 @@
   .active {
     background-color: #3b8d67b0;
     font-weight: 500;
+  }
+  .section-block {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 250px;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid black;
+    text-align: center;
+  }
+  .sections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .vertical-line {
+    width: 2px;
+    background-color: black;
+    height: 75px;
+  }
+  svg {
+    cursor: pointer;
   }
 </style>
