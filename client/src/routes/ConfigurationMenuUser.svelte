@@ -201,23 +201,27 @@
   }
   let sectionOrder = getCurrentSectionOrder();
   function changeSectionOrder(i, index, list) {
-    console.log(list[index]);
     if (i == "up") {
-      if (index == list.length - 1) return;
+      console.log(list);
       list[index].sectionOrder += 1;
       list[index + 1].sectionOrder -= 1;
       [list[index], list[index + 1]] = [list[index + 1], list[index]];
       sectionOrder = list;
     } else if (i == "down") {
-      if (index == 0) return;
-
+      console.log(list);
       list[index].sectionOrder -= 1;
-      list[index + 1].sectionOrder += 1;
-      console.log(list[index]);
-      console.log(list[index - 1]);
+      list[index - 1].sectionOrder += 1;
       [list[index], list[index - 1]] = [list[index - 1], list[index]];
       sectionOrder = list;
     }
+  }
+
+  function saveSectionChanges() {
+    console.log(sectionOrder);
+    // let temp = { body: sectionOrder };
+    // const body = JSON.stringify(temp);
+    // const headers = { "Content-Type": "application/json" };
+    // fetch("/changeOrderOfSections", { method: "post", body, headers });
   }
 </script>
 
@@ -471,8 +475,10 @@
                 </div>
                 <div class="vertical-line" />
               {/each}
-
               <div class="section-block">Footer</div>
+              <button class="button-save" on:click={() => saveSectionChanges()}
+                >Save</button
+              >
             </div>
           {/await}
         </div>
@@ -1008,5 +1014,20 @@
   }
   svg {
     cursor: pointer;
+  }
+  .button-save {
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #16a060;
+    background: none;
+    color: #16a060;
+    transition: 0.3s all ease;
+    cursor: pointer;
+  }
+  .button-save:hover {
+    transform: translateY(-5px);
+    padding: 7px;
+    transition: 0.3s all ease;
   }
 </style>
