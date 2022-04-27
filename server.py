@@ -102,7 +102,9 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS news(
     title text,
     text_content text,
     button_text text,
-    src text
+    src text,
+    idnews INTEGER PRIMARY KEY,
+    content text
 )""")
 
 myConnection = sqlite3.connect('usersData.sqlite')
@@ -308,6 +310,7 @@ def saveColors():
         object = {}
         object['colors'] = request.get_json()
         object['blocks'] = content['blocks']
+        object['sliderTimeSpan'] = content['sliderTimeSpan']
         object['fonts'] = content['fonts']
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
@@ -345,6 +348,7 @@ def saveFont():
         object['colors'] = content['colors']
         object['blocks'] = content['blocks']
         object['fonts'] = font['fontFamily']
+        object['sliderTimeSpan'] = content['sliderTimeSpan']
         print(json.dumps(object))
 
         f.write(json.dumps(object))
@@ -364,6 +368,7 @@ def changeBlockSettings():
         object = {}
         object['colors'] = content['colors']
         object['fonts'] = content['fonts']
+        object['sliderTimeSpan'] = content['sliderTimeSpan']
         tempSettings = content['blocks']
         tempSettings[request.get_json()['id']] = 1 if request.get_json()['value'] == True else 0
         object['blocks'] = tempSettings
@@ -411,6 +416,56 @@ def getCurrentSectionOrder():
     myCursor.execute("SELECT * FROM sectionOrder ORDER BY sectionOrder")
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
+
+
+@app.route("/changeOrderOfSections", methods=['GET', 'POST'])
+def changeOrderOfSections():
+    data = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+    body = data.body
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM sectionOrder")
+    myConnection.commit()
+    myConnection.close()
+    for i in body:
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute(
+            f"INSERT INTO sectionOrder (name, sectionOrder) VALUES('{i.name}','{i.sectionOrder}')")
+        myConnection.commit()
+        myConnection.close()
+    return redirect("/#/configurationuser")
+
+@app.route("/updateSliderTime", methods=['GET', 'POST'])
+def updateSliderTime():
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    data = request.get_json()
+    content = {}
+    with open(path, 'r') as f:
+        content = json.loads(f.read())
+    with open(path, 'w') as f: f.close()
+    with open(path, 'w') as f:
+        object = {}
+        object['colors'] = content['colors']
+        object['fonts'] = content['fonts']
+        object['blocks'] = content['blocks']
+        object['sliderTimeSpan'] = data['body']
+        f.write(json.dumps(object))
+    return redirect("/#/configurationuser")
+
+
+
+@app.route("/getArticleById", methods=['GET', 'POST'])
+def getArticleById():
+    req = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"SELECT * FROM news WHERE idnews={req.body}")
+    records = [dict(row) for row in myCursor.fetchall()]
+    print(records)
+    return json.dumps(records)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
