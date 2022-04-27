@@ -5,6 +5,7 @@
   import Login from "./routes/Login.svelte";
   import HomePageCms from "./routes/HomePageCms.svelte";
   import ConfigurationMenuUser from "./routes/ConfigurationMenuUser.svelte";
+  import Article from "./routes/Article.svelte";
 
   export let name;
 </script>
@@ -16,6 +17,7 @@
       "/register": Register,
       "/login": Login,
       "/configurationUser": ConfigurationMenuUser,
+      "/article/:id": Article,
     }}
   />
 </main>

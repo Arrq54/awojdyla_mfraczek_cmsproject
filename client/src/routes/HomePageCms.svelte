@@ -1,9 +1,9 @@
 <script>
   import { Router, Link } from "svelte-navigator";
   async function getContentFromDatabase() {
-    let temp = fetch("/getContentFromDatabase").then((response) =>
-      response.json()
-    );
+    let temp = fetch("/getContentFromDatabase")
+      .then((response) => response.json())
+      .then((data) => (dataFromDatabaseSlider = data));
     const res = await temp;
     console.log(res);
     return res;
@@ -21,6 +21,7 @@
       actualSliderSide += x;
     }
   }
+  let dataFromDatabaseSlider; //slider interval
   let logged = getLoginStatus();
   async function getLoginStatus() {
     let temp = fetch("/checkLoginStatus").then((response) => response.json());
@@ -39,8 +40,22 @@
   }
   window.onload = () => {
     getSettings();
-  };
 
+    setTimeout(() => {
+      setInterval(() => {
+        dataFromDatabaseSlider.forEach((element) => {
+          if (element.type == "slider") {
+            if (actualSliderSide == element.content.length - 1) {
+              actualSliderSide = 0;
+            } else {
+              actualSliderSide += 1;
+            }
+          }
+        });
+      }, sliderTimeSpan);
+    }, 500);
+  };
+  let sliderTimeSpan = 0;
   let menuOn = true,
     sliderOn = true,
     ffnOn = true,
@@ -101,6 +116,7 @@
       r.style.setProperty("--content-width", "100%");
       r.style.setProperty("--menu-border-right", "none");
     }
+    sliderTimeSpan = settings.sliderTimeSpan;
   }
 </script>
 
@@ -186,8 +202,10 @@
                 >
               </div>
               <div class="slider-content">
-                <h4>{item.content[actualSliderSide].label}</h4>
-                <p>{item.content[actualSliderSide].texts}</p>
+                <h4 class="slider-label">
+                  {item.content[actualSliderSide].label}
+                </h4>
+                <p class="slider-p">{item.content[actualSliderSide].texts}</p>
               </div>
             </div>
           {/if}
@@ -203,7 +221,9 @@
                     <br />
                     <br />
                     <div class="btn btn-div-news">
-                      <a href={news.src} class="btn-news">{news.button_text}</a>
+                      <a href={`/#/article/${news.idnews}`} class="btn-news"
+                        >{news.button_text}</a
+                      >
                     </div>
                   </div>
                 </div>

@@ -20,6 +20,12 @@
     fetch("/getSlider")
       .then((response) => response.json())
       .then((data) => (sliderAsync = data));
+    let settings = await fetch("/getSettings").then((response) =>
+      response.json()
+    );
+    document.querySelector("#slidertime").value = settings.sliderTimeSpan;
+    document.querySelector("#input-range-value").innerHTML =
+      String(settings.sliderTimeSpan) + " ms";
   }
   async function loadThemes() {
     let settings = await fetch("/getSettings").then((response) =>
@@ -217,11 +223,26 @@
   }
 
   function saveSectionChanges() {
-    console.log(sectionOrder);
-    // let temp = { body: sectionOrder };
-    // const body = JSON.stringify(temp);
-    // const headers = { "Content-Type": "application/json" };
-    // fetch("/changeOrderOfSections", { method: "post", body, headers });
+    console.log(sectionOrder.length);
+    if (sectionOrder.length != undefined) {
+      let temp = { body: sectionOrder };
+      const body = JSON.stringify(temp);
+      const headers = { "Content-Type": "application/json" };
+      fetch("/changeOrderOfSections", { method: "post", body, headers });
+    }
+  }
+
+  function setSliderTime(e) {
+    let value = e.target.value;
+    document.querySelector("#input-range-value").innerHTML =
+      String(value) + " ms";
+  }
+
+  function fetchChangeSliderTime(e) {
+    let temp = { body: e.target.value };
+    const body = JSON.stringify(temp);
+    const headers = { "Content-Type": "application/json" };
+    fetch("/updateSliderTime", { method: "post", body, headers });
   }
 </script>
 
@@ -491,6 +512,19 @@
                 enctype="multipart/form-data"
                 method="post"
               >
+                <div class="input-range">
+                  Slider time span
+                  <input
+                    type="range"
+                    name=""
+                    id="slidertime"
+                    min="2000"
+                    max="10000"
+                    on:input={(e) => setSliderTime(e)}
+                    on:change={(e) => fetchChangeSliderTime(e)}
+                  />
+                  <span id="input-range-value">ms</span>
+                </div>
                 <button
                   type="button"
                   on:click={() => setTab("changeOrderOfSlider")}
@@ -1029,5 +1063,10 @@
     transform: translateY(-5px);
     padding: 7px;
     transition: 0.3s all ease;
+  }
+  .input-range {
+    margin: 15px;
+    display: flex;
+    justify-content: center;
   }
 </style>
