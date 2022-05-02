@@ -104,7 +104,8 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS news(
     button_text text,
     src text,
     idnews INTEGER PRIMARY KEY,
-    content text
+    content text,
+    category text
 )""")
 
 myConnection = sqlite3.connect('usersData.sqlite')
@@ -465,6 +466,54 @@ def getArticleById():
     records = [dict(row) for row in myCursor.fetchall()]
     print(records)
     return json.dumps(records)
+
+@app.route("/getNewsToEdit", methods=['GET', 'POST'])
+def getNewsToEdit():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"SELECT * FROM news")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+
+@app.route("/updateArticles", methods=['GET', 'POST'])
+def updateArticles():
+    htmlSrc = {}
+    print(request.form)
+    newRecords = []
+    for i in range(0, int(request.form['length'])):
+        header = request.form[f'articleHeader{i}']
+        title = request.form[f'articleTitle{i}']
+        summary = request.form[f'articleSummary{i}']
+        button_text = request.form[f'articleButtonText{i}']
+        text = request.form[f'articleText{i}']
+        category = request.form[f'category{i}']
+        print(category)
+        if(category=="other"):
+            category=request.form[f'otherCategory{i}']
+        newRecord={}
+        newRecord['header'] = header
+        newRecord['title'] = title
+        newRecord['text_content'] = summary
+        newRecord['button_text'] = button_text
+        newRecord['content'] = text
+        print(newRecord['content'])
+        newRecord['category'] = category
+        newRecords.append(newRecord)
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM news")
+    myConnection.commit()
+    myConnection.close()
+    for i in newRecords:
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute("INSERT INTO NEWS (header,title,text_content,button_text,content,category) VALUES (?, ?, ?, ?, ?, ?)",(i['header'],i['title'],i['text_content'],i['button_text'],i['content'],i['category']))
+
+        myConnection.commit()
+        myConnection.close()
+    return redirect("/#/configurationuser")
 
 
 if __name__ == "__main__":
