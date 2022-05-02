@@ -168,3 +168,47 @@ button:focus {
   overflow: hidden;
   background-color: #ddd;
 }
+.sport {
+  color: #d90429;
+  fill: #d90429;
+}
+.fashion{
+  color: #2e2e2e;
+  fill: #2e2e2e;
+}
+.business{
+  color: #023e8a;
+  fill: #023e8a;
+}
+.science{
+  color: #e8d138;
+  fill: #e8d138;
+}
+.tech{
+  color: #03045e;
+  fill: #03045e;
+}
+.art{
+  color: #929292;
+  fill: #929292;
+}
+.currentAffairs{
+  color: #4cc9f0;
+  fill: #4cc9f0;
+}
+.health{
+  color: #e62626;
+  fill: #e62626;
+}
+.lifestyle{
+  color: #bebc3f;
+  fill: #bebc3f;
+}
+.law{
+  color: #9d4edd;
+  fill: #9d4edd;
+}
+.other{
+  color: black;
+  fill: black;
+}
