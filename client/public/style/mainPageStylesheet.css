@@ -12,6 +12,7 @@
   --menu-width: 100%;
   --content-width: 100%;
   --menu-border-right: none;
+  --menu-border-bottom: 1px solid #ebebeb;
 }
 body {
   background-color: var(--body-backround-color);
@@ -37,8 +38,9 @@ body {
   padding: 4px;
 }
 .navbar {
-  padding: 0 20%;
+  padding: 5px 20%;
   margin-bottom: 10px;
+  border-bottom: var(--menu-border-bottom);
 }
 
 .flex {
@@ -236,7 +238,7 @@ hr {
 }
 .upper-footer {
   width: 100%;
-  height: 35px;
+  min-height: 35px;
 }
 .footer-item {
   margin: 5px 20px;
@@ -256,6 +258,7 @@ hr {
   display: flex;
   flex-direction: var(--menu-vetical-horizontal);
   width: 100vw;
+  min-height: 100vh;
 }
 .vertical{
   flex-direction: var(--menu-flex-direction);
@@ -511,9 +514,10 @@ hr {
   background-color: white;
   margin-left: 50%;
   transform: translate(-50%,50%);
-  padding: 5px;
   border-radius: 10px;
   fill: gray;
+  display: flex;
+  padding: 5px;
 }
 
 .search-input{
@@ -521,4 +525,12 @@ hr {
   height: 31px;
   margin: 0;
   border: none;
+}
+.f-col{
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+}
+.f-wrap{
+  flex-wrap: wrap;
 }

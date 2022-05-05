@@ -1,0 +1,79 @@
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 500px;
+    width: 80%;
+    margin-left: 10%;
+    justify-content: space-evenly;
+}
+.gallery-picture{
+    width: 150px;
+    height: auto;
+    transition: 0.2s all ease;
+    box-shadow: 4px 4px 32px -12px rgba(66, 68, 90, 1);
+}
+.gallery-picture:hover{
+    width: 170px;
+    transition: 0.2s all ease;
+    cursor: pointer;
+    box-shadow: 4px 4px 47px 0px rgba(66, 68, 90, 1);
+}
+.gallery-item{
+    margin: 30px;
+    height: fit-content;
+}
+.overlay{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(41, 41, 41, 0.885);
+    z-index: 1;
+}
+.extended-gallery{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%,-50%);
+    
+}
+.x-sign{
+    position: absolute;
+    right: -100px;
+    width: 40px;
+    height: 40px;
+    fill: white;
+    z-index: 3;
+    cursor: pointer;
+    transition: 0.2s all ease;
+}
+.x-sign:hover{
+    width: 45px;
+    height: 45px;
+    transition: 0.2s all ease;
+}
+.arrow{
+    position: absolute;
+    width: 40px;
+    height: 60px;
+    fill: white;
+    transition: 0.2s all ease;
+}
+.arrow:hover{
+    width: 45px;
+    height: 70px;
+    transition: 0.2s all ease;
+    cursor: pointer;
+}
+.left-arrow{
+    transform: translateY(-50%);
+    left: -80px;
+    top: 50%;
+}
+.right-arrow{
+    transform: translateY(-50%);
+    right: -80px;
+    top: 50%;
+}

@@ -6,6 +6,8 @@
   import HomePageCms from "./routes/HomePageCms.svelte";
   import ConfigurationMenuUser from "./routes/ConfigurationMenuUser.svelte";
   import Article from "./routes/Article.svelte";
+  import Menu from "./routes/Menu.svelte";
+  import Footer from "./routes/Footer.svelte";
 
   export let name;
 </script>
@@ -18,6 +20,8 @@
       "/login": Login,
       "/configurationUser": ConfigurationMenuUser,
       "/article/:id": Article,
+      "/menu/:id": Menu,
+      "/footer/:id": Footer,
     }}
   />
 </main>

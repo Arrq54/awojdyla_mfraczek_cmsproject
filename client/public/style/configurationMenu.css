@@ -406,8 +406,6 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
-
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -422,4 +420,41 @@ input:checked + .slider:before {
   width: 150px !important;
   border: rgb(170, 170, 170);
   border-radius: 5px;
+}
+.articles-to-edit-order{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+}
+.article-order-box{
+  width: 350px;
+  min-height: 250px;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
+}
+.article-small-font{
+  font-size: 13px;
+  margin-top: 10px;
+}
+.article-order-box{
+  position: relative;
+}
+.bottom-arrows{
+  bottom: 0;
+  position: absolute;
+  background-color: rgb(238, 238, 238);
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  border-top: 1px solid gray;
+  border-radius: 0 0 10px 10px;
+  justify-content: space-evenly;
+}
+.line-center{
+  justify-content: center;
+  display: flex;
 }
