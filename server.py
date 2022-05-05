@@ -105,13 +105,17 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS news(
     src text,
     idnews INTEGER PRIMARY KEY,
     content text,
-    category text
+    category text,
+    newsOrder number,
+    pictures text
 )""")
 
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS navbar_menu(
-    text_content text
+    text_content text,
+    id INTEGER PRIMARY KEY,
+    content text
 )""")
 
 myConnection = sqlite3.connect('usersData.sqlite')
@@ -136,7 +140,9 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS footer(
-    text_content text
+    text_content text,
+    id INTEGER PRIMARY KEY,
+    content text
 )""")
 
 myConnection = sqlite3.connect('usersData.sqlite')
@@ -173,7 +179,7 @@ def getContentFromDatabase():
     myConnection = sqlite3.connect('usersData.sqlite')
     myConnection.row_factory = sqlite3.Row
     myCursor = myConnection.cursor()
-    myCursor.execute("SELECT * FROM news")
+    myCursor.execute("SELECT * FROM news ORDER BY newsOrder")
     records = [dict(row) for row in myCursor.fetchall()]
     output['news'] = records
     # ffn
@@ -251,6 +257,7 @@ def getUsers():
 
 
 app.config['UPLOAD_FOLDER'] = 'client/public/images'
+app.config['UPLOAD_FOLDER_ARTICLES'] = 'client/public/images/articles'
 app.config['IMAGES_LOCATION'] = "../../images/"
 app.config['DEFAULT_SLIDER_IMAGE_PATH'] = "../../images/sliderPlaceholder1.png"
 
@@ -479,17 +486,25 @@ def getNewsToEdit():
 
 @app.route("/updateArticles", methods=['GET', 'POST'])
 def updateArticles():
-    htmlSrc = {}
-    print(request.form)
     newRecords = []
     for i in range(0, int(request.form['length'])):
+        pictures = []
+        filelist = request.files.getlist(f'articleImages{i}')
+        for file in filelist:
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER_ARTICLES"])
+                file.save(os.path.join(path, filename))
+                pictures.append(f"../../images/articles/{filename}")
+
+        pictures = json.dumps(pictures)
         header = request.form[f'articleHeader{i}']
         title = request.form[f'articleTitle{i}']
         summary = request.form[f'articleSummary{i}']
         button_text = request.form[f'articleButtonText{i}']
         text = request.form[f'articleText{i}']
         category = request.form[f'category{i}']
-        print(category)
+        newsOrder = request.form[f'newsOrder{i}']
         if(category=="other"):
             category=request.form[f'otherCategory{i}']
         newRecord={}
@@ -498,8 +513,14 @@ def updateArticles():
         newRecord['text_content'] = summary
         newRecord['button_text'] = button_text
         newRecord['content'] = text
-        print(newRecord['content'])
         newRecord['category'] = category
+        newRecord['newsOrder'] = newsOrder
+        newRecord['previousPictures'] = request.form[f'articleFiles{i}']
+        print(newRecord['previousPictures'])
+        if(pictures!="[]"):
+            newRecord['pictures'] = pictures
+        else:
+            newRecord['pictures'] = "x"
         newRecords.append(newRecord)
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
@@ -509,12 +530,184 @@ def updateArticles():
     for i in newRecords:
         myConnection = sqlite3.connect('usersData.sqlite')
         myCursor = myConnection.cursor()
-        myCursor.execute("INSERT INTO NEWS (header,title,text_content,button_text,content,category) VALUES (?, ?, ?, ?, ?, ?)",(i['header'],i['title'],i['text_content'],i['button_text'],i['content'],i['category']))
-
+        if(i['pictures']=="x"):
+            myCursor.execute("INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(i['header'],i['title'],i['text_content'],i['button_text'],i['content'],i['category'],i['newsOrder'], i['previousPictures']))
+        else:
+            myCursor.execute(
+                "INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (i['header'], i['title'], i['text_content'], i['button_text'], i['content'], i['category'],
+                 i['newsOrder'], i['pictures']))
         myConnection.commit()
         myConnection.close()
     return redirect("/#/configurationuser")
 
+
+@app.route("/getArticles")
+def getArticles():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM news ORDER BY newsOrder")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+
+@app.route("/changeOrderOfArticles", methods=['GET', 'POST'])
+def changeOrderOfArticles():
+    req = request.get_json()
+    body = req['body']
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM news")
+    myConnection.commit()
+    myConnection.close()
+    for i in body:
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute("INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder) VALUES (?, ?, ?, ?, ?, ?, ?)",(i['header'],i['title'],i['text_content'],i['button_text'],i['content'],i['category'],i['newsOrder']))
+        myConnection.commit()
+        myConnection.close()
+    return redirect("/#/configurationuser")
+
+@app.route("/getffn")
+def getffn():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM ffn")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+@app.route("/uploadFfn", methods=['GET', 'POST'])
+def uploadFfn():
+    files = request.files
+    file = files['photo']
+    texts = request.form
+    title = texts['title']
+    text_content = texts['summary']
+    fName = ""
+    if file.filename != '':
+        filename = secure_filename(file.filename)
+        path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
+        file.save(os.path.join(path, filename))
+        fName = f"../../images/{filename}"
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute(f"UPDATE ffn SET title=?, text_content=?, src=?",(title,text_content,fName))
+        myConnection.commit()
+        myConnection.close()
+        return redirect("/#/configurationuser")
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"UPDATE ffn SET title=?, text_content=?", (title, text_content))
+    myConnection.commit()
+    myConnection.close()
+    return redirect("/#/configurationuser")
+
+@app.route("/getMenuItems")
+def getMenuItems():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM navbar_menu")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+@app.route("/getMenuItemById", methods=['GET', 'POST'])
+def getMenuItemById():
+    req = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"SELECT * FROM navbar_menu WHERE id={req.body}")
+    records = [dict(row) for row in myCursor.fetchall()]
+    print(records)
+    return json.dumps(records)
+
+
+
+@app.route("/changeMenuItems", methods=['GET', 'POST'])
+def changeMenuItems():
+    length = int(request.form['menuLength'])
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM navbar_menu")
+    myConnection.commit()
+    myConnection.close()
+    for i in range(length):
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute(
+            "INSERT INTO navbar_menu (text_content, content) VALUES (?, ?)",
+            (request.form[f'menuTextContent{i}'],request.form[f'menuContent{i}']))
+        myConnection.commit()
+        myConnection.close()
+
+    return redirect("/#/configurationuser")
+
+@app.route("/getFooterItems")
+def getFooterItems():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM footer")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+
+@app.route("/getFooterCompany")
+def getFooterCompany():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT * FROM footer_company")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
+
+
+
+
+@app.route("/changeCompanyName", methods=['GET', 'POST'])
+def changeCompanyName():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    companyName = request.form['companyName']
+    print(companyName)
+    myCursor.execute(f"UPDATE footer_company SET company=?", (companyName,))
+    myConnection.commit()
+    myConnection.close()
+    return redirect("/#/configurationuser")
+
+
+@app.route("/uploadFooter", methods=['GET', 'POST'])
+def uploadFooter():
+    length = int(request.form['footerLength'])
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"DELETE FROM footer")
+    myConnection.commit()
+    myConnection.close()
+    for i in range(length):
+        myConnection = sqlite3.connect('usersData.sqlite')
+        myCursor = myConnection.cursor()
+        myCursor.execute(
+            "INSERT INTO footer (text_content, content) VALUES (?, ?)",
+            (request.form[f'footerTextContent{i}'],request.form[f'footerContent{i}']))
+        myConnection.commit()
+        myConnection.close()
+
+    return redirect("/#/configurationuser")
+
+
+@app.route("/getFooterItemById", methods=['GET', 'POST'])
+def getFooterItemById():
+    req = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myConnection.row_factory = sqlite3.Row
+    myCursor = myConnection.cursor()
+    myCursor.execute(f"SELECT * FROM footer WHERE id={req.body}")
+    records = [dict(row) for row in myCursor.fetchall()]
+    return json.dumps(records)
 
 if __name__ == "__main__":
     app.run(debug=True)

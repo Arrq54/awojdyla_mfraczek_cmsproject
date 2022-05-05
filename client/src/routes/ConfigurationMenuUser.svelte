@@ -23,9 +23,11 @@
     let settings = await fetch("/getSettings").then((response) =>
       response.json()
     );
-    document.querySelector("#slidertime").value = settings.sliderTimeSpan;
-    document.querySelector("#input-range-value").innerHTML =
-      String(settings.sliderTimeSpan) + " ms";
+    if (document.querySelector("#slidertime") != null)
+      document.querySelector("#slidertime").value = settings.sliderTimeSpan;
+    if (document.querySelector("#input-range-value") != null)
+      document.querySelector("#input-range-value").innerHTML =
+        String(settings.sliderTimeSpan) + " ms";
   }
   async function loadThemes() {
     let settings = await fetch("/getSettings").then((response) =>
@@ -92,6 +94,7 @@
         body = JSON.stringify(newColors);
         headers = { "Content-Type": "application/json" };
         fetch("/saveColors", { method: "post", body, headers });
+        break;
       case "blue":
         newColors["body-background-color"] = "#caf0f8";
         newColors["slider-font-color"] = "#ffffff";
@@ -102,6 +105,7 @@
         body = JSON.stringify(newColors);
         headers = { "Content-Type": "application/json" };
         fetch("/saveColors", { method: "post", body, headers });
+        break;
       default:
         break;
     }
@@ -203,7 +207,6 @@
     let temp = await fetch("/getCurrentSectionOrder").then((response) =>
       response.json()
     );
-    console.log(temp);
     return temp;
   }
   let sectionOrder = getCurrentSectionOrder();
@@ -251,6 +254,7 @@
     let data = await fetch("/getNewsToEdit")
       .then((response) => response.json())
       .then((data) => (fetchArticles = data));
+    console.log(data);
   }
   getArticleData();
   function addArticle() {
@@ -263,6 +267,7 @@
     placeHolder.button_text = "Placeholder button";
     placeHolder.category = "Placeholder";
     placeHolder.content = "Placeholder for article content";
+    placeHolder.newsOrder = fetchArticles.length + 1;
     fetchArticles = [...fetchArticles, placeHolder];
   }
   function removeArticle(i) {
@@ -301,6 +306,99 @@
       document.querySelector(`#otherCategory${i}`).style.display = "none";
     }
   }
+  function switchToArticleOrder() {
+    selectedTab = "article order";
+  }
+  async function loadArticles() {
+    let temp = await fetch("/getArticles").then((response) => response.json());
+    return temp;
+  }
+
+  function changeArticleOrder(type, index, list) {
+    console.log("aaa");
+    if (type == "up") {
+      if (index == list.length - 1) return;
+      list[index].newsOrder = parseInt(list[index].newsOrder) + 1;
+      list[index + 1].newsOrder = parseInt(list[index].newsOrder) - 1;
+      [list[index], list[index + 1]] = [list[index + 1], list[index]];
+      articlesChangeOrder = list;
+    } else if (type == "down") {
+      if (index == 0) return;
+      list[index].newsOrder = parseInt(list[index].newsOrder) - 1;
+      list[index + 1].newsOrder = parseInt(list[index].newsOrder) + 1;
+      [list[index], list[index - 1]] = [list[index - 1], list[index]];
+      articlesChangeOrder = list;
+    }
+    console.log(articlesChangeOrder);
+    articlesChangeOrder.forEach((element) => {
+      console.log(element.newsOrder);
+    });
+  }
+  function fetchSaveArticlesOrder() {
+    if (articlesChangeOrder.length > 0) {
+      let temp = { body: articlesChangeOrder };
+      const body = JSON.stringify(temp);
+      const headers = { "Content-Type": "application/json" };
+      fetch("/changeOrderOfArticles", { method: "post", body, headers });
+    }
+  }
+  let articlesChangeOrder = loadArticles();
+
+  async function getFfn() {
+    let temp = await fetch("/getffn").then((response) => response.json());
+    return temp[0];
+  }
+  let ffn = getFfn();
+
+  async function fetchGetMenuItems() {
+    let temp = await fetch("/getMenuItems").then((response) => response.json());
+    return temp;
+  }
+
+  let fetchMenuItems = fetchGetMenuItems();
+
+  async function fetchGetFooterItems() {
+    let temp = await fetch("/getFooterItems").then((response) =>
+      response.json()
+    );
+    return temp;
+  }
+  let fetchFooterItems = fetchGetFooterItems();
+
+  async function fetchGetFooterCompanyNAme() {
+    let temp = await fetch("/getFooterCompany").then((response) =>
+      response.json()
+    );
+    return temp;
+  }
+  let fetchFooterCompanyName = fetchGetFooterCompanyNAme();
+
+  function addMenuItem(list) {
+    let placeHolder = {};
+    placeHolder.text_content = "Placeholder";
+    placeHolder.content =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam cursus facilisis arcu, ac ultricies urna sodales et. Vestibulum eget accumsan ipsum, quis fermentum metus. Maecenas aliquam magna nec dui aliquet malesuada. Suspendisse non bibendum tellus. Mauris fringilla, purus ut varius dignissim, dui massa suscipit sem, sed interdum turpis enim et est. Mauris in rutrum felis. Nam eu massa eu nunc vulputate placerat a nec turpis. Morbi quis ante a sapien vestibulum pellentesque. Curabitur quam nibh, maximus sit amet sapien id, faucibus convallis arcu. Etiam non ante commodo augue malesuada posuere non sed ligula. Quisque eros orci, laoreet eget congue egestas, commodo vel eros. Suspendisse eleifend posuere faucibus. Donec ut diam placerat odio congue cursus id eget massa. In pulvinar eros maximus felis elementum, a vehicula neque gravida.\nPellentesque porta eleifend purus, id rutrum nunc convallis id. Nullam tristique lacus augue, ut vehicula tortor facilisis gravida. Nunc placerat elementum elit, sed faucibus risus porta id. Suspendisse convallis neque sed lorem sodales, nec tincidunt felis venenatis. Morbi facilisis metus non enim dictum, ut blandit ex dignissim. Proin vel enim mauris. Aliquam faucibus neque et lacus malesuada, et viverra massa maximus. Aliquam erat volutpat. Morbi eu quam accumsan, luctus neque eu, imperdiet quam. Sed at posuere quam. Praesent eleifend nisl vel convallis sollicitudin. Duis suscipit pretium nunc, sit amet aliquet nulla tempor ut. Nulla sem leo, rutrum id semper ut, efficitur ac quam. Sed placerat, est eu tempus cursus, dolor tortor accumsan felis, nec varius libero dolor nec lacus. Etiam ac volutpat dui, dictum dignissim mauris. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.";
+
+    let tempList = [...list, placeHolder];
+    fetchMenuItems = tempList;
+  }
+  function removeMenuItem(i, list) {
+    if (confirm(`Do you want to remove menu item nr ${i}?`))
+      fetchMenuItems = [...list.filter((item, index) => index !== i)];
+  }
+  function addFooterItem(list) {
+    let placeHolder = {};
+    placeHolder.text_content = "Placeholder";
+    placeHolder.content =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam cursus facilisis arcu, ac ultricies urna sodales et. Vestibulum eget accumsan ipsum, quis fermentum metus. Maecenas aliquam magna nec dui aliquet malesuada. Suspendisse non bibendum tellus. Mauris fringilla, purus ut varius dignissim, dui massa suscipit sem, sed interdum turpis enim et est. Mauris in rutrum felis. Nam eu massa eu nunc vulputate placerat a nec turpis. Morbi quis ante a sapien vestibulum pellentesque. Curabitur quam nibh, maximus sit amet sapien id, faucibus convallis arcu. Etiam non ante commodo augue malesuada posuere non sed ligula. Quisque eros orci, laoreet eget congue egestas, commodo vel eros. Suspendisse eleifend posuere faucibus. Donec ut diam placerat odio congue cursus id eget massa. In pulvinar eros maximus felis elementum, a vehicula neque gravida.\nPellentesque porta eleifend purus, id rutrum nunc convallis id. Nullam tristique lacus augue, ut vehicula tortor facilisis gravida. Nunc placerat elementum elit, sed faucibus risus porta id. Suspendisse convallis neque sed lorem sodales, nec tincidunt felis venenatis. Morbi facilisis metus non enim dictum, ut blandit ex dignissim. Proin vel enim mauris. Aliquam faucibus neque et lacus malesuada, et viverra massa maximus. Aliquam erat volutpat. Morbi eu quam accumsan, luctus neque eu, imperdiet quam. Sed at posuere quam. Praesent eleifend nisl vel convallis sollicitudin. Duis suscipit pretium nunc, sit amet aliquet nulla tempor ut. Nulla sem leo, rutrum id semper ut, efficitur ac quam. Sed placerat, est eu tempus cursus, dolor tortor accumsan felis, nec varius libero dolor nec lacus. Etiam ac volutpat dui, dictum dignissim mauris. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.";
+
+    let tempList = [...list, placeHolder];
+    fetchFooterItems = tempList;
+  }
+  function removeFooterItem(i, list) {
+    if (confirm(`Do you want to remove footer item nr ${i}?`))
+      fetchFooterItems = [...list.filter((item, index) => index !== i)];
+  }
 </script>
 
 <svelte:head>
@@ -329,7 +427,10 @@
           <li id="menu" on:click={() => setTab("menu")}>Menu</li>
           <li id="users" on:click={() => setTab("users")}>Users</li>
           <li id="articles" on:click={() => setTab("articles")}>Articles</li>
-          <li id="pictures" on:click={() => setTab("pictures")}>Pictures</li>
+          <li id="articles" on:click={() => setTab("ffn")}>
+            First featurette news
+          </li>
+          <li id="pictures" on:click={() => setTab("footer")}>Footer</li>
           <li
             id="showSite"
             on:click={() => {
@@ -704,9 +805,60 @@
           </div>
         </div>
       {:else if selectedTab == "menu"}
-        <div>
-          <!-- MENU EDYCJA -->
-          menu
+        <div class="settings">
+          <div>
+            {#await fetchMenuItems then menuItems}
+              <form
+                action="/changeMenuItems"
+                method="POST"
+                enctype="multipart/form-data"
+              >
+                {#each menuItems as menuItem, i}
+                  <div class="card">
+                    <div class="line-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        on:click={() => removeMenuItem(i, menuItems)}
+                        style="width: 30px; height:30px;"
+                        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                          d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z"
+                        /></svg
+                      >
+                    </div>
+
+                    <div class="line">
+                      <h5>On homepage text content</h5>
+                      <input
+                        type="text"
+                        name={`menuTextContent${i}`}
+                        value={menuItem.text_content}
+                      />
+                    </div>
+                    <div class="line">
+                      <h5>Content of subpage</h5>
+                      <input
+                        type="text"
+                        name={`menuContent${i}`}
+                        value={menuItem.content}
+                      />
+                    </div>
+                    <hr class="sliderHR" />
+                  </div>
+                {/each}
+
+                <input
+                  type="hidden"
+                  name="menuLength"
+                  value={menuItems.length}
+                />
+                <button type="submit">Save</button>
+              </form>
+              <button on:click={() => addMenuItem(menuItems)}
+                >Add menu item</button
+              >
+            {/await}
+          </div>
         </div>
       {:else if selectedTab == "articles"}
         <!-- ARTICLES EDYCJA -->
@@ -719,6 +871,9 @@
                 enctype="multipart/form-data"
               >
                 <button type="submit">Save</button>
+                <button on:click={() => switchToArticleOrder()}
+                  >Change order of articles</button
+                >
                 {#each articles as article, i}
                   <div class="card-header">
                     Article, id:{article.idnews}
@@ -1017,6 +1172,20 @@
                         </label>
                       </div>
                     </div>
+                    <input
+                      type="hidden"
+                      value={article.pictures}
+                      name={`articleFiles${i}`}
+                    />
+                    <div class="line">
+                      <input
+                        type="file"
+                        name={`articleImages${i}`}
+                        multiple
+                        accept="image/*"
+                        id=""
+                      />
+                    </div>
                   </div>
                   <input
                     type="hidden"
@@ -1027,6 +1196,12 @@
                       category: article.category,
                     }}
                   />
+                  <input
+                    type="hidden"
+                    name={`newsOrder${i}`}
+                    value={article.newsOrder}
+                  />
+
                   <hr class="sliderHR" />
                 {/each}
                 <input type="hidden" name="length" value={articles.length} />
@@ -1035,9 +1210,150 @@
             {/await}
           </div>
         </div>
-      {:else if selectedTab == "pictures"}
-        <!-- Pictures EDYCJA -->
-        <div>pictures</div>
+      {:else if selectedTab == "article order"}
+        <div class="settings">
+          <div>
+            {#await articlesChangeOrder then articles}
+              <div class="articles-to-edit-order">
+                {#each articles as article, index}
+                  <div class="article-order-box">
+                    <h3>{article.title}</h3>
+                    <div class="article-small-font">{article.text_content}</div>
+                    <div class="bottom-arrows">
+                      <button
+                        on:click={() =>
+                          changeArticleOrder("down", index, articles)}
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 384 512"
+                          style="width: 20px; height:20px;"
+                          ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                            d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
+                          /></svg
+                        ></button
+                      >
+                      <button
+                        on:click={() =>
+                          changeArticleOrder("up", index, articles)}
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 384 512"
+                          style="width: 20px; height:20px;"
+                          ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                            d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                          /></svg
+                        ></button
+                      >
+                    </div>
+                  </div>
+                  {#if index != articles.length - 1}
+                    <div class="vertical-line" />
+                  {/if}
+                {/each}
+                <button on:click={() => fetchSaveArticlesOrder()}>Save</button>
+              </div>
+            {/await}
+          </div>
+        </div>
+      {:else if selectedTab == "footer"}
+        <div class="settings">
+          <div class="card">
+            <form action="/changeCompanyName" method="POST">
+              <br />
+              <div class="line">
+                <h5>Company Name</h5>
+                {#await fetchFooterCompanyName then FooterCompanyName}
+                  <input
+                    type="text"
+                    value={FooterCompanyName[0].company}
+                    name="companyName"
+                  />
+                {/await}
+              </div>
+              <button type="submit">Save</button>
+            </form>
+            <hr class="sliderHr" />
+            {#await fetchFooterItems then footerItems}
+              <form action="/uploadFooter" method="POST">
+                {#each footerItems as footerItem, i}
+                  <div class="card">
+                    <div class="line-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        on:click={() => removeFooterItem(i, footerItems)}
+                        style="width: 30px; height:30px;"
+                        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                          d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z"
+                        /></svg
+                      >
+                    </div>
+                    <div class="line">
+                      <h5>On homepage text content</h5>
+                      <input
+                        type="text"
+                        name={`footerTextContent${i}`}
+                        value={footerItem.text_content}
+                      />
+                    </div>
+                    <div class="line">
+                      <h5>Content of subpage</h5>
+                      <input
+                        type="text"
+                        name={`footerContent${i}`}
+                        value={footerItem.content}
+                      />
+                    </div>
+                    <hr class="sliderHR" />
+                  </div>
+                {/each}
+                <input
+                  type="hidden"
+                  name="footerLength"
+                  value={footerItems.length}
+                />
+                <button type="submit">Save</button>
+              </form>
+              <button on:click={() => addFooterItem(footerItems)}
+                >Add footer item</button
+              >
+            {/await}
+          </div>
+        </div>
+      {:else if selectedTab == "ffn"}
+        <div class="settings">
+          {#await ffn then ffn}
+            <form
+              action="/uploadFfn"
+              enctype="multipart/form-data"
+              method="post"
+            >
+              <div class="line">
+                <h5>Title</h5>
+                <input type="text" name="title" id="" value={ffn.title} />
+              </div>
+              <div class="line">
+                <h5>Sumamry</h5>
+                <input
+                  type="text"
+                  name="summary"
+                  id=""
+                  value={ffn.text_content}
+                />
+              </div>
+              <div class="line">
+                <h5>Photo (500x500)</h5>
+                <input type="file" name="photo" id="" accept="image/*" />
+              </div>
+              <img
+                src={ffn.src}
+                style="width: 150px; height: 150px"
+                alt=""
+              /><br />
+              <button type="submit">Save</button>
+            </form>
+          {/await}
+        </div>
       {:else if selectedTab == "users"}
         <div use:getUsers class="card users">
           <div class="editedCard" style="display:none">
