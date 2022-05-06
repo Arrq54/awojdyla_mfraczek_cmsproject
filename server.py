@@ -746,5 +746,104 @@ def getComments():
     return json.dumps(myCursor.fetchall())
 
 
+
+
+@app.route('/importSettings', methods=['GET', 'POST'])
+def importSettings():
+    data = request.get_json()
+    content = data['body']
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    with open(path, 'w') as f: f.close()
+    with open(path, 'w') as f:
+        f.write(json.dumps(content))
+    return redirect("/#/configurationuser")
+
+
+
+
+
+
+@app.route('/importSettingsWithDatabase', methods=['GET', 'POST'])
+def importSettingsWithDatabase():
+    data = request.get_json()
+    template = data['body']['template']
+    databaseContent = data['body']['database']
+    path = os.path.join(app.root_path, "client/public/data/settings.json")
+    with open(path, 'w') as f: f.close()
+    with open(path, 'w') as f:
+        f.write(json.dumps(template))
+
+    for i in databaseContent:
+        if(i['type']=='navbarItems'):
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute("DELETE FROM navbar_menu")
+            myConnection.commit()
+            myConnection.close()
+            for item in i['content']:
+                myConnection = sqlite3.connect('usersData.sqlite')
+                myCursor = myConnection.cursor()
+                myCursor.execute(
+                    "INSERT INTO navbar_menu (text_content, content) VALUES (?, ?)",(item[1], item[2]))
+                myConnection.commit()
+                myConnection.close()
+        elif(i['type']=='slider'):
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute("DELETE FROM slider")
+            myConnection.commit()
+            myConnection.close()
+            for item in i['content']:
+                myConnection = sqlite3.connect('usersData.sqlite')
+                myCursor = myConnection.cursor()
+                myCursor.execute(
+                    f"INSERT INTO slider (src,label,texts,sliderOrder) VALUES(?, ?, ?, ?)",(item['src'],item['label'],item['texts'],item['sliderOrder']))
+                myConnection.commit()
+                myConnection.close()
+        elif (i['type'] == 'news'):
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute("DELETE FROM news")
+            myConnection.commit()
+            myConnection.close()
+            for item in i['content']:
+                myConnection = sqlite3.connect('usersData.sqlite')
+                myCursor = myConnection.cursor()
+                myCursor.execute(
+                    "INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (item['header'], item['title'], item['text_content'], item['button_text'], item['content'], item['category'],
+                    item['newsOrder'], item['pictures']))
+                myConnection.commit()
+                myConnection.close()
+        elif (i['type'] == 'firstFeaturetteNews'):
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute(f"UPDATE ffn SET title=?, text_content=?, src=?", (i['content'][0]['title'], i['content'][0]['text_content'], i['content'][0]['src']))
+            myConnection.commit()
+            myConnection.close()
+        elif (i['type'] == 'footer'):
+            company = i['content']['company'][0][0]
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute(f"UPDATE footer_company SET company=?", (company,))
+            myConnection.commit()
+            myConnection.close()
+            links = i['content']['links']
+            myConnection = sqlite3.connect('usersData.sqlite')
+            myCursor = myConnection.cursor()
+            myCursor.execute("DELETE FROM footer")
+            myConnection.commit()
+            myConnection.close()
+            for item in links:
+                myConnection = sqlite3.connect('usersData.sqlite')
+                myCursor = myConnection.cursor()
+                myCursor.execute(
+                    "INSERT INTO footer (text_content, content) VALUES (?, ?)", (item[1], item[2]))
+                myConnection.commit()
+                myConnection.close()
+    return redirect("/#/configurationuser")
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

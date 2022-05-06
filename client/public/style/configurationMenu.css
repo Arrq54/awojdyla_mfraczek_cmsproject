@@ -484,3 +484,34 @@ input:checked + .slider:before {
   background-color: black;
   margin: 0;
 }
+.center{
+  justify-content: center;
+}
+.center>h3{
+  margin-right: 50px;
+}
+.mtb-10{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.labelExport{
+  font-size: 20px;
+}
+.exportButton{
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  fill: white;
+  background-color: #16a060;
+  width: 150px;
+  transition: 0.3s all ease;
+  cursor: pointer;
+  border: 2px solid #16a060;
+}
+.exportButton:hover{
+  color: #16a060;
+  fill: #16a060;
+  transition: 0.3s all ease;
+  background-color: white;
+ 
+}

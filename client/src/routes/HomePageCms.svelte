@@ -23,21 +23,24 @@
   let dataFromDatabaseSlider; //slider interval
   let logged = getLoginStatus();
   async function getLoginStatus() {
-    if(localStorage.getItem('user') != null){
-      const body = JSON.stringify({ username: localStorage.getItem('user')});
+    if (localStorage.getItem("user") != null) {
+      const body = JSON.stringify({ username: localStorage.getItem("user") });
       const headers = { "Content-Type": "application/json" };
-      let temp = fetch("/checkLoginStatus", {method:'post', body, headers}).then((response) => response.json());
+      let temp = fetch("/checkLoginStatus", {
+        method: "post",
+        body,
+        headers,
+      }).then((response) => response.json());
       const res = await temp;
-      console.log(res)
+      console.log(res);
       return res;
-    }else{
-      return {permission:-1}
+    } else {
+      return { permission: -1 };
     }
-
   }
   function logout() {
-    localStorage.removeItem('user')
-    window.location.reload()
+    localStorage.removeItem("user");
+    window.location.reload();
   }
   function settingsMenu() {
     sessionStorage.setItem("selectedTab", "themes");

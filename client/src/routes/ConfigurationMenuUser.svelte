@@ -155,14 +155,13 @@
   }
 
   async function EditUser(id, username, email, password, admin) {
-    if(admin == 2) {
+    if (admin == 2) {
       document.getElementById("edadmin").style.display = "block";
-      document.getElementById("ednormal").remove()
+      document.getElementById("ednormal").remove();
       document.getElementById("edImg").src = "./images/admin.png";
-    } 
-    else  {
+    } else {
       document.getElementById("ednormal").style.display = "block";
-      document.getElementById("edadmin").remove()
+      document.getElementById("edadmin").remove();
     }
     document.getElementsByName("username")[0].value = username;
     document.getElementsByName("email")[0].value = email;
@@ -176,15 +175,16 @@
     darkDiv.onclick = goBackEditing;
     darkDiv.style = `position:absolute; width:100%; height:100%; top:0; left:0; background-color:black; z-index:100; opacity:90%;`;
     document.getElementsByClassName("users")[0].append(darkDiv);
-    document.getElementsByClassName("users")[0].style.overflow = "hidden"
+    document.getElementsByClassName("users")[0].style.overflow = "hidden";
   }
 
   async function saveme(id) {
     let username = document.getElementsByName("username")[0].value;
     let email = document.getElementsByName("email")[0].value;
     let password = document.getElementsByName("password")[0].value;
-    let permissions = 2
-    if(document.getElementById("permissions") !== null) permissions = document.getElementById("permissions").value;
+    let permissions = 2;
+    if (document.getElementById("permissions") !== null)
+      permissions = document.getElementById("permissions").value;
     let canGoFurther = true;
 
     if (username == "" || email == "" || password == "") canGoFurther = false;
@@ -192,13 +192,13 @@
     else document.getElementById("err").style.display = "block";
   }
 
-  async function saveChanges(id, username, email, password,) {
+  async function saveChanges(id, username, email, password) {
     const body = JSON.stringify({
       id: id,
       username: username,
       email: email,
       password: password,
-      admin: permissions
+      admin: permissions,
     });
     const headers = { "Content-Type": "application/json" };
     fetch("/editUser", { method: "post", body, headers });
@@ -260,7 +260,6 @@
     let data = await fetch("/getNewsToEdit")
       .then((response) => response.json())
       .then((data) => (fetchArticles = data));
-    console.log(data);
   }
   getArticleData();
   function addArticle() {
@@ -406,11 +405,66 @@
       fetchFooterItems = [...list.filter((item, index) => index !== i)];
   }
   async function getLoginStatus() {
-    const body = JSON.stringify({ username: localStorage.getItem('user')});
+    const body = JSON.stringify({ username: localStorage.getItem("user") });
     const headers = { "Content-Type": "application/json" };
-    let temp = fetch("/checkLoginStatus", {method:'post', body, headers}).then((response) => response.json());
+    let temp = fetch("/checkLoginStatus", {
+      method: "post",
+      body,
+      headers,
+    }).then((response) => response.json());
     const res = await temp;
     return res;
+    async function exportSettings() {
+      let exportObject = {};
+      let template = await fetch("/getSettings").then((response) =>
+        response.json()
+      );
+      exportObject.template = template;
+      let dataFromDatabase = [];
+      if (document.querySelector("#database_content").checked == true) {
+        dataFromDatabase = await fetch("/getContentFromDatabase").then(
+          (response) => response.json()
+        );
+      }
+      exportObject.database = dataFromDatabase;
+      let jsonData = JSON.stringify(exportObject);
+      var jsonurl =
+        "data:text/json;charset=utf-8," + encodeURIComponent(jsonData);
+      var a = document.createElement("A");
+      a.setAttribute("href", jsonurl);
+      a.setAttribute("download", "backup.json");
+      a.click();
+    }
+
+    async function importFromJSON(input) {
+      let text = await input.files[0].text();
+      try {
+        let importedObject = JSON.parse(text);
+        if (
+          importedObject.template != null &&
+          importedObject.database != null
+        ) {
+          console.log(importedObject);
+          if (importedObject.database.length == 0) {
+            let temp = { body: importedObject.template };
+            const body = JSON.stringify(temp);
+            const headers = { "Content-Type": "application/json" };
+            fetch("/importSettings", { method: "post", body, headers });
+          } else {
+            let temp = { body: importedObject };
+            const body = JSON.stringify(temp);
+            const headers = { "Content-Type": "application/json" };
+            fetch("/importSettingsWithDatabase", {
+              method: "post",
+              body,
+              headers,
+            });
+          }
+        }
+      } catch {
+        console.log("not a json file");
+      }
+    }
   }
 </script>
 
@@ -424,7 +478,6 @@
   <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
 
-
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
   <div use:setFirstTab class="alls">
@@ -432,17 +485,18 @@
       <div class="maincard">
         <ul>
           <li id="themes" on:click={() => setTab("themes")}>Themes</li>
-          <li id="slider" on:click={() => setTab("block_order")}>
+          <li id="block_order" on:click={() => setTab("block_order")}>
             Block order
           </li>
           <li id="slider" on:click={() => setTab("slider")}>Slider</li>
           <li id="menu" on:click={() => setTab("menu")}>Menu</li>
           <li id="users" on:click={() => setTab("users")}>Users</li>
           <li id="articles" on:click={() => setTab("articles")}>Articles</li>
-          <li id="articles" on:click={() => setTab("ffn")}>
-            First featurette news
+          <li id="ffn" on:click={() => setTab("ffn")}>First featurette news</li>
+          <li id="footer" on:click={() => setTab("footer")}>Footer</li>
+          <li id="import_export" on:click={() => setTab("import_export")}>
+            Import/Export
           </li>
-          <li id="pictures" on:click={() => setTab("footer")}>Footer</li>
           <li
             id="showSite"
             on:click={() => {
@@ -1400,37 +1454,38 @@
                     class="buttonUs btnEdit">Edit</button
                   ><br />
                 </div>
-              {:else if item.admin==1}
-              <div class="userCard" id={"card" + item.rowid}>
-                <img
-                  src="./images/avatar.png"
-                  alt="avatar"
-                  width="150px"
-                  height="150px"
-                />
-                <h3>{item.username}</h3>
-                <p>email: {item.email}</p>
-                <p>password: {item.password}</p>
-                <h3 style="color:#00BFFF; margin:10px;">Advanced User</h3>
-                <button
-                  on:click={() => {
-                    EditUser(
-                      item.rowid,
-                      item.username,
-                      item.email,
-                      item.password,
-                      item.admin
-                    );
-                  }}
-                  class="buttonUs btnEdit">Edit</button>
-                  <br>
-                <button
-                on:click={() => {
-                  DeleteUser(item.rowid);
-                }}
-                class="buttonUs btnDelete">Delete</button
-              ><br />
-              </div>
+              {:else if item.admin == 1}
+                <div class="userCard" id={"card" + item.rowid}>
+                  <img
+                    src="./images/avatar.png"
+                    alt="avatar"
+                    width="150px"
+                    height="150px"
+                  />
+                  <h3>{item.username}</h3>
+                  <p>email: {item.email}</p>
+                  <p>password: {item.password}</p>
+                  <h3 style="color:#00BFFF; margin:10px;">Advanced User</h3>
+                  <button
+                    on:click={() => {
+                      EditUser(
+                        item.rowid,
+                        item.username,
+                        item.email,
+                        item.password,
+                        item.admin
+                      );
+                    }}
+                    class="buttonUs btnEdit">Edit</button
+                  >
+                  <br />
+                  <button
+                    on:click={() => {
+                      DeleteUser(item.rowid);
+                    }}
+                    class="buttonUs btnDelete">Delete</button
+                  ><br />
+                </div>
               {:else}
                 <div class="userCard" id={"card" + item.rowid}>
                   <img
@@ -1480,8 +1535,8 @@
               <input type="text" name="password" />
               <label for="permissions">Permission</label>
               <select id="permissions">
-                <option value=0>Normal user</option>
-                <option value=1>Advanced user</option>
+                <option value="0">Normal user</option>
+                <option value="1">Advanced user</option>
               </select>
               <button class="buttonUs btnEdit" id="saveme">Save</button>
             </div>
@@ -1508,6 +1563,50 @@
               You must fill in all the blanks!
             </div>
           {/await}
+        </div>
+      {:else if selectedTab == "import_export"}
+        <div class="settings">
+          <h3>
+            In this part of CMS you can generate JSON files, so you can create
+            backup of your changes. Default export settings take data from
+            template that you created, but if you want to, you can also generate
+            backup of data from database
+          </h3>
+          <hr class="mtb-10" />
+          <div class="card">
+            <div class="flex center">
+              <div class="flex">
+                <h3>Database content</h3>
+                <label class="switch">
+                  <input type="checkbox" id="database_content" />
+                  <span class="slider round" />
+                </label>
+              </div>
+            </div>
+            <button class="exportButton" on:click={() => exportSettings()}
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                style="width: 20px; height:20px;"
+                ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                  d="M480 352h-133.5l-45.25 45.25C289.2 409.3 273.1 416 256 416s-33.16-6.656-45.25-18.75L165.5 352H32c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32v-96C512 366.3 497.7 352 480 352zM432 456c-13.2 0-24-10.8-24-24c0-13.2 10.8-24 24-24s24 10.8 24 24C456 445.2 445.2 456 432 456zM233.4 374.6C239.6 380.9 247.8 384 256 384s16.38-3.125 22.62-9.375l128-128c12.49-12.5 12.49-32.75 0-45.25c-12.5-12.5-32.76-12.5-45.25 0L288 274.8V32c0-17.67-14.33-32-32-32C238.3 0 224 14.33 224 32v242.8L150.6 201.4c-12.49-12.5-32.75-12.5-45.25 0c-12.49 12.5-12.49 32.75 0 45.25L233.4 374.6z"
+                /></svg
+              >Export</button
+            >
+            <hr class="mtb-10" />
+            <h3>Import</h3>
+            <input
+              type="file"
+              accept="application/JSON"
+              name=""
+              id="importFile"
+            />
+            <button
+              on:click={() =>
+                importFromJSON(document.querySelector("#importFile"))}
+              >Import</button
+            >
+          </div>
         </div>
       {/if}
     </div>
