@@ -19,9 +19,8 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS data(
     admin integer
 )""")
 
-myConnection = sqlite3.connect('cmsProject.sqlite')
-app.config["Loggedin"] = 0
 
+myConnection = sqlite3.connect('cmsProject.sqlite')
 
 @app.route("/")
 def main():
@@ -50,8 +49,6 @@ def attemptLogin():
         if username == i[0] and password == i[2]:
             found = True
             admin = i[3]
-            app.config["Loggedin"] = 2 if admin == 1 else 1
-            ####### WAZNE app.config = session, wedlug tego wyswietlamy rozne wersje strony glownej, 0 = niezalogowany, 1 = normalny user, 2 = admin
     returnAnswer = f'{{"correctData":true, "admin":{admin}}}' if found else f'{{"correctData":false, "admin":{admin}}}'
     print(returnAnswer)
     # true = user istnieje w bazie #false = nie istnieje
@@ -84,7 +81,11 @@ def register():
 
 @app.route("/checkLoginStatus", methods=['GET', 'POST'])
 def getUserType():
-    returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute("SELECT *, oid FROM data WHERE username='" + request.get_json()["username"] +"'")
+    answer = myCursor.fetchall()[0][3]
+    returnAnswer = f'{{"permission":{answer}}}'
     return json.loads(returnAnswer)
 
 
@@ -234,13 +235,6 @@ def getContentFromDatabase():
     res.append(obj)
     return json.dumps(res)
 
-
-@app.route("/logout")
-def logout():
-    print("logout")
-    app.config["Loggedin"] = 0
-    returnAnswer = f'{{"user":{app.config["Loggedin"]}}}'
-    return json.loads(returnAnswer)
 
 
 @app.route("/getSlider")
@@ -411,13 +405,15 @@ def editUser():
     myCursor.execute("""UPDATE data SET
                     username = :username,
                     email = :email,
-                    password =  :password
+                    password =  :password,
+                    admin = :admin
 
                     WHERE oid = :oid""",
                      {
                          'username': data["username"],
                          'email': data["email"],
                          'password': data["password"],
+                         'admin': data["admin"],
                          'oid': data["id"]
                      })
     myConnection.commit()
