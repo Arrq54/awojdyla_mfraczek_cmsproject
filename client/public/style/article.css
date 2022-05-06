@@ -77,6 +77,22 @@
   right: -80px;
   top: 50%;
 }
+
+.article_content {
+  width: 75%;
+  margin: auto;
+  padding: 10px;
+  margin-bottom: 30px;
+}
+.article_content > h1,
+.article_content > h5 {
+  text-align: center;
+}
+.article_content > p {
+  white-space: pre-wrap;
+  width: 70%;
+  margin: auto;
+}
 .agagagaga {
   margin-right: 30px;
   width: 80px;
@@ -89,8 +105,10 @@
 .time {
   color: darkgrey;
   position: absolute;
-  margin-top: 100px;
-  left: 59%;
+  width: fit-content;
+  height: fit-content;
+  bottom: -20px;
+  right: 5px;
 }
 .comment > .content {
   display: flex;
@@ -101,7 +119,7 @@
   padding: 15px;
 }
 .load_comments {
-  width: 80%;
+  width: 85%;
   margin: auto;
   margin-top: -20px;
   padding-top: 20px;
@@ -111,6 +129,7 @@
   height: 90%;
   resize: none;
   width: 65%;
+  margin-left: 20px;
   margin-right: 20px;
   outline: none;
   transition: 0.2s ease;
@@ -144,7 +163,7 @@
 }
 .comments {
   width: 50%;
-  height: 200px;
+  min-height: 200px;
   margin: auto;
   padding: 10px;
 }
@@ -153,23 +172,24 @@
   background: rgb(235, 235, 235);
   border-radius: 30px;
   padding: 10px;
-  width: 82%;
-  margin: 20px auto;
-  height: 90px;
+  width: 100%;
+  height: auto;
+  margin-top: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 .new_comment {
   z-index: 10;
-  width: 90%;
+  width: 100%;
   margin: auto;
   height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: whitesmoke;
-  padding: 10px;
+  padding: 25px;
   border-radius: 30px;
   transition: 0.5s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -187,4 +207,7 @@
 }
 .user > h4 {
   margin: 0;
+}
+.extended-gallery-picture {
+  width: 100%;
 }

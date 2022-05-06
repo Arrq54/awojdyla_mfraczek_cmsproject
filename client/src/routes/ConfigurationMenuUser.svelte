@@ -414,56 +414,53 @@
     }).then((response) => response.json());
     const res = await temp;
     return res;
-    async function exportSettings() {
-      let exportObject = {};
-      let template = await fetch("/getSettings").then((response) =>
-        response.json()
+  }
+  async function exportSettings() {
+    let exportObject = {};
+    let template = await fetch("/getSettings").then((response) =>
+      response.json()
+    );
+    exportObject.template = template;
+    let dataFromDatabase = [];
+    if (document.querySelector("#database_content").checked == true) {
+      dataFromDatabase = await fetch("/getContentFromDatabase").then(
+        (response) => response.json()
       );
-      exportObject.template = template;
-      let dataFromDatabase = [];
-      if (document.querySelector("#database_content").checked == true) {
-        dataFromDatabase = await fetch("/getContentFromDatabase").then(
-          (response) => response.json()
-        );
-      }
-      exportObject.database = dataFromDatabase;
-      let jsonData = JSON.stringify(exportObject);
-      var jsonurl =
-        "data:text/json;charset=utf-8," + encodeURIComponent(jsonData);
-      var a = document.createElement("A");
-      a.setAttribute("href", jsonurl);
-      a.setAttribute("download", "backup.json");
-      a.click();
     }
+    exportObject.database = dataFromDatabase;
+    let jsonData = JSON.stringify(exportObject);
+    var jsonurl =
+      "data:text/json;charset=utf-8," + encodeURIComponent(jsonData);
+    var a = document.createElement("A");
+    a.setAttribute("href", jsonurl);
+    a.setAttribute("download", "backup.json");
+    a.click();
+  }
 
-    async function importFromJSON(input) {
-      let text = await input.files[0].text();
-      try {
-        let importedObject = JSON.parse(text);
-        if (
-          importedObject.template != null &&
-          importedObject.database != null
-        ) {
-          console.log(importedObject);
-          if (importedObject.database.length == 0) {
-            let temp = { body: importedObject.template };
-            const body = JSON.stringify(temp);
-            const headers = { "Content-Type": "application/json" };
-            fetch("/importSettings", { method: "post", body, headers });
-          } else {
-            let temp = { body: importedObject };
-            const body = JSON.stringify(temp);
-            const headers = { "Content-Type": "application/json" };
-            fetch("/importSettingsWithDatabase", {
-              method: "post",
-              body,
-              headers,
-            });
-          }
+  async function importFromJSON(input) {
+    let text = await input.files[0].text();
+    try {
+      let importedObject = JSON.parse(text);
+      if (importedObject.template != null && importedObject.database != null) {
+        console.log(importedObject);
+        if (importedObject.database.length == 0) {
+          let temp = { body: importedObject.template };
+          const body = JSON.stringify(temp);
+          const headers = { "Content-Type": "application/json" };
+          fetch("/importSettings", { method: "post", body, headers });
+        } else {
+          let temp = { body: importedObject };
+          const body = JSON.stringify(temp);
+          const headers = { "Content-Type": "application/json" };
+          fetch("/importSettingsWithDatabase", {
+            method: "post",
+            body,
+            headers,
+          });
         }
-      } catch {
-        console.log("not a json file");
       }
+    } catch {
+      console.log("not a json file");
     }
   }
 </script>
