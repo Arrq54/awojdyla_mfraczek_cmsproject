@@ -18,11 +18,11 @@
 
 {#await fecthMenu then item}
   <h1>{item.text_content}</h1>
-  <div class="menu-content">{item.content}</div>
+  <div class="menu-content">{JSON.stringify(item.content)}</div>
 {/await}
 
 <style>
   .menu-content {
-    white-space: pre-wrap;
+    white-space: pre-line;
   }
 </style>

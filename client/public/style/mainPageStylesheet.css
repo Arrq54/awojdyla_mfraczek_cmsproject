@@ -241,6 +241,8 @@ hr {
 .ffn-image {
   width: 500px;
   height: 500px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 .upper-footer {
   width: 100%;
