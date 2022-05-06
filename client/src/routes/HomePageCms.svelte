@@ -23,15 +23,21 @@
   let dataFromDatabaseSlider; //slider interval
   let logged = getLoginStatus();
   async function getLoginStatus() {
-    let temp = fetch("/checkLoginStatus").then((response) => response.json());
-    const res = await temp;
-    return res;
+    if(localStorage.getItem('user') != null){
+      const body = JSON.stringify({ username: localStorage.getItem('user')});
+      const headers = { "Content-Type": "application/json" };
+      let temp = fetch("/checkLoginStatus", {method:'post', body, headers}).then((response) => response.json());
+      const res = await temp;
+      console.log(res)
+      return res;
+    }else{
+      return {permission:-1}
+    }
+
   }
   function logout() {
     localStorage.removeItem('user')
-    fetch("/logout")
-      .then((response) => response.fjson())
-      .then((data) => (logged = data));
+    window.location.reload()
   }
   function settingsMenu() {
     sessionStorage.setItem("selectedTab", "themes");
@@ -280,7 +286,7 @@
               </div>
               <div class="register-login-buttons flex vertical">
                 {#await logged then status}
-                  {#if status.user > 0}
+                  {#if status.permission >= 0}
                     <div class="navbar-item btn  btn-menu">
                       <a href={null} on:click={settingsMenu} class="btn-a"
                         >Menu</a

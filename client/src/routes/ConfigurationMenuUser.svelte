@@ -1,9 +1,5 @@
 <script defer>
-  async function asyncCheckLoginStatus() {
-    let temp = fetch("/checkLoginStatus").then((response) => response.json());
-    return await temp;
-  }
-  $: status = asyncCheckLoginStatus();
+  $: status = getLoginStatus();
   $: selectedTab =
     sessionStorage.getItem("selectedTab") == null
       ? "themes"
@@ -159,9 +155,15 @@
   }
 
   async function EditUser(id, username, email, password, admin) {
-    if (admin == 1) document.getElementById("edImg").src = "./images/admin.png";
-
-    document.getElementById("ed").style.display = "block";
+    if(admin == 2) {
+      document.getElementById("edadmin").style.display = "block";
+      document.getElementById("ednormal").remove()
+      document.getElementById("edImg").src = "./images/admin.png";
+    } 
+    else  {
+      document.getElementById("ednormal").style.display = "block";
+      document.getElementById("edadmin").remove()
+    }
     document.getElementsByName("username")[0].value = username;
     document.getElementsByName("email")[0].value = email;
     document.getElementsByName("password")[0].value = password;
@@ -174,25 +176,29 @@
     darkDiv.onclick = goBackEditing;
     darkDiv.style = `position:absolute; width:100%; height:100%; top:0; left:0; background-color:black; z-index:100; opacity:90%;`;
     document.getElementsByClassName("users")[0].append(darkDiv);
+    document.getElementsByClassName("users")[0].style.overflow = "hidden"
   }
 
   async function saveme(id) {
     let username = document.getElementsByName("username")[0].value;
     let email = document.getElementsByName("email")[0].value;
     let password = document.getElementsByName("password")[0].value;
+    let permissions = 2
+    if(document.getElementById("permissions") !== null) permissions = document.getElementById("permissions").value;
     let canGoFurther = true;
 
     if (username == "" || email == "" || password == "") canGoFurther = false;
-    if (canGoFurther) saveChanges(id, username, email, password);
+    if (canGoFurther) saveChanges(id, username, email, password, permissions);
     else document.getElementById("err").style.display = "block";
   }
 
-  async function saveChanges(id, username, email, password) {
+  async function saveChanges(id, username, email, password,) {
     const body = JSON.stringify({
       id: id,
       username: username,
       email: email,
       password: password,
+      admin: permissions
     });
     const headers = { "Content-Type": "application/json" };
     fetch("/editUser", { method: "post", body, headers });
@@ -399,6 +405,13 @@
     if (confirm(`Do you want to remove footer item nr ${i}?`))
       fetchFooterItems = [...list.filter((item, index) => index !== i)];
   }
+  async function getLoginStatus() {
+    const body = JSON.stringify({ username: localStorage.getItem('user')});
+    const headers = { "Content-Type": "application/json" };
+    let temp = fetch("/checkLoginStatus", {method:'post', body, headers}).then((response) => response.json());
+    const res = await temp;
+    return res;
+  }
 </script>
 
 <svelte:head>
@@ -411,7 +424,6 @@
   <link rel="stylesheet" href="../../style/configurationMenu.css" />
 </svelte:head>
 
-<div style="transform:translateX(-1000%)" class="darkdiv" />
 
 <!-- svelte-ignore missing-declaration -->
 {#await status then user}
@@ -440,10 +452,12 @@
             Show the site
           </li>
         </ul>
-        {#if user.user == 2}
+        {#if user.permissions == 2}
           <p class="statusAdmin">Admin</p>
+        {:else if user.permissions == 1}
+          <p class="statusAdmin">Advanced user permissions</p>
         {:else}
-          <p class="statusAdmin">No admin permissions</p>
+          <p class="statusAdmin">Standard user permissions</p>
         {/if}
       </div>
     </div>
@@ -1361,7 +1375,7 @@
           </div>
           {#await usersData then users}
             {#each users as item, i}
-              {#if item.admin == 1}
+              {#if item.admin == 2}
                 <div class="userCard" id={"card" + item.rowid}>
                   <img
                     src="./images/admin.png"
@@ -1380,23 +1394,55 @@
                         item.username,
                         item.email,
                         item.password,
-                        1
+                        item.admin
                       );
                     }}
                     class="buttonUs btnEdit">Edit</button
                   ><br />
                 </div>
+              {:else if item.admin==1}
+              <div class="userCard" id={"card" + item.rowid}>
+                <img
+                  src="./images/avatar.png"
+                  alt="avatar"
+                  width="150px"
+                  height="150px"
+                />
+                <h3>{item.username}</h3>
+                <p>email: {item.email}</p>
+                <p>password: {item.password}</p>
+                <h3 style="color:#00BFFF; margin:10px;">Advanced User</h3>
+                <button
+                  on:click={() => {
+                    EditUser(
+                      item.rowid,
+                      item.username,
+                      item.email,
+                      item.password,
+                      item.admin
+                    );
+                  }}
+                  class="buttonUs btnEdit">Edit</button>
+                  <br>
+                <button
+                on:click={() => {
+                  DeleteUser(item.rowid);
+                }}
+                class="buttonUs btnDelete">Delete</button
+              ><br />
+              </div>
               {:else}
                 <div class="userCard" id={"card" + item.rowid}>
                   <img
                     src="./images/avatar.png"
                     alt="avatar"
-                    width="200px"
-                    height="200px"
+                    width="150px"
+                    height="150px"
                   />
                   <h3>{item.username}</h3>
                   <p>email: {item.email}</p>
                   <p>password: {item.password}</p>
+                  <h3 style="color:#696969; margin:10px;">Normal user</h3>
                   <button
                     on:click={() => {
                       EditUser(
@@ -1404,7 +1450,7 @@
                         item.username,
                         item.email,
                         item.password,
-                        0
+                        item.admin
                       );
                     }}
                     class="buttonUs btnEdit">Edit</button
@@ -1418,12 +1464,36 @@
                 </div>
               {/if}
             {/each}
-            <div class="editedCard" id="ed" style="display:none">
+            <div class="editedCard" id="ednormal" style="display:none">
               <img
                 src="./images/avatar.png"
                 alt="avatar"
-                width="200px"
-                height="200px"
+                width="130px"
+                height="130px"
+                id="edImg"
+              />
+              <label for="username">Username</label>
+              <input type="text" name="username" />
+              <label for="email">Email</label>
+              <input type="text" name="email" />
+              <label for="password">Password</label>
+              <input type="text" name="password" />
+              <label for="permissions">Permission</label>
+              <select id="permissions">
+                <option value=0>Normal user</option>
+                <option value=1>Advanced user</option>
+              </select>
+              <button class="buttonUs btnEdit" id="saveme">Save</button>
+            </div>
+            <div id="err" style="display:none;">
+              You must fill in all the blanks!
+            </div>
+            <div class="editedCard" id="edadmin" style="display:none">
+              <img
+                src="./images/avatar.png"
+                alt="avatar"
+                width="180px"
+                height="180px"
                 id="edImg"
               />
               <label for="username">Username</label>
