@@ -120,6 +120,15 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS navbar_menu(
 
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
+myCursor.execute("""CREATE TABLE IF NOT EXISTS comments(
+    user text,
+    content text,
+    time text,
+    articleid integer
+)""")
+
+myConnection = sqlite3.connect('usersData.sqlite')
+myCursor = myConnection.cursor()
 myCursor.execute("""CREATE TABLE IF NOT EXISTS ffn(
     title text,
     text_content text,
@@ -135,7 +144,6 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS slider(
     texts text,
     sliderOrder integer
 )""")
-
 
 myConnection = sqlite3.connect('usersData.sqlite')
 myCursor = myConnection.cursor()
@@ -384,6 +392,7 @@ def changeBlockSettings():
         f.write(json.dumps(object))
     return redirect("/#/configurationuser")
 
+
 @app.route("/deleteUser", methods=['GET', 'POST'])
 def deleteUser():
     myConnection = sqlite3.connect('usersData.sqlite')
@@ -444,6 +453,7 @@ def changeOrderOfSections():
         myConnection.close()
     return redirect("/#/configurationuser")
 
+
 @app.route("/updateSliderTime", methods=['GET', 'POST'])
 def updateSliderTime():
     path = os.path.join(app.root_path, "client/public/data/settings.json")
@@ -462,7 +472,6 @@ def updateSliderTime():
     return redirect("/#/configurationuser")
 
 
-
 @app.route("/getArticleById", methods=['GET', 'POST'])
 def getArticleById():
     req = json.loads(request.data.decode('utf8').replace("'", '"'), object_hook=lambda d: SimpleNamespace(**d))
@@ -473,6 +482,7 @@ def getArticleById():
     records = [dict(row) for row in myCursor.fetchall()]
     print(records)
     return json.dumps(records)
+
 
 @app.route("/getNewsToEdit", methods=['GET', 'POST'])
 def getNewsToEdit():
@@ -505,9 +515,9 @@ def updateArticles():
         text = request.form[f'articleText{i}']
         category = request.form[f'category{i}']
         newsOrder = request.form[f'newsOrder{i}']
-        if(category=="other"):
-            category=request.form[f'otherCategory{i}']
-        newRecord={}
+        if (category == "other"):
+            category = request.form[f'otherCategory{i}']
+        newRecord = {}
         newRecord['header'] = header
         newRecord['title'] = title
         newRecord['text_content'] = summary
@@ -517,7 +527,7 @@ def updateArticles():
         newRecord['newsOrder'] = newsOrder
         newRecord['previousPictures'] = request.form[f'articleFiles{i}']
         print(newRecord['previousPictures'])
-        if(pictures!="[]"):
+        if (pictures != "[]"):
             newRecord['pictures'] = pictures
         else:
             newRecord['pictures'] = "x"
@@ -530,8 +540,11 @@ def updateArticles():
     for i in newRecords:
         myConnection = sqlite3.connect('usersData.sqlite')
         myCursor = myConnection.cursor()
-        if(i['pictures']=="x"):
-            myCursor.execute("INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(i['header'],i['title'],i['text_content'],i['button_text'],i['content'],i['category'],i['newsOrder'], i['previousPictures']))
+        if (i['pictures'] == "x"):
+            myCursor.execute(
+                "INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (i['header'], i['title'], i['text_content'], i['button_text'], i['content'], i['category'],
+                 i['newsOrder'], i['previousPictures']))
         else:
             myCursor.execute(
                 "INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -564,10 +577,13 @@ def changeOrderOfArticles():
     for i in body:
         myConnection = sqlite3.connect('usersData.sqlite')
         myCursor = myConnection.cursor()
-        myCursor.execute("INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder) VALUES (?, ?, ?, ?, ?, ?, ?)",(i['header'],i['title'],i['text_content'],i['button_text'],i['content'],i['category'],i['newsOrder']))
+        myCursor.execute(
+            "INSERT INTO NEWS (header,title,text_content,button_text,content,category, newsOrder) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (i['header'], i['title'], i['text_content'], i['button_text'], i['content'], i['category'], i['newsOrder']))
         myConnection.commit()
         myConnection.close()
     return redirect("/#/configurationuser")
+
 
 @app.route("/getffn")
 def getffn():
@@ -577,6 +593,7 @@ def getffn():
     myCursor.execute("SELECT * FROM ffn")
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
+
 
 @app.route("/uploadFfn", methods=['GET', 'POST'])
 def uploadFfn():
@@ -593,7 +610,7 @@ def uploadFfn():
         fName = f"../../images/{filename}"
         myConnection = sqlite3.connect('usersData.sqlite')
         myCursor = myConnection.cursor()
-        myCursor.execute(f"UPDATE ffn SET title=?, text_content=?, src=?",(title,text_content,fName))
+        myCursor.execute(f"UPDATE ffn SET title=?, text_content=?, src=?", (title, text_content, fName))
         myConnection.commit()
         myConnection.close()
         return redirect("/#/configurationuser")
@@ -604,6 +621,7 @@ def uploadFfn():
     myConnection.close()
     return redirect("/#/configurationuser")
 
+
 @app.route("/getMenuItems")
 def getMenuItems():
     myConnection = sqlite3.connect('usersData.sqlite')
@@ -612,6 +630,7 @@ def getMenuItems():
     myCursor.execute("SELECT * FROM navbar_menu")
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
+
 
 @app.route("/getMenuItemById", methods=['GET', 'POST'])
 def getMenuItemById():
@@ -623,7 +642,6 @@ def getMenuItemById():
     records = [dict(row) for row in myCursor.fetchall()]
     print(records)
     return json.dumps(records)
-
 
 
 @app.route("/changeMenuItems", methods=['GET', 'POST'])
@@ -639,11 +657,12 @@ def changeMenuItems():
         myCursor = myConnection.cursor()
         myCursor.execute(
             "INSERT INTO navbar_menu (text_content, content) VALUES (?, ?)",
-            (request.form[f'menuTextContent{i}'],request.form[f'menuContent{i}']))
+            (request.form[f'menuTextContent{i}'], request.form[f'menuContent{i}']))
         myConnection.commit()
         myConnection.close()
 
     return redirect("/#/configurationuser")
+
 
 @app.route("/getFooterItems")
 def getFooterItems():
@@ -663,8 +682,6 @@ def getFooterCompany():
     myCursor.execute("SELECT * FROM footer_company")
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
-
-
 
 
 @app.route("/changeCompanyName", methods=['GET', 'POST'])
@@ -692,7 +709,7 @@ def uploadFooter():
         myCursor = myConnection.cursor()
         myCursor.execute(
             "INSERT INTO footer (text_content, content) VALUES (?, ?)",
-            (request.form[f'footerTextContent{i}'],request.form[f'footerContent{i}']))
+            (request.form[f'footerTextContent{i}'], request.form[f'footerContent{i}']))
         myConnection.commit()
         myConnection.close()
 
@@ -708,6 +725,30 @@ def getFooterItemById():
     myCursor.execute(f"SELECT * FROM footer WHERE id={req.body}")
     records = [dict(row) for row in myCursor.fetchall()]
     return json.dumps(records)
+
+
+@app.route('/addComment', methods=['GET', 'POST'])
+def addComment():
+    print(request.get_json())
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    time = str(request.get_json()['date']) + ' ' + str(request.get_json()['hour'])
+    myCursor.execute(
+        f"INSERT INTO comments (user, content, time, articleid) VALUES ('{request.get_json()['user']}', '{request.get_json()['content']}', '{time}', '{int(request.get_json()['articleid'])}')")
+
+    myConnection.commit()
+    myConnection.close()
+    return redirect("/#/article/" + request.get_json()['articleid'])
+
+
+@app.route('/getComments', methods=['GET', 'POST'])
+def getComments():
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute(
+        "SELECT *, oid FROM comments WHERE articleid=" + request.get_json()['articleid'])
+    return json.dumps(myCursor.fetchall())
+
 
 if __name__ == "__main__":
     app.run(debug=True)

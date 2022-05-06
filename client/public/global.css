@@ -172,43 +172,43 @@ button:focus {
   color: #d90429;
   fill: #d90429;
 }
-.fashion{
+.fashion {
   color: #2e2e2e;
   fill: #2e2e2e;
 }
-.business{
+.business {
   color: #023e8a;
   fill: #023e8a;
 }
-.science{
+.science {
   color: #e8d138;
   fill: #e8d138;
 }
-.tech{
+.tech {
   color: #03045e;
   fill: #03045e;
 }
-.art{
+.art {
   color: #929292;
   fill: #929292;
 }
-.currentAffairs{
+.currentAffairs {
   color: #4cc9f0;
   fill: #4cc9f0;
 }
-.health{
+.health {
   color: #e62626;
   fill: #e62626;
 }
-.lifestyle{
+.lifestyle {
   color: #bebc3f;
   fill: #bebc3f;
 }
-.law{
+.law {
   color: #9d4edd;
   fill: #9d4edd;
 }
-.other{
+.other {
   color: black;
   fill: black;
 }

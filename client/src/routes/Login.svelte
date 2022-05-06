@@ -13,11 +13,15 @@
             data => {
               console.log(data)
               if(!data.correctData) userNotFound()
-              else window.location.replace("/")
+              else {
+                localStorage.setItem('user', login)
+                window.location.replace("/")
+              }
             }
         )
     }
-    async function emptyInputError(){ 
+  } 
+  async function emptyInputError(){ 
       document.querySelector("#errordisplay").textContent = "You must fill in all the blanks!"
       document.querySelector("#errordisplay").style.display = "block"
    }
@@ -25,7 +29,6 @@
       document.querySelector("#errordisplay").textContent = "User with that data not found!"
       document.querySelector("#errordisplay").style.display = "block"
    }
-  } 
 </script>
 <div class="all"> 
   <div class="login-box" style="height:310px">

@@ -28,6 +28,7 @@
     return res;
   }
   function logout() {
+    localStorage.removeItem('user')
     fetch("/logout")
       .then((response) => response.fjson())
       .then((data) => (logged = data));
