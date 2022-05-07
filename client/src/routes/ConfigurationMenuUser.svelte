@@ -116,7 +116,7 @@
     } else if (type == "down") {
       if (index == 0) return;
       list[index].sliderOrder -= 1;
-      list[index + 1].sliderOrder += 1;
+      list[index - 1].sliderOrder += 1;
       [list[index], list[index - 1]] = [list[index - 1], list[index]];
       sliderAsync = list;
     }
@@ -319,7 +319,6 @@
   }
 
   function changeArticleOrder(type, index, list) {
-    console.log("aaa");
     if (type == "up") {
       if (index == list.length - 1) return;
       list[index].newsOrder = parseInt(list[index].newsOrder) + 1;
@@ -329,14 +328,10 @@
     } else if (type == "down") {
       if (index == 0) return;
       list[index].newsOrder = parseInt(list[index].newsOrder) - 1;
-      list[index + 1].newsOrder = parseInt(list[index].newsOrder) + 1;
+      list[index - 1].newsOrder = parseInt(list[index].newsOrder) + 1;
       [list[index], list[index - 1]] = [list[index - 1], list[index]];
       articlesChangeOrder = list;
     }
-    console.log(articlesChangeOrder);
-    articlesChangeOrder.forEach((element) => {
-      console.log(element.newsOrder);
-    });
   }
   function fetchSaveArticlesOrder() {
     if (articlesChangeOrder.length > 0) {

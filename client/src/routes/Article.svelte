@@ -47,6 +47,7 @@
       if (response.length > 0) {
         article_found = true;
       }
+      console.log(response);
       return response[0];
     } catch {
       article_found = false;
@@ -140,63 +141,65 @@
     <div class="article_content">
       <h1>{article.title}</h1>
       <h5>{article.text_content}</h5>
-      {#if JSON.parse(article.pictures).length > 0}
-        <div class="gallery">
-          {#each JSON.parse(article.pictures) as picture, i}
-            <div class="gallery-item">
-              <img
-                src={picture}
-                alt=""
-                class="gallery-picture"
-                on:click={() => setGalleryPhoto(i)}
-              />
-            </div>
-          {/each}
-        </div>
-        <div
-          class="overlay"
-          id="overlay"
-          style="display: none;"
-          on:click={hideGallery}
-        />
-        <div
-          id="extended-gallery"
-          class="extended-gallery"
-          style="display: none;"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 384 512"
-            class="x-sign"
-            on:click={() => hideGallery()}
-            ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-              d="M376.6 427.5c11.31 13.58 9.484 33.75-4.094 45.06c-5.984 4.984-13.25 7.422-20.47 7.422c-9.172 0-18.27-3.922-24.59-11.52L192 305.1l-135.4 162.5c-6.328 7.594-15.42 11.52-24.59 11.52c-7.219 0-14.48-2.438-20.47-7.422c-13.58-11.31-15.41-31.48-4.094-45.06l142.9-171.5L7.422 84.5C-3.891 70.92-2.063 50.75 11.52 39.44c13.56-11.34 33.73-9.516 45.06 4.094L192 206l135.4-162.5c11.3-13.58 31.48-15.42 45.06-4.094c13.58 11.31 15.41 31.48 4.094 45.06l-142.9 171.5L376.6 427.5z"
-            /></svg
-          >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-            class="arrow left-arrow"
-            on:click={() => changePhoto(-1, article)}
-            ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-              d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
-            /></svg
-          >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-            class="arrow right-arrow"
-            on:click={() => changePhoto(1, article)}
-            ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
-              d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
-            /></svg
-          >
-          <img
-            class="extended-gallery-picture"
-            src={JSON.parse(article.pictures)[currentGalleryPhoto]}
-            alt=""
+      {#if article.pictures != null}
+        {#if JSON.parse(article.pictures).length > 0}
+          <div class="gallery">
+            {#each JSON.parse(article.pictures) as picture, i}
+              <div class="gallery-item">
+                <img
+                  src={picture}
+                  alt=""
+                  class="gallery-picture"
+                  on:click={() => setGalleryPhoto(i)}
+                />
+              </div>
+            {/each}
+          </div>
+          <div
+            class="overlay"
+            id="overlay"
+            style="display: none;"
+            on:click={hideGallery}
           />
-        </div>
+          <div
+            id="extended-gallery"
+            class="extended-gallery"
+            style="display: none;"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+              class="x-sign"
+              on:click={() => hideGallery()}
+              ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                d="M376.6 427.5c11.31 13.58 9.484 33.75-4.094 45.06c-5.984 4.984-13.25 7.422-20.47 7.422c-9.172 0-18.27-3.922-24.59-11.52L192 305.1l-135.4 162.5c-6.328 7.594-15.42 11.52-24.59 11.52c-7.219 0-14.48-2.438-20.47-7.422c-13.58-11.31-15.41-31.48-4.094-45.06l142.9-171.5L7.422 84.5C-3.891 70.92-2.063 50.75 11.52 39.44c13.56-11.34 33.73-9.516 45.06 4.094L192 206l135.4-162.5c11.3-13.58 31.48-15.42 45.06-4.094c13.58 11.31 15.41 31.48 4.094 45.06l-142.9 171.5L376.6 427.5z"
+              /></svg
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+              class="arrow left-arrow"
+              on:click={() => changePhoto(-1, article)}
+              ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z"
+              /></svg
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+              class="arrow right-arrow"
+              on:click={() => changePhoto(1, article)}
+              ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
+              /></svg
+            >
+            <img
+              class="extended-gallery-picture"
+              src={JSON.parse(article.pictures)[currentGalleryPhoto]}
+              alt=""
+            />
+          </div>
+        {/if}
       {/if}
 
       <div class="article-content">{article.content}</div>

@@ -532,21 +532,20 @@ def displayNewsFrame(id):
 def saveChN(Header, Title, Text_Content, Button_Text, Category, id):
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
-    myCursor.execute("""UPDATE news SET
-                    header = :header,
-                    title = :title,
-                    text_content =  :text_content,
-                    button_text = :button_text,
-                    category = :category
-                    WHERE idnews = :id""",
-                     {
-                         'header': Header,
-                         'title': Title,
-                         'text_content': Text_Content,
-                         'button_text': Button_Text,
-                         'category': Category,
-                         'id': id
-                     })
+    myCursor.execute(f"select * from news where idnews ={id}")
+    records = myCursor.fetchall()
+    record = records[0]
+    content = record[2]
+    pictures = record[8]
+    myConnection.commit()
+    myConnection.close()
+    
+
+    
+
+    myConnection = sqlite3.connect('usersData.sqlite')
+    myCursor = myConnection.cursor()
+    myCursor.execute("UPDATE news SET header = ?, title = ?, text_content =  ?, button_text = ?, category = ?, content = ?, pictures = ? WHERE idnews = ?",(Header,Title,Text_Content,Button_Text,Category,id,content,pictures))
     myConnection.commit()
 
 
@@ -613,10 +612,12 @@ def addNews():
 def saveNewNews(Header, Title, Text_Content, Button_Text, Category, frameNews):
     myConnection = sqlite3.connect('usersData.sqlite')
     myCursor = myConnection.cursor()
+    pictures = []
+    content = ""
     print(
         f"INSERT INTO news (header,title,text_content,button_text, category, idnews) VALUES('{Header}','{Title}','{Text_Content}','{Button_Text}','{Category}','{max([i[4] for i in getAllNewsRecords()]) + 1}'")
     myCursor.execute(
-        f"INSERT INTO news (header,title,text_content,button_text, category, idnews) VALUES('{Header}','{Title}','{Text_Content}','{Button_Text}','{Category}','{max([i[4] for i in getAllNewsRecords()]) + 1}')")
+        f"INSERT INTO news (header,title,text_content,button_text, category, idnews, pictures, content) VALUES('{Header}','{Title}','{Text_Content}','{Button_Text}','{Category}','{max([i[4] for i in getAllNewsRecords()]) + 1}','{pictures}','{content}')")
     myConnection.commit()
     myConnection.close()
     navNewsFrame.destroy()
