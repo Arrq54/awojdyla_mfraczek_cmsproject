@@ -166,15 +166,13 @@ def saveChanges(item_id):
         myCursor.execute("""UPDATE data SET
                 username = :username,
                 email = :email,
-                password =  :password,
-                admin = :admin
+                password =  :password
     
                 WHERE oid = :oid""",
                          {
                              'username': editArr[0].get(),
                              'email': editArr[1].get(),
                              'password': editArr[2].get(),
-                             'admin': 0,
                              'oid': item_id
                          })
         myConnection.commit()

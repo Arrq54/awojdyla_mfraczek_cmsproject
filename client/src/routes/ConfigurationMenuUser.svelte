@@ -186,13 +186,12 @@
     if (document.getElementById("permissions") !== null)
       permissions = document.getElementById("permissions").value;
     let canGoFurther = true;
-
     if (username == "" || email == "" || password == "") canGoFurther = false;
     if (canGoFurther) saveChanges(id, username, email, password, permissions);
     else document.getElementById("err").style.display = "block";
   }
 
-  async function saveChanges(id, username, email, password) {
+  async function saveChanges(id, username, email, password, permissions) {
     const body = JSON.stringify({
       id: id,
       username: username,
@@ -413,6 +412,7 @@
       headers,
     }).then((response) => response.json());
     const res = await temp;
+    console.log(res)
     return res;
   }
   async function exportSettings() {
@@ -481,6 +481,7 @@
     <div class="menu">
       <div class="maincard">
         <ul>
+          {#if user.permission == 2}
           <li id="themes" on:click={() => setTab("themes")}>Themes</li>
           <li id="block_order" on:click={() => setTab("block_order")}>
             Block order
@@ -502,10 +503,47 @@
           >
             Show the site
           </li>
+          {:else if user.permission == 1}
+          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+          <li id="block_order" on:click={() => setTab("block_order")}>
+            Block order
+          </li>
+          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+          <li id="menu" on:click={() => setTab("menu")}>Menu</li>
+          <li id="articles" on:click={() => setTab("articles")}>Articles</li>
+          <li id="ffn" on:click={() => setTab("ffn")}>First featurette news</li>
+          <li id="footer" on:click={() => setTab("footer")}>Footer</li>
+          <li id="import_export" on:click={() => setTab("import_export")}>
+            Import/Export
+          </li>
+          <li
+            id="showSite"
+            on:click={() => {
+              window.open("/", "_blank");
+            }}
+          >
+            Show the site
+          </li>
+          {:else}
+          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+          <li id="ffn" on:click={() => setTab("ffn")}>First featurette news</li>
+          <li id="import_export" on:click={() => setTab("import_export")}>
+            Import/Export
+          </li>
+          <li
+            id="showSite"
+            on:click={() => {
+              window.open("/", "_blank");
+            }}
+          >
+            Show the site
+          </li>
+          {/if}
         </ul>
-        {#if user.permissions == 2}
+        {#if user.permission == 2}
           <p class="statusAdmin">Admin</p>
-        {:else if user.permissions == 1}
+        {:else if user.permission == 1}
           <p class="statusAdmin">Advanced user permissions</p>
         {:else}
           <p class="statusAdmin">Standard user permissions</p>
