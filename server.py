@@ -19,7 +19,6 @@ myCursor.execute("""CREATE TABLE IF NOT EXISTS data(
     admin integer
 )""")
 
-
 myConnection = sqlite3.connect('cmsProject.sqlite')
 
 @app.route("/")
