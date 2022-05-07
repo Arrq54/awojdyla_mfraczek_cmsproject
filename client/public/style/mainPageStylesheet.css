@@ -17,8 +17,8 @@
 body {
   background-color: var(--body-backround-color);
   width: 100vw;
-  height: 100vh;
   font-family: var(--font-family);
+  overflow-x: hidden;
 }
 .justify-content-center {
   justify-content: center;
@@ -38,8 +38,9 @@ body {
   padding: 4px;
 }
 .navbar {
-  padding: 5px 20%;
+  padding: 5px 10%;
   margin-bottom: 10px;
+  min-width: 15px;
   border-bottom: var(--menu-border-bottom);
 }
 
@@ -75,6 +76,10 @@ body {
 .arrow-right {
   right: 5%;
 }
+.register-login-buttons{
+  display: flex;
+  flex-wrap: wrap;
+}
 .slider-content {
   position: absolute;
   bottom: 20px;
@@ -85,6 +90,16 @@ body {
 .btn {
   border-radius: 5px;
   padding: 4px;
+  height: fit-content;
+  min-width: 100px;
+  text-align: center;
+  border: 1px solid black;
+}
+.btn-n{
+  border-radius: 5px;
+  padding: 4px;
+  height: fit-content;
+  text-align: center;
   border: 1px solid black;
 }
 .btn-a {
@@ -197,7 +212,6 @@ a {
 .btn-news {
   color: white !important;
   text-decoration: none !important;
-
   width: fit-content !important;
 }
 .btn-div-news:hover {
@@ -270,9 +284,11 @@ hr {
 }
 .vertical{
   flex-direction: var(--menu-flex-direction);
+  position: relative;
 }
 .menu{
   width: var(--menu-width);
+  min-width: 152px;
   border-right: var(--menu-border-right);
 } 
 .content{

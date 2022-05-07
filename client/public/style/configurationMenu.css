@@ -136,11 +136,14 @@
 }
 .alls {
   width: 100%;
-  height: 100%;
   background-color: whitesmoke;
   overflow: auto;
+  /* position: relative; */
   margin: 0;
+  padding: 0;
+  height: 100%;
 }
+
 p {
   color: rgb(210, 255, 229);
   margin-bottom: 25px;
@@ -157,6 +160,7 @@ p {
   background-color: #16a060;
   margin: 0px;
   top: 0;
+  min-width: 120px;
   position: absolute;
 }
 .maincard > ul {
@@ -178,12 +182,16 @@ p {
 .maincard {
   height: 100%;
   position: relative;
+
 }
 .content {
   width: 85%;
+  max-width: calc(100% - 120px);
   height: 100vh;
   padding: 0px;
-  margin-left: 15%;
+  position: absolute;
+  overflow: auto;
+  right: 0;
 }
 .flex {
   display: flex;
@@ -514,4 +522,11 @@ input:checked + .slider:before {
   transition: 0.3s all ease;
   background-color: white;
  
+}
+.red{
+  text-align: center;
+  font-size: 35px;
+  color: red;
+  font-weight: bold;
+  letter-spacing: 3px;
 }

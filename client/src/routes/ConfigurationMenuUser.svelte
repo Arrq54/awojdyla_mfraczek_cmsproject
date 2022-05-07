@@ -404,16 +404,27 @@
       fetchFooterItems = [...list.filter((item, index) => index !== i)];
   }
   async function getLoginStatus() {
-    const body = JSON.stringify({ username: localStorage.getItem("user") });
-    const headers = { "Content-Type": "application/json" };
-    let temp = fetch("/checkLoginStatus", {
-      method: "post",
-      body,
-      headers,
-    }).then((response) => response.json());
-    const res = await temp;
-    console.log(res)
-    return res;
+    if (localStorage.getItem("user") != null) {
+      const body = JSON.stringify({ username: localStorage.getItem("user") });
+      const headers = { "Content-Type": "application/json" };
+      let temp = fetch("/checkLoginStatus", {
+        method: "post",
+        body,
+        headers,
+      }).then((response) => response.json());
+      const res = await temp;
+
+      sessionStorage.getItem("selectedTab") == null
+        ? setTab("themes")
+        : setTab(
+            sessionStorage.getItem("selectedTab") == "login to customize"
+              ? "themes"
+              : sessionStorage.getItem("selectedTab")
+          );
+      return res;
+    }
+    setTab("login to customize");
+    return { permission: -1 };
   }
   async function exportSettings() {
     let exportObject = {};
@@ -482,71 +493,81 @@
       <div class="maincard">
         <ul>
           {#if user.permission == 2}
-          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
-          <li id="block_order" on:click={() => setTab("block_order")}>
-            Block order
-          </li>
-          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
-          <li id="menu" on:click={() => setTab("menu")}>Menu</li>
-          <li id="users" on:click={() => setTab("users")}>Users</li>
-          <li id="articles" on:click={() => setTab("articles")}>Articles</li>
-          <li id="ffn" on:click={() => setTab("ffn")}>First featurette news</li>
-          <li id="footer" on:click={() => setTab("footer")}>Footer</li>
-          <li id="import_export" on:click={() => setTab("import_export")}>
-            Import/Export
-          </li>
-          <li
-            id="showSite"
-            on:click={() => {
-              window.open("/", "_blank");
-            }}
-          >
-            Show the site
-          </li>
+            <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+            <li id="block_order" on:click={() => setTab("block_order")}>
+              Block order
+            </li>
+            <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+            <li id="menu" on:click={() => setTab("menu")}>Menu</li>
+            <li id="users" on:click={() => setTab("users")}>Users</li>
+            <li id="articles" on:click={() => setTab("articles")}>Articles</li>
+            <li id="ffn" on:click={() => setTab("ffn")}>
+              First featurette news
+            </li>
+            <li id="footer" on:click={() => setTab("footer")}>Footer</li>
+            <li id="import_export" on:click={() => setTab("import_export")}>
+              Import / Export
+            </li>
+            <li
+              id="showSite"
+              on:click={() => {
+                window.open("/", "_blank");
+              }}
+            >
+              Show the site
+            </li>
           {:else if user.permission == 1}
-          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
-          <li id="block_order" on:click={() => setTab("block_order")}>
-            Block order
-          </li>
-          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
-          <li id="menu" on:click={() => setTab("menu")}>Menu</li>
-          <li id="articles" on:click={() => setTab("articles")}>Articles</li>
-          <li id="ffn" on:click={() => setTab("ffn")}>First featurette news</li>
-          <li id="footer" on:click={() => setTab("footer")}>Footer</li>
-          <li id="import_export" on:click={() => setTab("import_export")}>
-            Import/Export
-          </li>
-          <li
-            id="showSite"
-            on:click={() => {
-              window.open("/", "_blank");
-            }}
-          >
-            Show the site
-          </li>
+            <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+            <li id="block_order" on:click={() => setTab("block_order")}>
+              Block order
+            </li>
+            <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+            <li id="menu" on:click={() => setTab("menu")}>Menu</li>
+            <li id="articles" on:click={() => setTab("articles")}>Articles</li>
+            <li id="ffn" on:click={() => setTab("ffn")}>
+              First featurette news
+            </li>
+            <li id="footer" on:click={() => setTab("footer")}>Footer</li>
+            <li id="import_export" on:click={() => setTab("import_export")}>
+              Import / Export
+            </li>
+            <li
+              id="showSite"
+              on:click={() => {
+                window.open("/", "_blank");
+              }}
+            >
+              Show the site
+            </li>
+          {:else if user.permission == 0}
+            <li id="themes" on:click={() => setTab("themes")}>Themes</li>
+            <li id="slider" on:click={() => setTab("slider")}>Slider</li>
+            <li id="ffn" on:click={() => setTab("ffn")}>
+              First featurette news
+            </li>
+            <li id="import_export" on:click={() => setTab("import_export")}>
+              Import / Export
+            </li>
+            <li
+              id="showSite"
+              on:click={() => {
+                window.open("/", "_blank");
+              }}
+            >
+              Show the site
+            </li>
           {:else}
-          <li id="themes" on:click={() => setTab("themes")}>Themes</li>
-          <li id="slider" on:click={() => setTab("slider")}>Slider</li>
-          <li id="ffn" on:click={() => setTab("ffn")}>First featurette news</li>
-          <li id="import_export" on:click={() => setTab("import_export")}>
-            Import/Export
-          </li>
-          <li
-            id="showSite"
-            on:click={() => {
-              window.open("/", "_blank");
-            }}
-          >
-            Show the site
-          </li>
+            <li>Login to customize</li>
           {/if}
         </ul>
         {#if user.permission == 2}
           <p class="statusAdmin">Admin</p>
         {:else if user.permission == 1}
           <p class="statusAdmin">Advanced user permissions</p>
-        {:else}
+        {:else if user.permission == 0}
           <p class="statusAdmin">Standard user permissions</p>
+        {:else}
+          <p class="statusAdmin">Access denied</p>
         {/if}
       </div>
     </div>
@@ -1599,6 +1620,8 @@
             </div>
           {/await}
         </div>
+      {:else if selectedTab == "login to customize"}
+        <div class="settings red">LOGIN TO CUSTOMIZE</div>
       {:else if selectedTab == "import_export"}
         <div class="settings">
           <h3>
