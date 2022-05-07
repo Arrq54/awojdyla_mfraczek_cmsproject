@@ -112,7 +112,7 @@ def createUserTable(isEditing, item_id):
             for index2, item2 in enumerate(item):
                 if index2 != 4 and index2 != 3:
                     createEntry(item2, index2, index)
-            if item[3] != 1:
+            if item[3] != 2:
                 createButtonDel(index, item)
                 createButtonSave(index, item)
             else:
@@ -121,7 +121,7 @@ def createUserTable(isEditing, item_id):
             for index2, item2 in enumerate(item):
                 if index2 != 4 and index2 != 3:
                     Label(usersW, text=item2).grid(column=index2, row=index + 1, **biggerpaddings)
-            if item[3] != 1:
+            if item[3] != 2:
                 createButtonDel(index, item)
                 createButtonEdit(index, item, isEditing)
             else:

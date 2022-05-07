@@ -19,15 +19,19 @@
       150 - document.getElementById("new_comment_content").value.length;
   };
   async function getLoginStatus() {
-    const body = JSON.stringify({ username: localStorage.getItem("user") });
-    const headers = { "Content-Type": "application/json" };
-    let temp = fetch("/checkLoginStatus", {
-      method: "post",
-      body,
-      headers,
-    }).then((response) => response.json());
-    const res = await temp;
-    return res;
+    if (localStorage.getItem("user") != null) {
+      const body = JSON.stringify({ username: localStorage.getItem("user") });
+      const headers = { "Content-Type": "application/json" };
+      let temp = fetch("/checkLoginStatus", {
+        method: "post",
+        body,
+        headers,
+      }).then((response) => response.json());
+      const res = await temp;
+      return res;
+    } else {
+      return { permission: -1 };
+    }
   }
   let article_found = false;
   let fetchArticle = getArticle(params.id);

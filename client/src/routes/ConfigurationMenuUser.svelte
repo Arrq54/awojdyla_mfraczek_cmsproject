@@ -558,6 +558,14 @@
             </li>
           {:else}
             <li>Login to customize</li>
+            <li
+              id="showSite"
+              on:click={() => {
+                window.open("/", "_blank");
+              }}
+            >
+              Show the site
+            </li>
           {/if}
         </ul>
         {#if user.permission == 2}
