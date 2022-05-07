@@ -640,7 +640,7 @@
                         {news.text_content}
                         <br />
                         <br />
-                        <div class="btn btn-div-news">
+                        <div class="btn-n btn-div-news">
                           <a href={`/#/article/${news.idnews}`} class="btn-news"
                             >{news.button_text}</a
                           >

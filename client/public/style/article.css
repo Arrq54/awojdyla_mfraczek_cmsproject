@@ -35,9 +35,9 @@
 .extended-gallery {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 200px;
   z-index: 2;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 .x-sign {
   position: absolute;
